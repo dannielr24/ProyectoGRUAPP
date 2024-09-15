@@ -25,7 +25,7 @@ export class MapaPage implements OnInit {
 
       const mapOptions = {
         center: latLng,
-        ZOOM: 15,
+        zoom: 15,
         mapTypeId: google.maps.mapTypeId.ROADMAP
       };
 

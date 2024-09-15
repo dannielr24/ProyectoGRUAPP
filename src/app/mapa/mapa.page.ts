@@ -18,15 +18,21 @@ export class MapaPage implements OnInit {
   }
 
   loadMap() {
-    let latLng = new google.maps.LatLng(-33.4489, -70.6693); // Cambia por tu latitud y longitud.
+    const mapElement = document.getElementById('map');
 
-    let mapOptions = {
-      center: latLng,
-      zoom: 15,
-      mapTypeId: google.maps.MapTypeId.ROADMAP
-    };
+    if (mapElement) {
+      const latLng = new google.maps.latLng(-33.4489, -70.6693);
 
-    this.map = new google.maps.Map(document.getElementById('map'), mapOptions);
+      const mapOptions = {
+        center: latLng,
+        ZOOM: 15,
+        mapTypeId: google.maps.mapTypeId.ROADMAP
+      };
+
+      this.map = new google.maps.Map(mapElement, mapOptions);
+    } else {
+      console.error('No se pudo encontrar el elemento para el mapa');
+    }
   }
 }
 

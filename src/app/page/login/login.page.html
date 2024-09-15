@@ -1,0 +1,49 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <img src="assets/img/DuocUC.png.png" width="50%" height="50%">
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+
+  <div>
+    <h1>
+      <ion-item>
+        <ion-input [(ngModel)]="email" label="Email" type="email" placeholder=""></ion-input>
+      </ion-item>
+  
+      <ion-item>
+        <ion-input [(ngModel)]="password" label="Password" type="password" value=""></ion-input>
+      </ion-item>
+      
+      <ion-button (click)="login()" expand="block">Login</ion-button>
+    </h1>
+  </div>
+
+  <div>
+    <ion-grid>
+      <ion-row>
+        <ion-col class="registrar">
+          <div>
+            <a [routerLink]="['/crearuser']" routerLinkActive="router-link-active">Registrar</a>
+          </div>
+        </ion-col>
+        <ion-col class="recuperar">
+          <div>
+            <a [routerLink]="['/recuperarpass']" routerLinkActive="router-link-active">Recuperar</a>
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+  
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-title>GruAPP</ion-title>
+  </ion-toolbar>
+</ion-footer>

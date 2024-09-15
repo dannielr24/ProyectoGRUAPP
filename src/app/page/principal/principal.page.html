@@ -1,0 +1,35 @@
+<ion-header>
+  <ion-toolbar>
+    <img src="assets/img/DuocUC.png.png" width="50%" height="50%">
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <h2>Bienvenido, {{ user.email }}!</h2>
+  <p>Te has logueado exitosamente en GruAPP.</p>
+
+  <ion-button (click)="logout()">Cerrar Sesión</ion-button>
+  <h1>
+    <div>
+      PÁGINA PRINCIPAL
+    </div>
+  </h1>
+
+  <ion-list>
+    <ion-item button (click)="navigateTo('profile')">
+      <ion-label>Ver Perfil</ion-label>
+    </ion-item>
+    <ion-item button (click)="navigateTo('settings')">
+      <ion-label>Configuración</ion-label>
+    </ion-item>
+    <ion-item button (click)="navigateTo('help')">
+      <ion-label>Ayuda</ion-label>
+    </ion-item>
+  </ion-list>
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-title>GruAPP</ion-title>
+  </ion-toolbar>
+</ion-footer>

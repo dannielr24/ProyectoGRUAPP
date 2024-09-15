@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "386799996285",
+    "project_id": "gruapp-ad3cb",
+    "storage_bucket": "gruapp-ad3cb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:386799996285:android:c19d852a457ed91debd014",
+        "android_client_info": {
+          "package_name": "com.example.gruapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCsZnncNtddHIxtXgK8j9V58EQs4HyGGvo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

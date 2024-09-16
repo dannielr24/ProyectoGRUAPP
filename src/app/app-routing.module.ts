@@ -1,9 +1,14 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { AngularFireAuthGuard, redirectUnauthorizedTo } from '@angular/fire/compat/auth-guard';
+import { MapaPage } from './mapa/mapa.page';
 
 const redireccionarLogin = () => redirectUnauthorizedTo(['/login'])
 const routes: Routes = [
+  {
+    path: 'mapa',
+    component: MapaPage
+  },
   { 
     path: 'home',
     loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)

@@ -10,16 +10,13 @@ import { FirebaseService } from 'src/app/service/firebase.service';
 export class PrincipalPage implements OnInit {
 
   email: string=""
-  pass: number=0
-  valor: number=0
+
   user: any;
 
   constructor(private firebase:FirebaseService, private router:Router, private activate:ActivatedRoute) { 
     this.activate.queryParams.subscribe(params => {
     this.email=params['email'];
-    this.pass=params['password'];
-    this.valor=params['valor'];
-    console.log(this.email,this.pass);
+    console.log(this.email);
 
     this.user = {
       email: this.email

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 declare var google: any;  // Declarar google para TypeScript
 
@@ -11,7 +12,7 @@ export class MapaPage implements OnInit {
 
   map: any;
 
-  constructor() {}
+  constructor(private router: Router) {}
 
   ngOnInit() {
     this.loadMap();
@@ -27,5 +28,13 @@ export class MapaPage implements OnInit {
     };
 
     this.map = new google.maps.Map(document.getElementById('map'), mapOptions);
+  }
+
+  requestRide() {
+    console.log("Viaje Solicitado");
+  }
+
+  goToAccount(page: string) {
+    this.router.navigate([page]);
   }
 }

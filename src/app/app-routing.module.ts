@@ -6,17 +6,13 @@ import { MapaPage } from './mapa/mapa.page';
 const redireccionarLogin = () => redirectUnauthorizedTo(['/login'])
 const routes: Routes = [
   {
-    path: 'mapa',
-    component: MapaPage
+    path: '',
+    redirectTo: 'login',
+    pathMatch: 'full'
   },
   { 
     path: 'home',
     loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)
-  },
-  {
-    path: '',
-    redirectTo: 'login',
-    pathMatch: 'full'
   },
   {
     path: 'login',
@@ -36,10 +32,6 @@ const routes: Routes = [
     loadChildren: () => import('./page/recuperarpass/recuperarpass.module').then( m => m.RecuperarpassPageModule)
   },
   {
-    path: 'principal',
-    loadChildren: () => import('./page/principal/principal.module').then( m => m.PrincipalPageModule)
-  },
-  {
     path: 'account',
     loadChildren: () => import('./page/account/account.module').then( m => m.AccountPageModule)
   },
@@ -47,7 +39,6 @@ const routes: Routes = [
     path: 'mapa',
     loadChildren: () => import('./mapa/mapa.module').then( m => m.MapaPageModule)
   },
-
 ];
 
 @NgModule({

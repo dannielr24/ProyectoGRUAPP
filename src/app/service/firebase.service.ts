@@ -26,5 +26,4 @@ export class FirebaseService {
   async logout() {
     await this.firebase.signOut()
   }
-
 }

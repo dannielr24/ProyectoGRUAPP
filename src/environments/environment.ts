@@ -5,7 +5,7 @@
 export const environment = {
   production: false,
   firebaseConfig: {
-    apiKey: "AIzaSyCyVm5QJRd_TbEyaZ0RZeSIvw2HCN-O3Dw",
+    apiKey: "AIzaSyCsZnncNtddHIxtXgK8j9V58EQs4HyGGvo",
     authDomain: "gruapp-ad3cb.firebaseapp.com",
     projectId: "gruapp-ad3cb",
     storageBucket: "gruapp-ad3cb.appspot.com",

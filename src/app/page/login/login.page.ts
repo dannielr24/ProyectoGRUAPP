@@ -23,7 +23,7 @@ export class LoginPage implements OnInit {
       let usuario=await this.firebase.auth(this.email,this.password);
       console.log(usuario);
       const navigationextras:NavigationExtras = {
-        queryParams: {email: this.email, password: this.password}
+        queryParams: {email: this.email}
       };
       this.router.navigate(['/principal'],navigationextras);
     } catch (error){
@@ -40,5 +40,4 @@ export class LoginPage implements OnInit {
     })
     await alert.present();
   }
-
 }

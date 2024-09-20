@@ -2,13 +2,16 @@
   <ion-menu contentId="main-content">
     <ion-header>
       <ion-toolbar>
-        <ion-title>Menu Content</ion-title>
+        <ion-buttons slot="start">
+          <ion-back-button defaultHref="/home"></ion-back-button>
+        </ion-buttons>
+        <ion-title>Menú</ion-title>
       </ion-toolbar>
     </ion-header>
     <ion-content>
       <ion-list>
         <ion-item routerLink="/home">Página Principal</ion-item>
-        <ion-item routerLink="/service">Servicio</ion-item>
+        <ion-item routerLink="/mapa">Mapa</ion-item>
         <ion-item routerLink="/activity">Actividad</ion-item>
         <ion-item routerLink="/account">Cuenta</ion-item>
       </ion-list>

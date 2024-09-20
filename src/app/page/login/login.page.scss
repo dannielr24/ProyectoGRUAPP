@@ -1,7 +1,23 @@
-.recuperar{
-    text-align: right;
+/* login.page.scss */
+.page {
+    background-color: #f8f9fa; /* Color de fondo */
 }
 
-.registrar{
+h1 {
+    color: #007bff; /* Color del texto del título */
+}
+
+ion-button {
+    --background: #007bff; /* Color de fondo del botón */
+    --color: white; /* Color del texto del botón */
+}
+
+.recuperar {
+    text-align: right;
+    color: #28a745; /* Color del texto del enlace */
+}
+
+.registrar {
     text-align: left;
+    color: #dc3545; /* Color del texto del enlace */
 }

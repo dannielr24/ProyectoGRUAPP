@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { MenuController } from '@ionic/angular';
 
 @Component({
   selector: 'app-home',
@@ -8,7 +9,7 @@ import { Router } from '@angular/router';
 })
 export class HomePage {
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private menu: MenuController) {}
 
 
   goToAccount(page: String) {
@@ -21,6 +22,10 @@ export class HomePage {
 
   navigateToService() {
     this.router.navigate(['/mapa']);
+  }
+
+  openMenu() {
+    this.menu.open(); // Abre el menú
   }
   
 }

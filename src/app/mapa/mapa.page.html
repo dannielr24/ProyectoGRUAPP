@@ -1,7 +1,9 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/home"></ion-back-button>
+      <ion-button (click)="goBack()">
+        <ion-icon name="arrow-back" aria-label="Volver"></ion-icon>
+      </ion-button>
     </ion-buttons>
     <ion-title>Mapa</ion-title>
   </ion-toolbar>
@@ -9,32 +11,8 @@
 
 <ion-content>
   <!-- Contenido de la página del mapa aquí -->
-  <div id="map" style="height: 100%; width: 100%;"></div>
-
-  <ion-button expand="full" (click)="requestRide()">Solicitar Viaje</ion-button>
+  <div id="map" style="height: 100%; width: 100%; position: relative; z-index: 0;"></div>
+  <ion-button expand="full" (click)="requestRide()" style="z-index: 10;">Solicitar Viaje</ion-button>
+  <!--<app-tab-bar></app-tab-bar>-->
 </ion-content>
 
-<!-- Barra de pestañas (tab bar) en la parte inferior -->
-<ion-tabs color="dark">
-  <ion-tab-bar slot="bottom">
-    <ion-tab-button (click)="goToAccount('home')">
-      <ion-icon name="home"></ion-icon>
-      <ion-label>Inicio</ion-label>
-    </ion-tab-button>
-
-    <ion-tab-button [routerLink]="['/mapa']">
-      <ion-icon name="map"></ion-icon>
-      <ion-label>Mapa</ion-label>
-    </ion-tab-button>
-
-    <ion-tab-button tab="activity">
-      <ion-icon name="pulse"></ion-icon>
-      <ion-label>Actividad</ion-label>
-    </ion-tab-button>
-
-    <ion-tab-button (click)="goToAccount('account')">
-      <ion-icon name="person"></ion-icon>
-      <ion-label>Cuenta</ion-label>
-    </ion-tab-button>
-  </ion-tab-bar>
-</ion-tabs>

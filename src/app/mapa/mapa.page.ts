@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Location } from '@angular/common';
 
 declare var google: any;  // Declarar google para TypeScript
 
@@ -12,7 +13,7 @@ export class MapaPage implements OnInit {
 
   map: any;
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private location: Location) {}
 
   ngOnInit() {
     this.loadMap();
@@ -36,5 +37,9 @@ export class MapaPage implements OnInit {
 
   goToAccount(page: string) {
     this.router.navigate([page]);
+  }
+
+  goBack() {
+    this.location.back();
   }
 }

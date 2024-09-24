@@ -1,21 +1,18 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-
 import { IonicModule } from '@ionic/angular';
-
-import { LoginPageRoutingModule } from './login-routing.module';
-
-import { LoginPage } from './login.page';
 import { RouterModule } from '@angular/router';
+import { TabBarComponent } from './tab-bar.component';
 
 @NgModule({
+  declarations: [TabBarComponent],
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    RouterModule.forChild([{path: '', component: LoginPage}])
+    RouterModule
   ],
-  declarations: [LoginPage]
+  exports: [TabBarComponent] 
 })
-export class LoginPageModule {}
+export class TabBarModule {}

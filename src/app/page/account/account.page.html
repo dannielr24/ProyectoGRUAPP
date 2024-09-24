@@ -1,48 +1,28 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <div>
-      <ion-buttons slot="start">
-        <ion-back-button defaultHref="/home"></ion-back-button>
-      </ion-buttons>
-    </div>
+    <ion-buttons slot="start">
+      <ion-button (click)="goBack()">
+        <ion-icon name="arrow-back" aria-label="Volver"></ion-icon>
+      </ion-button>
+    </ion-buttons>
     <ion-title>Cuenta</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
+<ion-content>
   <ion-header collapse="condense">
     <ion-toolbar>
       <ion-title size="large">Cuenta</ion-title>
     </ion-toolbar>
   </ion-header>
-  <ion-list>
-    <ion-item routerLink="/login">Iniciar Sesión</ion-item>
-    <ion-item routerLink="/crearuser">Crear Usuario</ion-item>
-    <ion-item routerLink="/recuperarpass">Recuperar Contraseña</ion-item>
-  </ion-list>
+  <div id="container">
+    <ion-list>
+      <ion-item routerLink="/login">Iniciar Sesión</ion-item>
+      <ion-item routerLink="/crearuser">Crear Usuario</ion-item>
+      <ion-item routerLink="/recuperarpass">Recuperar Contraseña</ion-item>
+    </ion-list>
+  </div>
 </ion-content>
 
-<!-- Barra de pestañas (tab bar) en la parte inferior -->
-<ion-tabs color="dark">
-  <ion-tab-bar slot="bottom">
-    <ion-tab-button (click)="goToAccount('home')">
-      <ion-icon name="home"></ion-icon>
-      <ion-label>Inicio</ion-label>
-    </ion-tab-button>
-
-    <ion-tab-button [routerLink]="['/mapa']">
-      <ion-icon name="map"></ion-icon>
-      <ion-label>Mapa</ion-label>
-    </ion-tab-button>
-
-    <ion-tab-button tab="activity">
-      <ion-icon name="pulse"></ion-icon>
-      <ion-label>Actividad</ion-label>
-    </ion-tab-button>
-
-    <ion-tab-button (click)="goToAccount('account')">
-      <ion-icon name="person"></ion-icon>
-      <ion-label>Cuenta</ion-label>
-    </ion-tab-button>
-  </ion-tab-bar>
-</ion-tabs>
+<!--<app-tab-bar></app-tab-bar>
+-->

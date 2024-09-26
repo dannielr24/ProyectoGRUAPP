@@ -2,21 +2,17 @@ import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
-import { HomePageRoutingModule } from './home-routing.module';
-import { HomePage } from './home.page';
-import { TabBarModule } from '../tab-bar/tab-bar.module';
-
-
+import { HistorialPageRoutingModule } from './historial-routing.module';
+import { HistorialPage } from './historial.page';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    HomePageRoutingModule,
-    TabBarModule
+    HistorialPageRoutingModule
   ],
-  declarations: [HomePage],
+  declarations: [HistorialPage],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
-export class HomePageModule {}
+export class HistorialPageModule {}

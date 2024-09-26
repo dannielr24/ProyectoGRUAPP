@@ -8,12 +8,12 @@ import { Router } from '@angular/router';
 })
 export class TabBarComponent  implements OnInit {
 
-  constructor(private router: Router) {}
+  constructor(private router: Router) { }
 
   ngOnInit() {}
 
-  goToAccount(destination: string) {
-    this.router.navigate([destination]);
+  goToAccount(page: string) {
+    this.router.navigate([`/${page}`]); 
   }
 
 }

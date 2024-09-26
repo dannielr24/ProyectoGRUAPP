@@ -4,6 +4,11 @@
     z-index: 0;
   }
 
+  ion-button {
+    --background: #007bff; /* Color de fondo del botón */
+    --color: white; /* Color del texto del botón */
+ }
+
 ion-content {
   z-index: 1;
 }

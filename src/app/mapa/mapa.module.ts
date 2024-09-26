@@ -4,14 +4,12 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { MapaPage } from './mapa.page';
 import { RouterModule } from '@angular/router';
-import { TabBarModule } from '../tab-bar/tab-bar.module'; 
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    TabBarModule,
     RouterModule.forChild([
       {
         path: '',

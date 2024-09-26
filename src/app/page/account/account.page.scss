@@ -1,10 +1,16 @@
 ion-content {
     --background: #fff; 
-    display: flex; 
     justify-content: center; 
     align-items: center; 
     height: 100%; 
+    z-index: 10;
+    position: relative;
   }
+
+  ion-button {
+    --background: #007bff; /* Color de fondo del botón */
+    --color: white; /* Color del texto del botón */
+ }
   
   ion-list {
     border: 1px solid blue;
@@ -15,3 +21,12 @@ ion-content {
     padding: 20px; 
     background-color: rgba(255, 0, 0, 0.2);
   }
+
+  .masculino {
+    background-color: lightblue;
+  }
+  
+  .femenino {
+    background-color: lightpink;
+  }
+  

@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { NavigationExtras, Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
 import { FirebaseService } from 'src/app/service/firebase.service';
+import { Location } from '@angular/common';
+import { UsuarioService } from 'src/app/services/usuario.service';
 
 @Component({
   selector: 'app-login',
@@ -12,8 +14,20 @@ export class LoginPage implements OnInit {
 
   email=""
   password=""
+  usuarioService: any;
 
-  constructor(private firebase:FirebaseService, private router:Router, private alertcontroller:AlertController) { }
+  constructor(private firebase:FirebaseService, private router:Router, private alertcontroller:AlertController, private location: Location) {}
+
+  singIn() {
+    const usuarioLogueado = {
+      nombre: 'Daniel',
+      sexo: 'M',
+    };
+    
+    this.usuarioService.setUsuario(usuarioLogueado);
+
+    this.router.navigate(['/account']); 
+  }
 
   ngOnInit() {
   }
@@ -39,5 +53,9 @@ export class LoginPage implements OnInit {
       buttons:['Ok']
     })
     await alert.present();
+  }
+
+  goBack() {
+    this.location.back();
   }
 }

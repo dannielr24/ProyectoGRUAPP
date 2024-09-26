@@ -1,7 +1,9 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/home"></ion-back-button>
+      <ion-button (click)="goBack()">
+        <ion-icon name="arrow-back" aria-label="Volver"></ion-icon>
+      </ion-button>
     </ion-buttons>
     <img src="assets/img/gruapp.png" width="50%" height="50%">
   </ion-toolbar>
@@ -16,7 +18,9 @@
       </ion-item>
   
       <ion-item>
-        <ion-input [(ngModel)]="password" label="Contraseña" type="contraseña" value=""></ion-input>
+        <ion-input [(ngModel)]="password" label="Contraseña" type="password" placeholder="Contraseña">
+          <ion-input-password-toggle slot="end"></ion-input-password-toggle>
+        </ion-input>
       </ion-item>
       
       <ion-button (click)="login()" expand="block">Iniciar Sesión</ion-button>

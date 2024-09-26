@@ -1,7 +1,9 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/home"></ion-back-button>
+      <ion-button (click)="goBack()">
+        <ion-icon name="arrow-back" aria-label="Volver"></ion-icon>
+      </ion-button>
     </ion-buttons>
     <img src="assets/img/gruapp.png" width="50%" height="50%">
   </ion-toolbar>

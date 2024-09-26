@@ -11,8 +11,8 @@ import { TabBarModule } from 'src/app/tab-bar/tab-bar.module';
     CommonModule,
     FormsModule,
     IonicModule,
-    TabBarModule,
-    AccountPageRoutingModule
+    AccountPageRoutingModule,
+    TabBarModule
   ],
   declarations: [AccountPage]
 })

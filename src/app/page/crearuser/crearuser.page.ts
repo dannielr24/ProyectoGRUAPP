@@ -12,8 +12,12 @@ export class CrearuserPage implements OnInit {
 
   constructor(private firebase:FirebaseService, private router:Router, private location: Location) { }
 
-email=""
-password=""
+nombre: string = '';
+apellido: string = '';
+rut: string = '';
+fechaNacimiento: string = '';
+email: string = '';
+password: string = '';
 
   ngOnInit() {
   }

@@ -2,7 +2,7 @@
   <ion-toolbar>
     <ion-buttons slot="start">
       <ion-button (click)="goBack()">
-        <ion-icon name="arrow-back" aria-label="Volver"></ion-icon>
+        <ion-icon name="chevron-back-outline" aria-label="Volver"></ion-icon>
       </ion-button>
     </ion-buttons>
     <img src="assets/img/gruapp.png" width="50%" height="50%">
@@ -10,17 +10,32 @@
 </ion-header>
 
 <ion-content class="ion-padding">
-  <h1>
-    <ion-item>
-      <ion-input [(ngModel)]="email" label="Email" type="email" placeholder=""></ion-input>
-    </ion-item>
+  <h1>Registro</h1>
 
-    <ion-item>
-      <ion-input [(ngModel)]="password" label="Contraseña" type="contraseña" value=""></ion-input>
-    </ion-item>
+  <ion-item>
+    <ion-input [(ngModel)]="nombre" label="Nombre" placeholder="Nombre"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-input [(ngModel)]="apellido" label="Apellido" placeholder="Apellido"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-input [(ngModel)]="rut" label="Rut" placeholder="Rut"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-input [(ngModel)]="fechaNacimiento" presentation="date" label="Fecha de Nacimiento" placeholder="Selecciona tu Fecha de Nacimiento"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-input [(ngModel)]="email" label="Email" type="email" placeholder=""></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-input [(ngModel)]="password" label="Contraseña" type="contraseña" value=""></ion-input>
+  </ion-item>
     
     <ion-button (click)="registrar()" expand="block">Registrar</ion-button>
-  </h1>
 </ion-content>
 
 <ion-footer>

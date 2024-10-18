@@ -1,0 +1,29 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="goBack()">
+        <ion-icon name="chevron-back-outline" aria-label="Volver"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Solicitar Grúa</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Solicitar Grúa</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Solicitar asistencia en carretera</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <p>Si necesitas asistencia, por favor haz clic en el botón de abajo para solicitar una grúa.</p>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-button expand="full" (click)="solicitarGrua()">Solicitar Grúa</ion-button>
+</ion-content>

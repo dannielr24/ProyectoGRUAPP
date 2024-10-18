@@ -18,7 +18,13 @@ export class LoginPage implements OnInit {
   usuarioService: any;
   tokenID: any="";
 
-  constructor(private firebase:FirebaseService, private router:Router, private alertcontroller:AlertController, private location: Location, private storage: StorageService) {}
+  constructor(
+    private firebase:FirebaseService, 
+    private router:Router, 
+    private alertcontroller:AlertController, 
+    private location: Location, 
+    private storage: StorageService
+  ) {}
 
   singIn() {
     const usuarioLogueado = {

@@ -1,0 +1,20 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="goBack()">
+        <ion-icon name="chevron-back-outline" aria-label="Volver"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Ruta Moto</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Ruta Moto</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-button expand="full" (click)="iniciarViaje()">Iniciar Viaje en Moto</ion-button>
+</ion-content>

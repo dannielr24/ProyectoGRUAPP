@@ -31,15 +31,25 @@ export class StorageService {
   }
 
   async agregarStorage(data: any) {
-    this.setItem(llave, JSON.stringify(data))
+    await this.setItem(llave, JSON.stringify(data))
   }
 
   async obtenerStorage() {
-    const data=await this.getItem(llave);
+    const data = await this.getItem(llave);
     if (data == null) {
       return []
     } else {
       return JSON.parse(data);
     }
   }
+
+  eliminarStorage() {
+    try {
+      localStorage.removeItem('usuarioData');
+      console.log('Datos eliminados del almacenamiento');
+    } catch (error) {
+      console.error('Error al eliminar datos del almacenamiento', error);
+    }
+  }
+
 }

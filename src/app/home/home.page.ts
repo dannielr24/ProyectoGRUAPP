@@ -10,8 +10,13 @@ import { UsuarioService } from '../services/usuario.service';
 })
 export class HomePage implements OnInit {
   usuario: any;
+  userName: string = '';
 
-  constructor(private router: Router, private menu: MenuController, private usuarioService: UsuarioService) {}
+  constructor(
+    private router: Router, 
+    private menu: MenuController, 
+    private usuarioService: UsuarioService
+  ) {}
 
   ngOnInit() {
     this.usuario = this.usuarioService.getUsuario();
@@ -47,14 +52,20 @@ export class HomePage implements OnInit {
 
   seleccionarOpcionViaje(opcion: string) {
     console.log('Opción seleccionada:', opcion);
+    if (opcion === 'Auto') {
+      this.router.navigate(['/ruta-auto']);
+    } else if (opcion === 'Moto') {
+      this.router.navigate(['/ruta-moto']);
+    }
   }
 
   solicitarViaje() {
     console.log('Solicituda de viaje enviada');
+    this.router.navigate(['/mapa']);
   }
 
   solicitarGrua() {
     console.log('Solicitud de grúa enviada');
-  }
-  
+    this.router.navigate(['/solicitar-grua']);
+  }  
 }

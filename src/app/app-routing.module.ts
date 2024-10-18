@@ -13,7 +13,7 @@ const routes: Routes = [
     children: [
       { 
         path: 'home',
-        loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)
+        loadChildren: () => import('./home/home.module').then( m => m.HomePageModule),
       },
       {
         path: 'mapa',
@@ -26,7 +26,19 @@ const routes: Routes = [
       {
         path: 'account',
         loadChildren: () => import('./page/account/account.module').then( m => m.AccountPageModule)
-      }
+      },
+      {
+        path: 'ruta-auto',
+        loadChildren: () => import('./ruta-auto/ruta-auto.module').then(m => m.RutaAutoPageModule)
+      },
+      {
+        path: 'ruta-moto',
+        loadChildren: () => import('./ruta-moto/ruta-moto.module').then(m => m.RutaMotoPageModule)
+      },
+      {
+        path: 'solicitar-grua',
+        loadChildren: () => import('./solicitar-grua/solicitar-grua.module').then(m => m.SolicitarGruaPageModule)
+      }      
     ]
   },     
       {

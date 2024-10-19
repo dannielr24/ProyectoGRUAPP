@@ -1,5 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { HistorialViajesService } from '../services/historial-viajes.service';
+
+interface Viaje {
+  tipo: string;
+  fecha: string;
+  origen: string;
+  destino: string;
+  estado: string;
+}
 
 @Component({
   selector: 'app-historial',
@@ -8,18 +17,33 @@ import { Router } from '@angular/router';
 })
 export class HistorialPage implements OnInit {
 
-  viajes = [
-    { tipo: 'Auto', fecha: '2024-09-24', origen: 'Punto A', destino: 'Punto B', estado: 'Completado' },
-    { tipo: 'Moto', fecha: '2024-09-23', origen: 'Punto C', destino: 'Punto D', estado: 'Cancelado' },
-  ];
+  viajes: Viaje[] = [];
 
-  constructor(private router: Router) { }
+  constructor(
+    private router: Router,
+    private historialService: HistorialViajesService
+  ) { }
 
   ngOnInit(): void {
+    this.historialService.getViajes().subscribe((viajes) => {
+      this.viajes = viajes;
+    });
   }
 
   solicitarGrua() {
-    console.log('Solicitud de grúa realizada');
+    const nuevoViaje: Viaje = { 
+      tipo: 'Grúa',
+      fecha: new Date().toISOString().split('T')[0],
+      origen: 'Punto X',
+      destino: 'Punto Y',
+      estado: 'Pendiente'
+    };
+
+    this.historialService.addViaje(nuevoViaje);
+
+    this.historialService.getViajes().subscribe((viajes) => {
+      this.viajes = viajes;
+    });
   }
 
   goBack() {

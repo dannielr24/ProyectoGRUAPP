@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NavController } from '@ionic/angular';
+import { LoggingService } from '../services/logging.service';
 
 @Component({
   selector: 'app-ruta-moto',
@@ -8,7 +9,10 @@ import { NavController } from '@ionic/angular';
 })
 export class RutaMotoPage implements OnInit {
 
-  constructor(private navCtrl: NavController) { }
+  constructor(
+    private navCtrl: NavController,
+    private loggingService: LoggingService
+  ) {}
 
   ngOnInit() {
   }
@@ -18,7 +22,7 @@ export class RutaMotoPage implements OnInit {
   }
 
   iniciarViaje() {
-    console.log('Viaje en moto iniciado');
+    this.loggingService.log('Viaje en moto iniciado');
   }
 
 }

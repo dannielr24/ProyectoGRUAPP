@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { NavController } from '@ionic/angular';
+import { NavController, ToastController } from '@ionic/angular';
+import { LoggingService } from '../services/logging.service';
 
 @Component({
   selector: 'app-solicitar-grua',
@@ -8,7 +9,10 @@ import { NavController } from '@ionic/angular';
 })
 export class SolicitarGruaPage implements OnInit {
 
-  constructor(private navCtrl: NavController) { }
+  constructor(
+    private navCtrl: NavController,
+    private loggingService: LoggingService
+  ) {}
 
   ngOnInit() {
   }
@@ -18,7 +22,7 @@ export class SolicitarGruaPage implements OnInit {
   }
 
   solicitarGrua() {
-    console.log('Solicitud de grúa enviada');
+    this.loggingService.log('Solicitud de grúa enviada');
   }
 
 }

@@ -2,6 +2,19 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { MenuController } from '@ionic/angular';
 import { UsuarioService } from '../services/usuario.service';
+import { Geolocation } from '@capacitor/geolocation';
+
+const printCurrentPosition = async () => {
+  try {
+    const coordinates = await Geolocation.getCurrentPosition();
+    console.log('Current position:', coordinates);
+  } catch (error) {
+    console.error('Error getting location', error);
+  }
+};
+
+// Llama a la función en el momento que necesites obtener la ubicación
+printCurrentPosition();
 
 @Component({
   selector: 'app-home',

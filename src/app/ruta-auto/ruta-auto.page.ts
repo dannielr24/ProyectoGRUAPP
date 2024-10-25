@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { NavController } from '@ionic/angular';
-import { LoggingService } from '../services/logging.service';
 
 @Component({
   selector: 'app-ruta-auto',
@@ -10,19 +10,20 @@ import { LoggingService } from '../services/logging.service';
 export class RutaAutoPage implements OnInit {
 
   constructor(
-    private navCtrl: NavController, 
-    private loggingService: LoggingService
+    private navCtrl: NavController,
+    private router: Router
   ) {}
 
   ngOnInit() {
   }
 
-  goBack() {
-    this.navCtrl.back();
+  iniciarViaje() {
+    console.log("Iniciando viaje en auto");
+    this.router.navigate(['/mapa']);
   }
 
-  iniciarViaje() {
-    this.loggingService.log("Viaje en auto iniciado");
+  goBack() {
+    this.router.navigate(['/home']);
   }
 
 }

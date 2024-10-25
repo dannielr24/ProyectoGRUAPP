@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { NavController } from '@ionic/angular';
-import { LoggingService } from '../services/logging.service';
 
 @Component({
   selector: 'app-ruta-moto',
@@ -11,18 +11,18 @@ export class RutaMotoPage implements OnInit {
 
   constructor(
     private navCtrl: NavController,
-    private loggingService: LoggingService
+    private router: Router
   ) {}
 
   ngOnInit() {
   }
 
-  goBack() {
-    this.navCtrl.back();
+  iniciarViaje() {
+    this.router.navigate(['/mapa']);
   }
 
-  iniciarViaje() {
-    this.loggingService.log('Viaje en moto iniciado');
+  goBack() {
+    this.router.navigate(['/home']);
   }
 
 }

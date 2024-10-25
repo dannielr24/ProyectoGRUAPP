@@ -11,10 +11,15 @@ import { Location } from '@angular/common';
 export class PrincipalPage implements OnInit {
 
   email: string=""
-
   user: any;
 
-  constructor(private firebase:FirebaseService, private router:Router, private activate:ActivatedRoute, private location: Location) { 
+  constructor(
+    private firebase: FirebaseService, 
+    private router: Router, 
+    private activate: ActivatedRoute, 
+    private location: Location
+  ){ 
+
     this.activate.queryParams.subscribe(params => {
     this.email=params['email'];
     console.log(this.email);

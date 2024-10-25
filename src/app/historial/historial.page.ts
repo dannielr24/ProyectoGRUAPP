@@ -1,14 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { HistorialViajesService } from '../services/historial-viajes.service';
-
-interface Viaje {
-  tipo: string;
-  fecha: string;
-  origen: string;
-  destino: string;
-  estado: string;
-}
+import { Viaje } from '../models/viaje.model';
 
 @Component({
   selector: 'app-historial',
@@ -16,16 +9,15 @@ interface Viaje {
   styleUrls: ['./historial.page.scss'],
 })
 export class HistorialPage implements OnInit {
-
   viajes: Viaje[] = [];
 
   constructor(
     private router: Router,
     private historialService: HistorialViajesService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
-    this.historialService.getViajes().subscribe((viajes) => {
+    this.historialService.getViajes().subscribe((viajes: Viaje[]) => {
       this.viajes = viajes;
     });
   }
@@ -41,7 +33,7 @@ export class HistorialPage implements OnInit {
 
     this.historialService.addViaje(nuevoViaje);
 
-    this.historialService.getViajes().subscribe((viajes) => {
+    this.historialService.getViajes().subscribe((viajes: Viaje[]) => {
       this.viajes = viajes;
     });
   }
@@ -54,4 +46,7 @@ export class HistorialPage implements OnInit {
     this.router.navigate([`/${page}`])
   }
 
+  verDetalleViaje(viaje: Viaje) {
+    this.router.navigate(['/detalle-viaje'], { state: { viaje } });
+  }
 }

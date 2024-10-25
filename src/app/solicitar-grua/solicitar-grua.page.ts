@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { NavController, ToastController } from '@ionic/angular';
-import { LoggingService } from '../services/logging.service';
 
 @Component({
   selector: 'app-solicitar-grua',
@@ -11,18 +11,19 @@ export class SolicitarGruaPage implements OnInit {
 
   constructor(
     private navCtrl: NavController,
-    private loggingService: LoggingService
+    private router: Router
   ) {}
 
   ngOnInit() {
   }
 
-  goBack() {
-    this.navCtrl.back();
+  solicitarGrua() {
+    console.log("Iniciando viaje en grúa");
+    this.router.navigate(['/mapa']);
   }
 
-  solicitarGrua() {
-    this.loggingService.log('Solicitud de grúa enviada');
+  goBack() {
+    this.router.navigate(['/home']);
   }
 
 }

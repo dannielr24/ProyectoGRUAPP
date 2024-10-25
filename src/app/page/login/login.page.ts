@@ -42,11 +42,11 @@ export class LoginPage implements OnInit {
 
   async login(){
     try {
-      let usuario=await this.firebase.auth(this.email,this.password);
-      this.tokenID=await usuario.user?.getIdToken();
+      let usuario = await this.firebase.auth(this.email,this.password);
+      this.tokenID = await usuario.user?.getIdToken();
       console.log(usuario);
-      console.log("token",await usuario.user?.getIdToken());
-      const navigationextras:NavigationExtras = {
+      console.log("token", await usuario.user?.getIdToken());
+      const navigationextras: NavigationExtras = {
         queryParams: {email: this.email}
       };
       this.pruebaStorage();

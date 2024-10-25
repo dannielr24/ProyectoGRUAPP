@@ -4,18 +4,6 @@ import { MenuController } from '@ionic/angular';
 import { UsuarioService } from '../services/usuario.service';
 import { Geolocation } from '@capacitor/geolocation';
 
-const printCurrentPosition = async () => {
-  try {
-    const coordinates = await Geolocation.getCurrentPosition();
-    console.log('Current position:', coordinates);
-  } catch (error) {
-    console.error('Error getting location', error);
-  }
-};
-
-// Llama a la función en el momento que necesites obtener la ubicación
-printCurrentPosition();
-
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
@@ -33,6 +21,16 @@ export class HomePage implements OnInit {
 
   ngOnInit() {
     this.usuario = this.usuarioService.getUsuario();
+    this.printCurrentPosition();
+  }
+
+  async printCurrentPosition() {
+    try {
+      const coordinates = await Geolocation.getCurrentPosition();
+      console.log('Current position:', coordinates);
+    } catch (error) {
+      console.error('Error getting location', error);
+    }
   }
 
   getAvatar() {
@@ -81,4 +79,8 @@ export class HomePage implements OnInit {
     console.log('Solicitud de grúa enviada');
     this.router.navigate(['/solicitar-grua']);
   }  
+
+  verDetalleViaje() {
+    this.router.navigate(['/detalle-viaje']);
+  }
 }

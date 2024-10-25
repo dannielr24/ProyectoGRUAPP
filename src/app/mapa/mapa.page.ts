@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
+import { Geolocation } from '@capacitor/geolocation';
+import { LatLng } from 'leaflet';
 
 declare var google: any;  // Declarar google para TypeScript
 
@@ -10,8 +12,8 @@ declare var google: any;  // Declarar google para TypeScript
   styleUrls: ['./mapa.page.scss'],
 })
 export class MapaPage implements OnInit {
-
   map: any;
+  vehicleType: string = '';
 
   constructor(private router: Router, private location: Location) {}
 
@@ -19,8 +21,13 @@ export class MapaPage implements OnInit {
     this.loadMap();
   }
 
-  loadMap() {
-    let latLng = new google.maps.LatLng(-33.4489, -70.6693); // Cambia por tu latitud y longitud.
+  async loadMap() {
+    try {
+      const coordinates = await Geolocation.getCurrentPosition({
+        enableHighAccuracy: true 
+      });
+
+    let latLng = new google.maps.LatLng(coordinates.coords.latitude, coordinates.coords.longitude); // Cambia por tu latitud y longitud.
 
     let mapOptions = {
       center: latLng,
@@ -29,10 +36,27 @@ export class MapaPage implements OnInit {
     };
 
     this.map = new google.maps.Map(document.getElementById('map'), mapOptions);
+
+    new google.maps.Marker({
+      position: latLng,
+      map: this.map,
+      title: "Tu ubicación",
+    });
+  } catch(error) {
+    console.error('Error obteniendo la ubicación', error);
   }
+}
+
+selectVehicle(type: string) {
+  this.vehicleType = type;
+}
 
   requestRide() {
-    console.log("Viaje Solicitado");
+    if (this.vehicleType) {
+      console.log('Viaje solicitado en ${this.vehicleType}');
+    } else {
+      console.error('Por favor, seleccione un tipo de vehiculo');
+    }
   }
 
   goToAccount(page: string) {

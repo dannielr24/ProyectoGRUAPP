@@ -17,13 +17,18 @@
   </ion-header>
 
   <ion-card>
+    <ion-img src="assets/img/uber-grua.jpg"></ion-img>
     <ion-card-header>
-      <ion-card-title>Solicitar asistencia en carretera</ion-card-title>
+      <ion-card-title>Asistencia en Carretera</ion-card-title>
     </ion-card-header>
     <ion-card-content>
-      <p>Si necesitas asistencia, por favor haz clic en el botón de abajo para solicitar una grúa.</p>
+      <p>¿Tienes un inconveniente? Haz clic en el botón para solicitar asistencia y recibir ayuda en el camino.</p>
     </ion-card-content>
   </ion-card>
 
-  <ion-button expand="full" (click)="solicitarGrua()">Solicitar Grúa</ion-button>
+  <ion-button expand="full" fill="solid" color="danger" shape="round" (click)="solicitarGrua()">
+    <ion-icon name="help-buoy-outline" slot="start"></ion-icon>
+    Solicitar Grúa
+  </ion-button>
 </ion-content>
+

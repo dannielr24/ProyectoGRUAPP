@@ -27,11 +27,7 @@ export class StorageService {
   private async removeItem(key:string){
     await Preferences.remove({key:key});
   }
-
-  async agregarStorage(data: any) {
-    await this.setItem(llave, JSON.stringify(data))
-  }
-
+  
   async obtenerStorage() {
     const data = await this.getItem(llave);
     if (data == null) {
@@ -39,6 +35,10 @@ export class StorageService {
     } else {
       return JSON.parse(data);
     }
+  }
+
+  async agregarStorage(data: any) {
+    await this.setItem(llave, JSON.stringify(data))
   }
 
   eliminarStorage() {

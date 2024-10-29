@@ -1,0 +1,37 @@
+ion-card {
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+  ion-img {
+    border-radius: 12px;
+    max-height: 200px; // Limita la altura máxima
+    width: 100%;
+    object-fit: cover; // Asegura que la imagen se vea bien y no se distorsione
+    margin-bottom: 10px;
+  }
+
+  ion-card-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #333;
+  }
+
+  ion-card-header {
+    margin-top: 10px; // Ajusta este margen si es necesario
+  }
+
+  ion-card-content {
+    font-size: 1rem;
+    color: #666;
+  }
+
+  ion-button {
+    margin-top: 10px;
+    --background: #ffce00; // Color amarillo para el botón de solicitar grúa
+    --background-hover: #e6b800; // Color al pasar el cursor
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  }
+
+  

@@ -27,15 +27,25 @@
   <ion-item>
     <ion-input [(ngModel)]="fechaNacimiento" presentation="date" label="Fecha de Nacimiento" placeholder="Selecciona tu Fecha de Nacimiento"></ion-input>
   </ion-item>
+
+  <ion-item>
+    <ion-input [(ngModel)]="telefono" label="Teléfono" placeholder="Teléfono"></ion-input>
+  </ion-item>
+
   <ion-item>
     <ion-input [(ngModel)]="email" label="Email" type="email" placeholder=""></ion-input>
   </ion-item>
 
   <ion-item>
-    <ion-input [(ngModel)]="password" label="Contraseña" type="contraseña" value=""></ion-input>
+    <ion-input [(ngModel)]="password" label="Contraseña" type="password" placeholder=""></ion-input>
   </ion-item>
-    
-    <ion-button (click)="registrar()" expand="block">Registrar</ion-button>
+
+  <ion-item>
+    <ion-label>Seleccionar Imagen</ion-label>
+    <input type="file" (change)="onFileChange($event)" />
+  </ion-item>
+
+  <ion-button (click)="registrar()" expand="block">Registrar</ion-button>
 </ion-content>
 
 <ion-footer>

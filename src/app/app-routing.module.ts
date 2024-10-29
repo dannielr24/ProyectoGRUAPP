@@ -70,6 +70,18 @@ const routes: Routes = [
       {
         path: '**',
         component: PageNotFoundComponent
+      },
+      {
+        path: 'profile',
+        loadChildren: () => import('./page/profile/profile.module').then(m => m.ProfilePageModule)
+      },
+      {
+        path: 'settings',
+        loadChildren: () => import('./page/settings/settings.module').then(m => m.SettingsPageModule)
+      },
+      {
+        path: 'help',
+        loadChildren: () => import('./page/help/help.module').then(m => m.HelpPageModule)
       },      
     ]
   },     
@@ -81,6 +93,22 @@ const routes: Routes = [
   {
     path: 'detalle-viaje',
     loadChildren: () => import('./detalle-viaje/detalle-viaje.module').then( m => m.DetalleViajePageModule)
+  },
+  {
+    path: 'profile',
+    loadChildren: () => import('./profile/profile.module').then( m => m.ProfilePageModule)
+  },
+  {
+    path: 'profile',
+    loadChildren: () => import('./page/profile/profile.module').then( m => m.ProfilePageModule)
+  },
+  {
+    path: 'settings',
+    loadChildren: () => import('./page/settings/settings.module').then( m => m.SettingsPageModule)
+  },
+  {
+    path: 'help',
+    loadChildren: () => import('./page/help/help.module').then( m => m.HelpPageModule)
   },
       
     ];

@@ -16,5 +16,18 @@
     </ion-toolbar>
   </ion-header>
 
-  <ion-button expand="full" (click)="iniciarViaje()">Iniciar Viaje en Auto</ion-button>
+  <ion-card>
+    <ion-img src="assets/img/uber-auto.jpg"></ion-img>
+    <ion-card-header>
+      <ion-card-title>Comienza tu Viaje</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <p>Conduce con seguridad y disfruta del viaje.</p>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-button expand="full" fill="solid" color="primary" shape="round" (click)="iniciarViaje()">
+    <ion-icon name="car-outline" slot="start"></ion-icon>
+    Iniciar Viaje en Auto
+  </ion-button>
 </ion-content>

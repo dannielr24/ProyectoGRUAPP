@@ -1,0 +1,28 @@
+<ion-header>
+  <ion-toolbar>
+    <div>
+      <ion-buttons slot="start">
+        <ion-back-button defaultHref="/principal"></ion-back-button>
+      </ion-buttons>
+      <img src="assets/img/gruapp.png" width="50%" height="50%" />
+    </div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <!-- Mostrar la imagen del usuario si está disponible -->
+  <ion-img *ngIf="usuario.length > 0" [src]="usuario[0].imagen_usuario" alt="Imagen del Usuario"></ion-img>
+  
+  <!-- Botón para tomar una foto -->
+  <ion-button expand="full" (click)="takePicture()">Tomar foto</ion-button>
+
+  <!-- Mostrar la imagen capturada -->
+  <img *ngIf="imageUrl" [src]="imageUrl" alt="Foto capturada" style="width: 100%; height: auto;" />
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-title>Desarrollado por GruAPP</ion-title>
+  </ion-toolbar>
+</ion-footer>
+

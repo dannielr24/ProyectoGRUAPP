@@ -3,6 +3,7 @@ import { ApiService } from '../service/api.service';
 import { StorageService } from '../service/storage.service';
 import { UserModel } from '../models/user.model';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-profile',
@@ -14,21 +15,50 @@ export class ProfilePage implements OnInit {
   imageUrl: string | undefined;
   email: string = '';
 
-  constructor(private apiService: ApiService, private storage: StorageService) {}
+  constructor(
+    private apiService: ApiService, 
+    private storage: StorageService,
+    private location: Location
+  ) {}
 
   async ngOnInit() {
-    await this.cargarUsuario();
+    const dataStorage = await this.storage.obtenerStorage();
+    if (dataStorage && dataStorage.length > 0) {
+      this.email = dataStorage[0]?.email || ''; // Asigna un valor predeterminado si es necesario
+      await this.cargarUsuario();
+    } else {
+      console.error('No hay datos de almacenamiento disponibles');
+    }
   }
 
   async cargarUsuario() {
-    const dataStorage = await this.storage.obtenerStorage();    
-    const req = await this.apiService.obtenerUsuario({
-      p_correo: this.email,
-      token: dataStorage[0].token
-    });
-    this.usuario = req;
-    console.log('DATA INICIO USUARIO ', this.usuario);
-  }
+    const dataStorage = await this.storage.obtenerStorage();
+    if (dataStorage && dataStorage.length > 0) {
+        const token = dataStorage[0]?.token;
+        this.email = dataStorage[0]?.email || '';
+        console.log('Email cargado:', this.email);
+
+        if (token) {
+            const req = await this.apiService.obtenerUsuario({
+                p_correo: this.email,
+                token: token
+            });
+
+            console.log('Respuesta de la API:', req);
+            if (req && req.length > 0) {
+                this.usuario = req;
+                console.log('Usuario cargado:', this.usuario);
+            } else {
+                console.warn('No se encontraron datos para el usuario');
+                this.usuario = [];
+            }
+        } else {
+            console.error('Token no disponible en el almacenamiento');
+        }
+    } else {
+        console.error('No hay datos de almacenamiento disponibles');
+    }
+}
 
   async takePicture() {
     const image = await Camera.getPhoto({
@@ -39,6 +69,10 @@ export class ProfilePage implements OnInit {
     });
 
     this.imageUrl = image.webPath;
+  }
+
+  goBack() {
+    this.location.back();
   }
 }
 

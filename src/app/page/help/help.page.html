@@ -1,13 +1,30 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
-    <ion-title>help</ion-title>
+    <ion-buttons slot="start">
+      <ion-button (click)="goBack()">
+        <ion-icon name="chevron-back-outline" aria-label="Volver"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <img src="assets/img/gruapp.png" width="50%" height="50%" />
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
+<ion-content [fullscreen]="true" class="help-content">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">help</ion-title>
+      <ion-title size="large">Ayuda</ion-title>
     </ion-toolbar>
   </ion-header>
+  
+  <div class="help-container">
+    <h2>Bienvenido a la Página de Ayuda</h2>
+    <p>Si tiene alguna pregunta, ¡No dude en comunicarse!</p>
+    <ion-button expand="full" color="primary">Contactar con Soporte</ion-button>
+    
+    <ion-list>
+      <ion-item *ngFor="let topic of helpTopics">
+        <ion-label>{{ topic }}</ion-label>
+      </ion-item>
+    </ion-list>
+  </div>
 </ion-content>

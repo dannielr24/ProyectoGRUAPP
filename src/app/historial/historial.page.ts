@@ -32,10 +32,6 @@ export class HistorialPage implements OnInit {
     };
 
     this.historialService.addViaje(nuevoViaje);
-
-    this.historialService.getViajes().subscribe((viajes: Viaje[]) => {
-      this.viajes = viajes;
-    });
   }
 
   goBack() {

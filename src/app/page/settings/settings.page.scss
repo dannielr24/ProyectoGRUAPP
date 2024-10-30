@@ -1,0 +1,39 @@
+/* Estilos para el modo oscuro */
+body.dark {
+    --ion-background-color: #222; // Color de fondo oscuro
+    --ion-text-color: #fff; // Color de texto claro
+    --ion-toolbar-background: #333; // Color de fondo de la barra de herramientas
+    --ion-toolbar-color: #fff; // Color de texto de la barra de herramientas
+    --ion-item-background: #444; // Color de fondo de los elementos
+    --ion-item-color: #fff; // Color de texto de los elementos
+    --ion-list-background: #333; // Color de fondo de la lista
+    --ion-list-color: #fff; // Color de texto de la lista
+    --ion-button-background: #555; // Color de fondo de los botones
+    --ion-button-color: #fff; // Color de texto de los botones
+    --ion-toggle-checked-background: #4caf50; // Color de fondo del toggle activado
+    --ion-toggle-checked-icon-color: #fff; // Color del icono del toggle activado
+    --ion-toggle-background: #777; // Color de fondo del toggle desactivado
+    --ion-toggle-icon-color: #fff; // Color del icono del toggle desactivado
+  }
+  
+  /* Estilos para el modo claro */
+  body {
+    --ion-background-color: #fff; // Color de fondo claro
+    --ion-text-color: #000; // Color de texto oscuro
+    --ion-toolbar-background: #f8f8f8; // Color de fondo de la barra de herramientas
+    --ion-toolbar-color: #000; // Color de texto de la barra de herramientas
+    --ion-item-background: #fff; // Color de fondo de los elementos
+    --ion-item-color: #000; // Color de texto de los elementos
+    --ion-list-background: #fff; // Color de fondo de la lista
+    --ion-list-color: #000; // Color de texto de la lista
+    --ion-button-background: #3880ff; // Color de fondo de los botones
+    --ion-button-color: #fff; // Color de texto de los botones
+    --ion-toggle-checked-background: #4caf50; // Color de fondo del toggle activado
+    --ion-toggle-checked-icon-color: #fff; // Color del icono del toggle activado
+    --ion-toggle-background: #ccc; // Color de fondo del toggle desactivado
+    --ion-toggle-icon-color: #000; // Color del icono del toggle desactivado
+  }
+  
+  /* Agrega otros estilos adicionales según sea necesario */
+  
+  

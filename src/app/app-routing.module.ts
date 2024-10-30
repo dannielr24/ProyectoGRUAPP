@@ -1,12 +1,11 @@
-import { Component, NgModule } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { AngularFireAuthGuard, redirectUnauthorizedTo } from '@angular/fire/compat/auth-guard';
-import { MapaPage } from './mapa/mapa.page';
-import { HistorialPage } from './historial/historial.page';
 import { TabBarComponent } from './tab-bar/tab-bar.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
-const redireccionarLogin = () => redirectUnauthorizedTo(['/login'])
+const redireccionarLogin = () => redirectUnauthorizedTo(['/login']);
+
 const routes: Routes = [
   {
     path: '',
@@ -68,12 +67,8 @@ const routes: Routes = [
         loadChildren: () => import('./page/testapi/testapi.module').then(m => m.TestapiPageModule)
       },
       {
-        path: '**',
-        component: PageNotFoundComponent
-      },
-      {
         path: 'profile',
-        loadChildren: () => import('./page/profile/profile.module').then(m => m.ProfilePageModule)
+        loadChildren: () => import('./profile/profile.module').then(m => m.ProfilePageModule)
       },
       {
         path: 'settings',
@@ -82,36 +77,18 @@ const routes: Routes = [
       {
         path: 'help',
         loadChildren: () => import('./page/help/help.module').then(m => m.HelpPageModule)
-      },      
+      },
+      {
+        path: '**',
+        component: PageNotFoundComponent
+      }       
     ]
   },     
-      {
-        path: 'principal',
-        canActivate: [AngularFireAuthGuard], data:{authGuardPipe:redireccionarLogin},
-        loadChildren: () => import('./page/principal/principal.module').then( m => m.PrincipalPageModule)
-      },
   {
     path: 'detalle-viaje',
     loadChildren: () => import('./detalle-viaje/detalle-viaje.module').then( m => m.DetalleViajePageModule)
   },
-  {
-    path: 'profile',
-    loadChildren: () => import('./profile/profile.module').then( m => m.ProfilePageModule)
-  },
-  {
-    path: 'profile',
-    loadChildren: () => import('./page/profile/profile.module').then( m => m.ProfilePageModule)
-  },
-  {
-    path: 'settings',
-    loadChildren: () => import('./page/settings/settings.module').then( m => m.SettingsPageModule)
-  },
-  {
-    path: 'help',
-    loadChildren: () => import('./page/help/help.module').then( m => m.HelpPageModule)
-  },
-      
-    ];
+];
 
 @NgModule({
   imports: [
@@ -119,4 +96,4 @@ const routes: Routes = [
   ],
   exports: [RouterModule]
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

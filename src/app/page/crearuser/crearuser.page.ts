@@ -34,8 +34,6 @@ archivoImagen: File | null = null;
   ngOnInit() {
   }
 
-  
-  
   async registrar() {
     try {
       let usuario = await this.firebase.registrar(this.email, this.password);

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { Viaje } from '../models/viaje.model';
 
 @Injectable({
@@ -7,6 +7,7 @@ import { Viaje } from '../models/viaje.model';
 })
 export class HistorialViajesService {
   private viajes: Viaje[] = [];
+  private viajesSubject: BehaviorSubject<Viaje[]> = new BehaviorSubject<Viaje[]>(this.viajes);
 
   constructor() {
     this.viajes = [
@@ -16,10 +17,11 @@ export class HistorialViajesService {
   }
 
   getViajes(): Observable<Viaje[]> {
-    return of(this.viajes);
+    return this.viajesSubject.asObservable();
   }
 
   addViaje(viaje: Viaje): void {
     this.viajes.push(viaje);
+    this.viajesSubject.next(this.viajes);
   }
 }

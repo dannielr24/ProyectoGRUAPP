@@ -1,0 +1,73 @@
+/* Estilos generales para la página de ayuda */
+.help-content {
+    padding: 16px; // Añadir padding para un mejor espaciado
+  }
+  
+  /* Estilo para el encabezado de la página */
+  .help-header {
+    text-align: center; // Centrar el texto
+    margin-bottom: 20px; // Espaciado inferior
+  }
+  
+  /* Estilos para el título principal */
+  h2 {
+    font-size: 1.8em; // Aumentar el tamaño del texto
+    color: var(--ion-text-color); // Color de texto según el modo
+    margin-bottom: 10px; // Espaciado inferior
+  }
+  
+  /* Estilo para el párrafo de bienvenida */
+  p {
+    font-size: 1.2em; // Aumentar tamaño de fuente
+    color: var(--ion-text-color); // Color de texto según el modo
+  }
+  
+  /* Estilos para los botones */
+  ion-button {
+    margin-top: 20px; // Espaciado superior
+    --background: var(--ion-button-background); // Color de fondo del botón
+    --color: var(--ion-button-color); // Color de texto del botón
+  }
+  
+  /* Estilos para la lista de temas de ayuda */
+  ion-list {
+    margin-top: 20px; // Espaciado superior
+    --background: var(--ion-list-background); // Color de fondo de la lista
+    --color: var(--ion-list-color); // Color de texto de la lista
+  }
+  
+  /* Estilos para cada elemento de la lista */
+  ion-item {
+    --background: var(--ion-item-background); // Color de fondo de cada elemento
+    --color: var(--ion-item-color); // Color de texto de cada elemento
+  
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.1); // Efecto de hover
+    }
+  }
+  
+  /* Estilos para el modo oscuro */
+  body.dark .help-content {
+    background-color: #222; // Color de fondo oscuro
+  }
+  
+  body.dark h2,
+  body.dark p {
+    color: #fff; // Color de texto claro
+  }
+  
+  body.dark ion-item {
+    --background: #444; // Color de fondo oscuro para elementos
+    --color: #fff; // Color de texto claro para elementos
+  }
+  
+  /* Estilos para el modo claro */
+  body {
+    background-color: #fff; // Color de fondo claro
+  }
+  
+  body h2,
+  body p {
+    color: #000; // Color de texto oscuro
+  }
+  

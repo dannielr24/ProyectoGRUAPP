@@ -12,40 +12,84 @@
 <ion-content class="ion-padding">
   <h1>Registro</h1>
 
-  <ion-item>
-    <ion-input [(ngModel)]="nombre" label="Nombre" placeholder="Nombre"></ion-input>
-  </ion-item>
+  <form [formGroup]="registerForm" (ngSubmit)="registrar()">
+    <!-- Nombre -->
+    <ion-item>
+      <ion-input formControlName="nombre" label="Nombre" placeholder="Nombre"></ion-input>
+    </ion-item>
 
-  <ion-item>
-    <ion-input [(ngModel)]="apellido" label="Apellido" placeholder="Apellido"></ion-input>
-  </ion-item>
+    <!-- Apellido -->
+    <ion-item>
+      <ion-input formControlName="apellido" label="Apellido" placeholder="Apellido"></ion-input>
+    </ion-item>
 
-  <ion-item>
-    <ion-input [(ngModel)]="rut" label="Rut" placeholder="Rut"></ion-input>
-  </ion-item>
+    <!-- RUT -->
+    <ion-item>
+      <ion-input formControlName="rut" label="Rut" placeholder="Rut"></ion-input>
+    </ion-item>
 
-  <ion-item>
-    <ion-input [(ngModel)]="fechaNacimiento" presentation="date" label="Fecha de Nacimiento" placeholder="Selecciona tu Fecha de Nacimiento"></ion-input>
-  </ion-item>
+    <ion-item>
+      <ion-label>Fecha de Nacimiento</ion-label>
+      <ion-grid>
+        <ion-row>
+          <!-- Selector de Día -->
+          <ion-col size="4">
+            <ion-select formControlName="dia" placeholder="Día">
+              <ion-select-option *ngFor="let day of days" [value]="day">{{ day }}</ion-select-option>
+            </ion-select>
+          </ion-col>
+    
+          <!-- Selector de Mes -->
+          <ion-col size="4">
+            <ion-select formControlName="mes" placeholder="Mes">
+              <ion-select-option *ngFor="let month of months" [value]="month.value">{{ month.name }}</ion-select-option>
+            </ion-select>
+          </ion-col>
+    
+          <!-- Selector de Año -->
+          <ion-col size="4">
+            <ion-select formControlName="anio" placeholder="Año">
+              <ion-select-option *ngFor="let year of years" [value]="year">{{ year }}</ion-select-option>
+            </ion-select>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-item>
 
-  <ion-item>
-    <ion-input [(ngModel)]="telefono" label="Teléfono" placeholder="Teléfono"></ion-input>
-  </ion-item>
+    <!-- Error de Fecha de Nacimiento -->
+    <div *ngIf="dateOfBirthInvalid" class="error-message">
+      Fecha de nacimiento no válida.
+    </div>
 
-  <ion-item>
-    <ion-input [(ngModel)]="email" label="Email" type="email" placeholder=""></ion-input>
-  </ion-item>
+    <!-- Contraseña -->
+    <ion-item>
+      <ion-input formControlName="password" type="password" placeholder="Contraseña"></ion-input>
+    </ion-item>
 
-  <ion-item>
-    <ion-input [(ngModel)]="password" label="Contraseña" type="password" placeholder=""></ion-input>
-  </ion-item>
+    <!-- Confirmar Contraseña -->
+    <ion-item>
+      <ion-input formControlName="confirmPassword" type="password" placeholder="Confirmar Contraseña"></ion-input>
+    </ion-item>
 
-  <ion-item>
-    <ion-label>Seleccionar Imagen</ion-label>
-    <input type="file" (change)="onFileChange($event)" />
-  </ion-item>
+    <!-- Teléfono -->
+    <ion-item>
+      <ion-input formControlName="telefono" label="Teléfono" placeholder="Teléfono"></ion-input>
+    </ion-item>
 
-  <ion-button (click)="registrar()" expand="block">Registrar</ion-button>
+    <!-- Email -->
+    <ion-item>
+      <ion-input formControlName="email" label="Email" type="email" placeholder=""></ion-input>
+    </ion-item>
+
+    <!-- Seleccionar Imagen -->
+    <ion-item>
+      <ion-label>Seleccionar Imagen</ion-label>
+      <input type="file" (change)="onFileChange($event)" />
+    </ion-item>
+
+    <!-- Botón Registrar -->
+    <ion-button type="submit" [disabled]="registerForm.invalid" expand="block">Registrar</ion-button>
+  </form>
 </ion-content>
 
 <ion-footer>

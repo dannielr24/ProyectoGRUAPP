@@ -79,6 +79,18 @@ const routes: Routes = [
         loadChildren: () => import('./page/help/help.module').then(m => m.HelpPageModule)
       },
       {
+        path: 'payment',
+        loadChildren: () => import('./payment/payment.module').then(m => m.PaymentPageModule)
+      },
+      {
+        path: 'payment-confirmation',
+        loadChildren: () => import('./payment-confirmation/payment-confirmation.module').then(m => m.PaymentConfirmationPageModule)
+      },
+      {
+        path: 'payment-history',
+        loadChildren: () => import('./payment-history/payment-history.module').then(m => m.PaymentHistoryPageModule)
+      },
+      {
         path: '**',
         component: PageNotFoundComponent
       }       
@@ -87,6 +99,18 @@ const routes: Routes = [
   {
     path: 'detalle-viaje',
     loadChildren: () => import('./detalle-viaje/detalle-viaje.module').then( m => m.DetalleViajePageModule)
+  },
+  {
+    path: 'payment',
+    loadChildren: () => import('./payment/payment.module').then( m => m.PaymentPageModule)
+  },
+  {
+    path: 'payment-confirmation',
+    loadChildren: () => import('./payment-confirmation/payment-confirmation.module').then( m => m.PaymentConfirmationPageModule)
+  },
+  {
+    path: 'payment-history',
+    loadChildren: () => import('./payment-history/payment-history.module').then( m => m.PaymentHistoryPageModule)
   },
 ];
 

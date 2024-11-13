@@ -19,12 +19,31 @@
   <div class="help-container">
     <h2>Bienvenido a la Página de Ayuda</h2>
     <p>Si tiene alguna pregunta, ¡No dude en comunicarse!</p>
-    <ion-button expand="full" color="primary">Contactar con Soporte</ion-button>
     
+    <!-- Botón de WhatsApp -->
+    <ion-button expand="block" color="success" (click)="sendWhatsAppMessage()">
+      <ion-icon name="logo-whatsapp" slot="start"></ion-icon>
+      Enviar Mensaje por WhatsApp
+    </ion-button>
+
+    <p>Si necesitas asistencia, por favor revisa las siguientes opciones o contáctanos.</p>
+    
+    <!-- Lista de temas de ayuda -->
     <ion-list>
-      <ion-item *ngFor="let topic of helpTopics">
-        <ion-label>{{ topic }}</ion-label>
+      <ion-item *ngFor="let topic of helpTopics" (click)="topic.action()">
+        <ion-label>{{ topic.title }}</ion-label>
       </ion-item>
     </ion-list>
+    
+    <!-- Aquí se muestra el contenido de ayuda dependiendo del tema seleccionado -->
+    <ion-card *ngIf="selectedHelpTopic && selectedHelpTopic.title">
+      <ion-card-header>
+        <ion-card-title>{{ selectedHelpTopic.title }}</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <div [innerHTML]="selectedHelpTopic.content"></div>
+      </ion-card-content>
+    </ion-card>
   </div>
 </ion-content>
+

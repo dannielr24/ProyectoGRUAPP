@@ -9,6 +9,8 @@ import { AngularFireModule } from '@angular/fire/compat';
 import { environment } from 'src/environments/environment';
 import { GoogleMapsModule } from '@angular/google-maps';
 import { provideHttpClient } from '@angular/common/http';
+import { ReactiveFormsModule } from '@angular/forms';
+import { StorageService } from './service/storage.service';
 
 @NgModule({
   declarations: [AppComponent],
@@ -18,10 +20,11 @@ import { provideHttpClient } from '@angular/common/http';
     AppRoutingModule, 
     AngularFireAuthModule, 
     AngularFireModule.initializeApp(environment.firebaseConfig),
-    GoogleMapsModule
+    GoogleMapsModule,
+    ReactiveFormsModule
   ],
   providers: [
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, provideHttpClient()],
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, StorageService, provideHttpClient()],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

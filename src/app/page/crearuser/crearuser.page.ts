@@ -12,26 +12,32 @@ import { FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors }
   styleUrls: ['./crearuser.page.scss'],
 })
 export class CrearuserPage implements OnInit {
-
-  nombre: string = '';
-  apellido: string = '';
-  rut: string = '';
-  fechaNacimiento: {day: number; month: number; year: number} = {day: 0, month: 0, year: 0};
-  telefono: string = '';
-  token: string = '';
-  email: string = '';
   password: string = '';
-  archivoImagen: File | null = null;
+  confirmPassword: string = '';
+  
+  imageSelectedError: boolean = false;
+  registerForm!: FormGroup; // Formulario reactivo para el registro
+  archivoImagen: File | null = null; // Imagen que el usuario puede subir
 
-  registerForm!: FormGroup;
-  days: number[] = [];
-  months = [
-    {value: 1, name: 'Enero'}, {value: 2, name: 'Febrero'}, {value: 3, name: 'Marzo'},
-    {value: 4, name: 'Abril'}, {value: 5, name: 'Mayo'}, {value: 6, name: 'Junio'},
-    {value: 7, name: 'Julio'}, {value: 8, name: 'Agosto'}, {value: 9, name: 'Septiembre'},
-    {value: 10, name: 'Octubre'}, {value: 11, name: 'Noviembre'}, {value: 12, name: 'Diciembre'},
-  ]; 
-  years: number[] = [];
+  days: number[] = Array.from({ length: 31 }, (_, i) => i + 1);
+  months: { value: number; name: string }[] = [
+    { value: 1, name: 'Enero' },
+    { value: 2, name: 'Febrero' },
+    { value: 3, name: 'Marzo' },
+    { value: 4, name: 'Abril' },
+    { value: 5, name: 'Mayo' },
+    { value: 6, name: 'Junio' },
+    { value: 7, name: 'Julio' },
+    { value: 8, name: 'Agosto' },
+    { value: 9, name: 'Septiembre' },
+    { value: 10, name: 'Octubre' },
+    { value: 11, name: 'Noviembre' },
+    { value: 12, name: 'Diciembre' },
+  ];
+  years: number[] = [2024, 2023, 2022, 2021, 2020];
+
+  passwordVisible: boolean = false;
+  confirmPasswordVisible: boolean = false;
 
   constructor(
     private firebase: FirebaseService, 
@@ -98,29 +104,58 @@ export class CrearuserPage implements OnInit {
     return this.registerForm.hasError('dateInvalid') && !!this.registerForm.get('dia')?.touched;
   }
 
+  // Método para alternar la visibilidad de la contraseña
+  togglePasswordVisibility() {
+    this.passwordVisible = !this.passwordVisible;
+  }
+
+  // Método para alternar la visibilidad de la confirmación de la contraseña
+  toggleConfirmPasswordVisibility() {
+    this.confirmPasswordVisible = !this.confirmPasswordVisible;
+  }
+
   // Método para registrar un nuevo usuario
   async registrar() {
+    if (this.registerForm.invalid) {
+      console.log('Formulario inválido');
+      return;
+    }
+
+    console.log('Formulario válido');
+
     try {
-      let usuario = await this.firebase.registrar(this.email, this.password);
+      // Convertir fecha en formato 'YYYY-MM-DD'
+      const fechaString = `${this.registerForm.value.anio}-${this.registerForm.value.mes < 10 ? '0' + this.registerForm.value.mes : this.registerForm.value.mes}-${this.registerForm.value.dia < 10 ? '0' + this.registerForm.value.dia : this.registerForm.value.dia}`;
+
+      // Llamada al servicio para registrar
+      let usuario = await this.firebase.registrar(
+        this.registerForm.value.email, 
+        this.registerForm.value.password, 
+        this.registerForm.value.nombre, 
+        this.registerForm.value.apellido, 
+        this.registerForm.value.rut, 
+        fechaString
+      );
+
       const token = await usuario.user?.getIdToken();
 
-      // Carga de imagen de perfil
       if (this.archivoImagen) {
-        const request = await this.crearuser.agregarUsuario(
+        await this.crearuser.agregarUsuario(
           {
-            p_correo_electronico: this.email,
-            p_nombre: this.nombre,
-            p_telefono: this.telefono,
+            p_correo_electronico: this.registerForm.value.email,
+            p_nombre: this.registerForm.value.nombre,
+            p_telefono: this.registerForm.value.telefono,
             token: token,
           },
           this.archivoImagen
         );
       }
-      console.log(usuario);
+
+      console.log('Usuario registrado correctamente', usuario);
       this.router.navigateByUrl('login');
     } catch (error) {
       this.popAlert();
-      console.log(error);
+      console.log('Error al registrar el usuario', error);
     }
   }
 

@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Router } from '@angular/router';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { FirebaseService } from '../service/firebase.service';
 
 @Component({
   selector: 'app-register',
@@ -16,36 +17,31 @@ export class RegisterPage {
   email: string;
   password: string;
 
-  constructor(private afAuth: AngularFireAuth, private router: Router, private firestore: AngularFirestore) {
+  constructor(
+    private afAuth: AngularFireAuth, 
+    private router: Router, 
+    private firestore: AngularFirestore, 
+    private firebaseService: FirebaseService
+  ) {
     this.email = '';
     this.password = '';
   }
 
   async register() {
     try {
-      const userCredential = await this.afAuth.createUserWithEmailAndPassword(this.email, this.password);
-      console.log('User registered successfully:', userCredential);
+      // Llamar al servicio para registrar al usuario
+      const usuario = await this.firebaseService.registrar(this.email, this.password, this.nombre, this.apellido, this.rut, this.fechaNacimiento);
+      console.log('Usuario registrado correctamente:', usuario);
 
-      // Obtener el UID del usuario creado
-      const uid = userCredential.user?.uid;
+      // Obtener el token del usuario
+      const token = await usuario.user?.getIdToken();
+      console.log('Token de usuario:', token);
 
-      // Almacenar los datos adicionales en Firestore
-      if (uid) {
-        await this.firestore.collection('usuarios').doc(uid).set({
-          nombre: this.nombre,
-          apellido: this.apellido,
-          rut: this.rut,
-          fechaNacimiento: this.fechaNacimiento,
-          email: this.email
-        });
-        console.log('Datos adicionales guardados en Firestore');
-      }
-
-      // Redirige a otra página o muestra un mensaje
+      // Redirigir al usuario después del registro
       await this.router.navigate(['/home']);
     } catch (error) {
-      console.error('Error registering user:', error);
-      // Maneja el error de registro
+      console.error('Error al registrar usuario:', error);
+      // Aquí podrías mostrar un mensaje de error al usuario si es necesario
     }
   }
 }

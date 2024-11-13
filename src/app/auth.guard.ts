@@ -6,7 +6,7 @@ import { FirebaseService } from './service/firebase.service';
   providedIn: 'root'
 })
 
-export class authGuard implements CanActivate {
+export class AuthGuard implements CanActivate {
   constructor(private authService: FirebaseService, private router: Router) {}
 
   async canActivate(): Promise<boolean> {

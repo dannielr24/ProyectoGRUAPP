@@ -40,19 +40,28 @@ export class LoginPage implements OnInit {
   ngOnInit() {
   }
 
-  async login(){
+  async login() {
     try {
-      let usuario = await this.firebase.auth(this.email,this.password);
-      this.tokenID = await usuario.user?.getIdToken();
-      console.log(usuario);
-      console.log("token", await usuario.user?.getIdToken());
-      const navigationextras: NavigationExtras = {
-        queryParams: {email: this.email}
-      };
-      this.pruebaStorage();
-      this.router.navigate(['/principal'],navigationextras);
-    } catch (error){
-      console.log(error);
+      let user = await this.firebase.auth(this.email, this.password);
+      this.tokenID = await user.user?.getIdToken() || "";
+  
+      // Guardar `user.uid` en vez de `tokenID`
+      const uid = user.user?.uid;
+  
+      if (this.tokenID && uid) {
+        // Almacenar el uid en vez del tokenID
+        this.storage.set('uid', uid);
+        this.storage.set('email', this.email);
+  
+        // Guardar el nombre del usuario usando `uid`
+        this.storage.setUserName(uid, 'Daniel'); // Cambia 'Daniel' por el nombre dinámico si lo tienes
+      } else {
+        console.error('Error: No se pudo obtener el uid o tokenID');
+      }
+  
+      this.router.navigate(['/principal']);
+    } catch (error) {
+      console.error('Error durante el login:', error);
       this.popAlert();
     }
   }
@@ -68,13 +77,5 @@ export class LoginPage implements OnInit {
 
   goBack() {
     this.location.back();
-  }
-
-  async pruebaStorage() {
-    const jsonToken:any={
-      tkon:this.tokenID
-    }
-    this.storage.agregarStorage(jsonToken);
-    console.log("Obtener", await this.storage.obtenerStorage());
   }
 }

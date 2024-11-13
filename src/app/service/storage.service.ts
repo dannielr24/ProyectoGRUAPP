@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Preferences } from '@capacitor/preferences';
 
 const llave='llaveValor';
 
@@ -8,28 +7,55 @@ const llave='llaveValor';
 })
 export class StorageService {
 
-  constructor() { }
+  constructor() {}
 
-  async getItem(key: string): Promise<string | null> {
-    try {
-      const obj = await Preferences.get({ key });
-      return obj.value;
-    } catch (error) {
-      console.error(`Error obteniendo el item con la llave ${key}:`, error);
-      return null;
-    }
+  set(key: string, value: any): void {
+    console.log(`Guardando en localStorage con clave ${key}:`, value);
+    localStorage.setItem(key, JSON.stringify(value));
   }
-  
-  private async setItem(key:string,valor:string){
-    await Preferences.set({key:key,value:valor});
+
+  get(key: string): any {
+    const data = localStorage.getItem(key);
+    console.log(`Recuperando de localStorage con clave ${key}:`, data);
+    return data ? JSON.parse(data) : null;
   }
- 
-  private async removeItem(key:string){
-    await Preferences.remove({key:key});
+
+  remove(key: string): void {
+    localStorage.removeItem(key);
   }
-  
+
+  clearSessionData(): void {
+    this.remove('email');
+    this.remove('tokenID');
+  }
+
+  setUserName(tokenID: string, name: string): void {
+    this.set(`name_${tokenID}`, name);
+  }
+
+  getUserName(tokenID: string): string | null {
+    return tokenID ? this.get(`name_${tokenID}`) : null;
+  }
+
+  // Método para asociar tarjetas
+  setUserCards(tokenID: string, cards: any[]): void {
+    if (tokenID) this.set(`cards_${tokenID}`, cards);
+  }
+
+  getUserCards(tokenID: string): any[] {
+    return tokenID ? this.get(`cards_${tokenID}`) || [] : [];
+  }
+
+  setUserSelectedCard(tokenID: string, selectedCard: any): void {
+    if (tokenID) this.set(`selectedCard_${tokenID}`, selectedCard);
+  }
+
+  getUserSelectCard(tokenID: string): any | null {
+    return tokenID ? this.get(`selectedCard_${tokenID}`) : null;
+  }
+    
   async obtenerStorage() {
-    const data = await this.getItem(llave);
+    const data = await this.get(llave);
     if (data == null) {
       return []
     } else {
@@ -38,7 +64,7 @@ export class StorageService {
   }
 
   async agregarStorage(data: any) {
-    await this.setItem(llave, JSON.stringify(data))
+    this.set(llave, JSON.stringify(data))
   }
 
   eliminarStorage() {

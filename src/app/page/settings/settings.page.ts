@@ -34,10 +34,12 @@ export class SettingsPage implements OnInit {
 
   saveNotifications() {
     localStorage.setItem('notificationsEnabled', JSON.stringify(this.notificationsEnabled));
+    console.log('Notificaciones guardadas:', this.notificationsEnabled);
   }
 
   saveDarkMode() {
     localStorage.setItem('darkModeEnabled', JSON.stringify(this.darkModeEnabled));
+    console.log('Modo oscuro guardado:', this.darkModeEnabled);
   }
 
   toggleDarkMode() {
@@ -52,6 +54,11 @@ export class SettingsPage implements OnInit {
     } else {
       document.body.classList.remove('dark');
     }
+  }
+
+  saveSettings() {
+    this.saveNotifications();
+    this.saveDarkMode();
   }
 
   goBack() {

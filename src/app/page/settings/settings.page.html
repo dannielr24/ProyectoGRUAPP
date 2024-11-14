@@ -20,7 +20,7 @@
     <h2>Administra tu Configuración</h2>
     <ion-item>
       <ion-label>Habilitar Notificaciones</ion-label>
-      <ion-toggle slot="end" [(ngModel)]="notificationsEnabled"></ion-toggle>
+      <ion-toggle slot="end" [(ngModel)]="notificationsEnabled" (ionChange)="saveNotifications()"></ion-toggle>
     </ion-item>
 
     <ion-item>
@@ -28,7 +28,6 @@
       <ion-toggle slot="end" [(ngModel)]="darkModeEnabled" (ionChange)="toggleDarkMode()"></ion-toggle>
     </ion-item>
 
-    <ion-button expand="full" color="secondary">Guardar Cambios</ion-button>
+    <ion-button expand="full" color="secondary" (click)="saveSettings()">Guardar Cambios</ion-button>
   </div>
 </ion-content>
-

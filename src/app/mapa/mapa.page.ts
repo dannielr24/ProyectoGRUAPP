@@ -28,6 +28,7 @@ export class MapaPage implements OnInit {
     // Configuración del mapa
     const mapOptions = {
       zoom: 15,
+      mapId: '7d8884afd62f26fc',
       mapTypeId: google.maps.MapTypeId.ROADMAP,
       disableDefaultUI: true,
       zoomControl: true,
@@ -55,8 +56,8 @@ export class MapaPage implements OnInit {
             // Centrar el mapa en la ubicación del usuario
             this.map.setCenter(userLocation);
 
-            // Añadir marcador en la ubicación del usuario
-            new google.maps.Marker({
+            // Añadir marcador usando AdvancedMarkerElement
+            new google.maps.marker.AdvancedMarkerElement({
               position: userLocation,
               map: this.map,
               title: 'Tu Ubicación',

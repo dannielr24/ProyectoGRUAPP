@@ -3,18 +3,16 @@ import { Router } from '@angular/router';
 import { FirebaseService } from './service/firebase.service';
 import { AlertController, LoadingController, Platform, MenuController } from '@ionic/angular';
 import { StorageService } from './service/storage.service';
-import { initializeApp } from 'firebase/app';
 
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.scss'],
 })
-export class AppComponent implements OnInit{
+export class AppComponent implements OnInit {
   userEmail: string = '';
   userName: string = 'Usuario';
-  userPhoto: string = 'assets/images/user1.jpg';
-
+  userPhoto: string = 'assets/images/default-user.png';
 
   constructor(
     private router: Router,
@@ -29,9 +27,7 @@ export class AppComponent implements OnInit{
   }
 
   initializeApp() {
-    this.platform.ready().then(() => {
-
-    });
+    this.platform.ready().then(() => {});
   }
 
   ngOnInit() {
@@ -42,6 +38,8 @@ export class AppComponent implements OnInit{
     const storedEmail = this.storage.get('email');
     if (storedEmail) {
       this.userEmail = storedEmail;
+
+      // Cargar el nombre de usuario asociado al email
       const storedName = this.storage.getUserName(this.userEmail);
       if (storedName) {
         this.userName = storedName;
@@ -63,11 +61,13 @@ export class AppComponent implements OnInit{
         { text: 'Cerrar Sesión', handler: () => this.logout() }
       ]
     });
+
     await alert.present();
   }
 
   async logout() {
     await this.menuController.close();
+
     const loading = await this.loadingController.create({
       message: 'Cerrando sesión...',
       duration: 1000,
@@ -93,7 +93,40 @@ export class AppComponent implements OnInit{
       message,
       buttons: ['OK']
     });
+
     await alert.present();
   }
 
+  async editProfile() {
+    const alert = await this.alertController.create({
+      header: 'Editar Perfil',
+      inputs: [
+        { name: 'name', type: 'text', placeholder: 'Ingresa tu nombre', value: this.userName }
+      ],
+      buttons: [
+        { text: 'Cancelar', role: 'cancel', cssClass: 'secondary' },
+        {
+          text: 'Guardar',
+          handler: (data) => {
+            if (data.name && data.name.trim().length > 0) {
+              this.userName = data.name;
+              this.storage.setUserName(this.userEmail, data.name);
+              this.presentAlert('Éxito', 'Perfil actualizado correctamente.');
+              return true;
+            } else {
+              this.presentAlert('Error', 'El nombre no puede estar vacío.');
+              return false;
+            }
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+  }
+
+  async takePicture() {
+    // Implementación de tomar foto (requiere plugins/capacidades de la cámara)
+    this.presentAlert('Función en desarrollo', 'La función de tomar una foto estará disponible próximamente.');
+  }
 }

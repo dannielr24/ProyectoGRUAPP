@@ -111,7 +111,7 @@ const routes: Routes = [
   {
     path: 'payment-history',
     loadChildren: () => import('./payment-history/payment-history.module').then( m => m.PaymentHistoryPageModule)
-  },
+  }
 ];
 
 @NgModule({

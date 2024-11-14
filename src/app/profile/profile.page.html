@@ -36,6 +36,22 @@
         <p><strong>Calificación Promedio:</strong> {{ usuario[0].calificacion_promedio }}</p>
       </div>
 
+      <!-- Opciones adicionales -->
+      <ion-list>
+        <ion-item button (click)="editProfile()">
+          <ion-icon name="create-outline" slot="start"></ion-icon>
+          Editar Perfil
+        </ion-item>
+        <ion-item button (click)="viewSettings()">
+          <ion-icon name="settings-outline" slot="start"></ion-icon>
+          Configuración
+        </ion-item>
+        <ion-item button (click)="logout()">
+          <ion-icon name="log-out-outline" slot="start"></ion-icon>
+          Cerrar Sesión
+        </ion-item>
+      </ion-list>
+
       <!-- Botón para tomar una foto -->
       <ion-button expand="full" (click)="takePicture()" style="margin-top: 15px;">
         <ion-icon slot="start" name="camera"></ion-icon>
@@ -56,4 +72,3 @@
     <ion-title>Desarrollado por GruAPP</ion-title>
   </ion-toolbar>
 </ion-footer>
-

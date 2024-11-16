@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { Location } from '@angular/common';
 
-declare var google: any;  // Declarar google para TypeScript
+declare var google: any;
 
 @Component({
   selector: 'app-mapa',
@@ -11,32 +9,20 @@ declare var google: any;  // Declarar google para TypeScript
 })
 export class MapaPage implements OnInit {
   map: any;
-  vehicleType: string = '';
 
-  constructor(private router: Router, private location: Location) {}
+  constructor() {}
 
   ngOnInit() {
     this.loadMap();
   }
 
   loadMap() {
-    if (typeof google === 'undefined') {
-      console.error('Google Maps API no está cargada.');
-      return;
-    }
-
-    // Configuración del mapa
     const mapOptions = {
       zoom: 15,
+      center: { lat: -33.456, lng: -70.648 },
       mapId: '7d8884afd62f26fc',
-      mapTypeId: google.maps.MapTypeId.ROADMAP,
       disableDefaultUI: true,
       zoomControl: true,
-      mapTypeControl: false,
-      fullscreenControl: false,
-      zoomControlOptions: {
-        position: google.maps.ControlPosition.RIGHT_CENTER
-      }
     };
 
     const mapElement = document.getElementById('map');
@@ -44,7 +30,7 @@ export class MapaPage implements OnInit {
     if (mapElement) {
       this.map = new google.maps.Map(mapElement, mapOptions);
 
-      // Geolocalización usando navigator.geolocation
+      // Verifica si la geolocalización está disponible
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
           (position) => {
@@ -56,47 +42,30 @@ export class MapaPage implements OnInit {
             // Centrar el mapa en la ubicación del usuario
             this.map.setCenter(userLocation);
 
-            // Añadir marcador usando AdvancedMarkerElement
-            new google.maps.marker.AdvancedMarkerElement({
+            // Agregar un marcador en la ubicación del usuario
+            new google.maps.Marker({
               position: userLocation,
               map: this.map,
-              title: 'Tu Ubicación',
+              title: 'Tu ubicación',
+              icon: {
+                url: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png', // Ícono del marcador
+              },
             });
           },
           (error) => {
             console.error('Error obteniendo la ubicación:', error);
-            alert('No se pudo obtener la ubicación. Verifica los permisos.');
+            alert('No se pudo obtener tu ubicación. Verifica los permisos.');
           },
           {
-            enableHighAccuracy: true,  // Solicitar alta precisión
-            timeout: 10000,            // Tiempo máximo de espera
+            enableHighAccuracy: true,
+            timeout: 10000,
           }
         );
       } else {
         console.error('La geolocalización no está soportada por este navegador.');
       }
     } else {
-      console.error('No se encontró el elemento del mapa en el DOM.');
+      console.error('No se encontró el elemento del mapa.');
     }
-  }
-
-  selectVehicle(type: string) {
-    this.vehicleType = type;
-  }
-
-  requestRide() {
-    if (this.vehicleType) {
-      console.log(`Viaje solicitado en ${this.vehicleType}`);
-    } else {
-      console.error('Por favor, seleccione un tipo de vehículo');
-    }
-  }
-
-  goToAccount(page: string) {
-    this.router.navigate([page]);
-  }
-
-  goBack() {
-    this.location.back();
   }
 }

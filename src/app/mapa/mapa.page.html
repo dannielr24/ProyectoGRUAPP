@@ -1,16 +1,43 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-button (click)="goBack()">
-        <ion-icon name="chevron-back-outline" aria-label="Volver"></ion-icon>
-      </ion-button>
+      <ion-menu-button></ion-menu-button>
     </ion-buttons>
     <ion-title>Mapa</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <!-- Contenido de la página del mapa aquí -->
-  <div id="map" style="height: 100%; width: 100%; position: relative; z-index: 0;"></div>
-  <ion-button expand="full" (click)="requestRide()" style="z-index: 10;">Solicitar Viaje</ion-button>
+  <!-- Contenedor del mapa -->
+  <div id="map"></div>
+
+  <!-- Tarjeta superior -->
+  <div class="overlay-top">
+    <ion-card>
+      <ion-card-content>
+        <!-- Nuevo mensaje superior con texto más pequeño y blanco -->
+        <h3 class="large-text">Buscando Uber por tu zona...</h3>
+      </ion-card-content>
+    </ion-card>
+  </div>
+
+  <!-- Tarjeta inferior -->
+  <div class="overlay-bottom">
+    <ion-card>
+      <ion-card-content>
+        <!-- Nuevo mensaje inferior con texto modificado -->
+        <p>Encontrando auto para ti...</p>
+        <ion-item>
+          <ion-avatar slot="start">
+            <img src="https://www.uber-assets.com/image/upload/f_auto,q_auto:eco,c_fill,h_368,w_552/v1548646935/assets/64/93c255-87c8-4e2e-9429-cf709bf1b838/original/3.png">
+          </ion-avatar>
+          <ion-label>
+            <h2>Anderson</h2>
+            <p>1280 trips</p>
+          </ion-label>
+        </ion-item>
+      </ion-card-content>
+    </ion-card>
+  </div>
 </ion-content>
+

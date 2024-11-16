@@ -23,63 +23,44 @@ export class MapaPage implements OnInit {
   constructor(
     private router: Router,
     private location: Location,
-    private historialService: HistorialViajesService,
+    private historialService: HistorialViajesService
   ) {}
 
   ngOnInit() {
     this.getUserLocation();
-    // Inicializar DirectionsService y DirectionsRenderer aquí
-    this.directionsService = new google.maps.DirectionsService();
-    this.directionsRenderer = new google.maps.DirectionsRenderer();
+    // Llama a loadMap aquí si necesitas que el mapa se cargue inmediatamente
+    this.loadMap();
   }
-
-  // Método para seleccionar el vehículo
-  selectVehicle(vehicleType: string) {
-    this.vehicleType = vehicleType;  // Guardar el tipo de vehículo seleccionado
-    
-    // Establecer un destino según el tipo de vehículo
-    switch (vehicleType) {
-      case 'auto':
-        this.destination = { lat: -33.4489, lng: -70.6693 }; // Coordenadas de ejemplo para un auto
-        break;
-      case 'moto':
-        this.destination = { lat: -33.4569, lng: -70.6483 }; // Coordenadas para una moto
-        break;
-      case 'grúa':
-        this.destination = { lat: -33.4700, lng: -70.7000 }; // Coordenadas para una grúa
-        break;
-      default:
-        this.destination = { lat: -33.4489, lng: -70.6693 }; // Coordenada por defecto
-        break;
-    }
-
-    // Llamar a la función para recalcular la ruta con el nuevo destino
-    this.calculateRoute(this.destination);
-  }  
+  
 
   getUserLocation() {
     if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(position => {
-        this.userLocation = {
-          lat: position.coords.latitude,
-          lng: position.coords.longitude,
-        };
-        this.loadMap();
-      });
-    } else {
-      console.error('La geolocalización no está disponible');
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          this.userLocation = {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude,
+          };
+          this.calculateRoute(this.destination);
+        },
+        (error) => {
+          console.error('Error obteniendo la ubicación:', error);
+        }
+      );
     }
-  }  
-
+  }
+  
   loadMap() {
+    console.log('Intentando inicializar el mapa...');
+  
     if (typeof google === 'undefined') {
-      console.error('Google Maps API no está cargada.');
-      return;
+      console.error('La API de Google Maps no se cargó.');
+      return; // Salir de la función si la API no se cargó
     }
   
     const mapOptions = {
       zoom: 15,
-      center: this.userLocation,
+      center: { lat: -33.4489, lng: -70.6693 },
       mapId: '6d85f3e1f153d7d2', // ID de mapa personalizado
       mapTypeId: google.maps.MapTypeId.ROADMAP,
       disableDefaultUI: true,
@@ -94,6 +75,10 @@ export class MapaPage implements OnInit {
     const mapElement = document.getElementById('map');
     if (mapElement) {
       this.map = new google.maps.Map(mapElement, mapOptions);
+      console.log('Mapa inicializado correctamente.');
+    } else {
+      console.error('No se encontró el elemento del mapa.');
+      return; // Salir de la función si no se encuentra el elemento del mapa
     }
   
     // Inicializar DirectionsService y DirectionsRenderer
@@ -103,26 +88,28 @@ export class MapaPage implements OnInit {
       suppressMarkers: true
     });
   
-    // Crear marcador del vehículo
-    this.addVehicleMarker(this.userLocation, 'auto'); // Usar tipo 'auto' o 'grúa' según corresponda
-    this.addVehicleMarker({ lat: -33.4489, lng: -70.6693 }, 'grúa'); // Ubicación de ejemplo para la grúa (Santiago, Chile)
-    this.addVehicleMarker({ lat: -33.4569, lng: -70.6483 }, 'moto'); // Ubicación de ejemplo para la moto (Santiago, Chile)
+    // Verificar que el mapa esté correctamente inicializado antes de agregar marcadores
+    if (this.map) {
+      this.addVehicleMarker(this.userLocation, 'auto'); // Usar tipo 'auto' o 'grúa' según corresponda
+      this.addVehicleMarker({ lat: -33.4489, lng: -70.6693 }, 'grúa'); // Ubicación de ejemplo para la grúa (Santiago, Chile)
+      this.addVehicleMarker({ lat: -33.4569, lng: -70.6483 }, 'moto'); // Ubicación de ejemplo para la moto (Santiago, Chile)
+    } else {
+      console.error('El mapa no pudo inicializarse correctamente.');
+    }
   }
   
   // Función para agregar marcador de vehículo
   addVehicleMarker(location: { lat: number, lng: number }, vehicleType: string) {
-    const markerIcon = document.createElement('img');
-    markerIcon.src = this.getVehicleIconUrl(vehicleType);
-    markerIcon.style.width = '32px'; // Tamaño del icono del marcador
-    markerIcon.style.height = '32px';
-  
-    new google.maps.marker.AdvancedMarkerElement({
+    new google.maps.Marker({
       map: this.map,
       position: location,
       title: vehicleType === 'auto' ? 'Auto' : vehicleType === 'grúa' ? 'Grúa' : 'Moto',
-      content: markerIcon
-    });
-  }
+      icon: {
+        url: this.getVehicleIconUrl(vehicleType), // Obtener la URL del icono del vehículo
+        scaledSize: new google.maps.Size(32, 32) // Tamaño del icono
+        }
+      });
+    }  
 
   getVehicleIconUrl(vehicleType: string): string {
     switch (vehicleType) {
@@ -137,31 +124,22 @@ export class MapaPage implements OnInit {
     }
   }
 
-  // Método para calcular la ruta
   calculateRoute(destination: { lat: number, lng: number }) {
-    console.log('Calculando ruta...');
-    console.log('Origen:', this.userLocation);
-    console.log('Destino:', destination);
+    // Aquí puedes integrar Google Maps o cualquier otra API para calcular la ruta,
+    // pero por ahora solo vamos a simular el cálculo de la ruta.
 
-    // Asegúrate de que directionsService y directionsRenderer estén inicializados
-    if (this.directionsService && this.directionsRenderer) {
-      const request = {
-        origin: this.userLocation, // La ubicación actual del usuario
-        destination: destination,  // El destino del viaje
-        travelMode: google.maps.TravelMode.DRIVING, // O el modo de transporte que desees
-      };
+    // Crear el objeto Viaje con los detalles del viaje
+    const viaje: Viaje = {
+      origen: this.userLocation,
+      destino: destination,
+      tipo: this.vehicleType,  // Puede ser 'auto', 'moto', 'grúa', etc.
+      fecha: new Date().toISOString(),  // Fecha del viaje en formato ISO
+      estado: 'en curso',  // El viaje está en curso mientras se realiza
+    };
 
-      this.directionsService.route(request, (result: any, status: any) => {
-        if (status === google.maps.DirectionsStatus.OK) {
-          console.log('Ruta calculada correctamente', result);
-          this.directionsRenderer.setDirections(result); // Renderizar la ruta en el mapa
-        } else {
-          console.error('Error al calcular la ruta:', status);
-        }
-      });
-    } else {
-      console.error('directionsService o directionsRenderer no están inicializados');
-    }
+    // Guardar el viaje en el historial de viajes
+    this.historialService.addViaje(viaje);
+    console.log('Viaje guardado en el historial:', viaje);
   }
 
   goBack() {
@@ -171,5 +149,11 @@ export class MapaPage implements OnInit {
   requestRide() {
     console.log('Solicitud de viaje iniciada');
     // Lógica para manejar la solicitud de viaje
+  }
+
+  // Define the selectVehicle method here
+  selectVehicle(vehicleType: string) {
+    // Implement the logic for selecting a vehicle based on vehicleType
+    console.log(`Selected vehicle: ${vehicleType}`); // Example usage
   }
 }

@@ -17,9 +17,11 @@ export class SolicitarGruaPage implements OnInit {
   ngOnInit() {
   }
 
-  solicitarGrua() {
-    console.log("Iniciando viaje en grúa");
-    this.router.navigate(['/mapa']);
+  iniciarViaje() {
+    console.log("Iniciando viaje en auto");
+    this.router.navigate(['/mapa'], {
+      state: { vehicleType: 'grua' }
+    });
   }
 
   goBack() {

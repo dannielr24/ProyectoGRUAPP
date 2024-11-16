@@ -17,6 +17,7 @@ export class ProfilePage implements OnInit {
   imageUrl: string | undefined;
   email: string = '';
   userName: string = 'Usuario';
+  user: any;
 
   constructor(
     private apiService: ApiService, 
@@ -27,13 +28,12 @@ export class ProfilePage implements OnInit {
     private alertController: AlertController
   ) {}
 
-  async ngOnInit() {
-    const dataStorage = await this.storage.obtenerStorage();
-    if (dataStorage && dataStorage.length > 0) {
-      this.email = dataStorage[0]?.email || ''; // Asigna un valor predeterminado si es necesario
-      await this.cargarUsuario();
+  ngOnInit() {
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) {
+      this.user = JSON.parse(storedUser);
     } else {
-      console.error('No hay datos de almacenamiento disponibles');
+      console.error("No hay datos de usuario en el almacenamiento.");
     }
   }
 

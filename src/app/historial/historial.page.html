@@ -20,12 +20,11 @@
     <ion-item *ngFor="let viaje of viajes" (click)="verDetalleViaje(viaje)">
       <ion-label>
         <h2>{{ viaje.tipo }} - {{ viaje.fecha }}</h2>
-        <p>Origen: {{ viaje.origen }}</p>
-        <p>Destino: {{ viaje.destino }}</p>
+        <p>Origen: {{ viaje.origen.lat }}, {{ viaje.origen.lng }}</p>
+        <p>Destino: {{ viaje.destino.lat }}, {{ viaje.destino.lng }}</p>
         <p>Estado: {{ viaje.estado }}</p>
       </ion-label>
     </ion-item>
   </ion-list>
-
-  <ion-button (click)="solicitarGrua()">Ver Historial de Viajes</ion-button>
 </ion-content>
+

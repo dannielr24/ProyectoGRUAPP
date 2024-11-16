@@ -1,9 +1,10 @@
 // viaje.model.ts
 export interface Viaje {
-    tipo: string;
-    fecha: string;
-    origen: string;
-    destino: string;
-    estado: string;
-  }
+  destino: { lat: number, lng: number };  
+  tipo: string;  
+  fecha: string; 
+  origen: { lat: number, lng: number }; 
+  estado: string;  
+}
+
   

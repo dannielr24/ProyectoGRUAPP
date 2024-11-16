@@ -13,52 +13,45 @@ import { StorageService } from 'src/app/service/storage.service';
 })
 export class LoginPage implements OnInit {
 
-  email=""
-  password=""
-  usuarioService: any;
-  tokenID: any="";
+  email: string = "";
+  password: string = "";
+  tokenID: string = "";
 
   constructor(
-    private firebase:FirebaseService, 
-    private router:Router, 
-    private alertcontroller:AlertController, 
+    private firebase: FirebaseService, 
+    private router: Router, 
+    private alertcontroller: AlertController, 
     private location: Location, 
     private storage: StorageService
   ) {}
 
-  singIn() {
-    const usuarioLogueado = {
-      nombre: 'Daniel',
-      sexo: 'M',
-    };
-    
-    this.usuarioService.setUsuario(usuarioLogueado);
+  ngOnInit() {}
 
-    this.router.navigate(['/account']); 
-  }
-
-  ngOnInit() {
-  }
-
+  // Método para iniciar sesión
   async login() {
     try {
+      // Autenticar al usuario
       let user = await this.firebase.auth(this.email, this.password);
       this.tokenID = await user.user?.getIdToken() || "";
-  
-      // Guardar `user.uid` en vez de `tokenID`
+
+      // Obtener el UID y el nombre del usuario desde Firebase
       const uid = user.user?.uid;
-  
+      const name = user.user?.displayName || 'Usuario';  // Obtener nombre real o usar 'Usuario' si no está disponible
+
       if (this.tokenID && uid) {
-        // Almacenar el uid en vez del tokenID
+        // Almacenar el uid, email y nombre del usuario
         this.storage.set('uid', uid);
         this.storage.set('email', this.email);
-  
-        // Guardar el nombre del usuario usando `uid`
-        this.storage.setUserName(uid, 'Daniel'); // Cambia 'Daniel' por el nombre dinámico si lo tienes
+        this.storage.setUserName(uid, name);  // Aquí usamos el nombre real del usuario
+
+        // También puedes almacenar los datos del usuario en localStorage
+        localStorage.setItem('user', JSON.stringify({ email: this.email, name }));
+
       } else {
         console.error('Error: No se pudo obtener el uid o tokenID');
       }
-  
+
+      // Redirigir a la página principal después de login exitoso
       this.router.navigate(['/principal']);
     } catch (error) {
       console.error('Error durante el login:', error);
@@ -66,15 +59,17 @@ export class LoginPage implements OnInit {
     }
   }
 
+  // Mostrar un mensaje de alerta en caso de error
   async popAlert() {
-    const alert=await this.alertcontroller.create({
-      header:'Error',
-      message:"Usuario o contraseña incorrecta",
-      buttons:['Ok']
-    })
+    const alert = await this.alertcontroller.create({
+      header: 'Error',
+      message: "Usuario o contraseña incorrecta",
+      buttons: ['Ok']
+    });
     await alert.present();
   }
 
+  // Volver a la página anterior
   goBack() {
     this.location.back();
   }

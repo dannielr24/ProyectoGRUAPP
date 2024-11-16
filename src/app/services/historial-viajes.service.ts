@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 import { Viaje } from '../models/viaje.model';
 
 @Injectable({
@@ -9,15 +9,11 @@ export class HistorialViajesService {
   private viajes: Viaje[] = [];
   private viajesSubject: BehaviorSubject<Viaje[]> = new BehaviorSubject<Viaje[]>(this.viajes);
 
-  constructor() {
-    this.viajes = [
-      { tipo: 'Auto', fecha: '2024-09-24', origen: 'Punto A', destino: 'Punto B', estado: 'Completado' },
-      { tipo: 'Moto', fecha: '2024-09-23', origen: 'Punto C', destino: 'Punto D', estado: 'Cancelado' },
-    ];
-  }
+  constructor() {}    
+
 
   getViajes(): Observable<Viaje[]> {
-    return this.viajesSubject.asObservable();
+    return this.viajesSubject.asObservable();  // Emitir los viajes desde el Subject
   }
 
   addViaje(viaje: Viaje): void {

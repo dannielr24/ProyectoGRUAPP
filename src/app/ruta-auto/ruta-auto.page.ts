@@ -19,7 +19,9 @@ export class RutaAutoPage implements OnInit {
 
   iniciarViaje() {
     console.log("Iniciando viaje en auto");
-    this.router.navigate(['/mapa']);
+    this.router.navigate(['/mapa'], {
+      state: { vehicleType: 'auto' }
+    });
   }
 
   goBack() {

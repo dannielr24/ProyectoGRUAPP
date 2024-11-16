@@ -18,8 +18,12 @@ export class RutaMotoPage implements OnInit {
   }
 
   iniciarViaje() {
-    this.router.navigate(['/mapa']);
+    console.log("Iniciando viaje en auto");
+    this.router.navigate(['/mapa'], {
+      state: { vehicleType: 'moto' }
+    });
   }
+  
 
   goBack() {
     this.router.navigate(['/home']);

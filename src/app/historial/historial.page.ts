@@ -16,30 +16,18 @@ export class HistorialPage implements OnInit {
     private historialService: HistorialViajesService
   ) {}
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.historialService.getViajes().subscribe((viajes: Viaje[]) => {
       this.viajes = viajes;
     });
   }
 
-  solicitarGrua() {
-    const nuevoViaje: Viaje = { 
-      tipo: 'Grúa',
-      fecha: new Date().toISOString().split('T')[0],
-      origen: 'Punto X',
-      destino: 'Punto Y',
-      estado: 'Pendiente'
-    };
-
-    this.historialService.addViaje(nuevoViaje);
-  }
-
   goBack() {
-    this.router.navigate(['/home']);
+    this.router.navigate(['/home']);  
   }
 
   goToAccount(page: String) {
-    this.router.navigate([`/${page}`])
+    this.router.navigate([`/${page}`]); 
   }
 
   verDetalleViaje(viaje: Viaje) {

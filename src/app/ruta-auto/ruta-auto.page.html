@@ -1,0 +1,33 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="goBack()">
+        <ion-icon name="chevron-back-outline" aria-label="Volver"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Ruta Auto</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Ruta Auto</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-card>
+    <ion-img src="assets/img/uber-auto.jpg"></ion-img>
+    <ion-card-header>
+      <ion-card-title>Comienza tu Viaje</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <p>Conduce con seguridad y disfruta del viaje.</p>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-button expand="full" fill="solid" color="primary" shape="round" (click)="iniciarViaje()">
+    <ion-icon name="car-outline" slot="start"></ion-icon>
+    Iniciar Viaje en Auto
+  </ion-button>
+</ion-content>

@@ -1,0 +1,24 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="goBack()">
+        <ion-icon name="chevron-back-outline" aria-label="Volver"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Cuenta</ion-title>
+  </ion-toolbar>
+</ion-header>
+  <ion-content>
+    <ion-header collapse="condense">
+      <ion-toolbar>
+        <ion-title size="large">Cuenta</ion-title>
+      </ion-toolbar>
+    </ion-header>
+    <div id="container">
+      <ion-list>
+        <ion-item routerLink="/login">Iniciar Sesión</ion-item>
+        <ion-item routerLink="/crearuser">Crear Usuario</ion-item>
+        <ion-item routerLink="/recuperarpass">Recuperar Contraseña</ion-item>
+      </ion-list>
+    </div>
+  </ion-content>

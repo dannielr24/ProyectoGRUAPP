@@ -1,0 +1,54 @@
+<div class="ion-page" id="main-content">
+  <ion-header color="primary">
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-button (click)="openMenu()">Abrir Menú</ion-button>
+      </ion-buttons>
+      <ion-title>GruAPP</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+
+  <ion-content>
+    <ion-searchbar placeholder="¿Adónde vas?" (ionChange)="buscarUbicacion($event)"></ion-searchbar>
+
+    <ion-list>
+      <ion-item button (click)="seleccionarOpcionViaje('Auto')">
+        <ion-avatar slot="start">
+          <img src="assets/img/auto.jpg" alt="Motocicleta">
+        </ion-avatar>
+        <ion-label>Viaje en Auto</ion-label>
+      </ion-item>
+      <ion-item button (click)="seleccionarOpcionViaje('Moto')">
+        <ion-avatar slot="start">
+          <img src="assets/img/moto.jpg" alt="Motocicleta">
+        </ion-avatar>
+        <ion-label>Viaje en Moto</ion-label>
+      </ion-item>
+      <ion-item button (click)="solicitarGrua()">
+        <ion-avatar slot="start">
+          <img src="assets/img/grua.jpg" alt="Grúa">
+        </ion-avatar>
+        <ion-label>Solicitar Grúa</ion-label>
+      </ion-item>
+    </ion-list>
+
+    <ion-item>
+      <ion-avatar slot="start">
+        <img [src]="getAvatar()" alt="Avatar del usuario" />
+      </ion-avatar>
+      <ion-label>{{getSaludo() }}</ion-label>
+    </ion-item>
+
+    <ion-button expand="block" color="primary" (click)="solicitarViaje()">Solicitar Viaje</ion-button>
+
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>¡Obtén 20% de descuento en tu primer viaje!</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        Usa el código promocional "NUEVOUSUARIO"
+      </ion-card-content>
+    </ion-card>
+  </ion-content>
+</div>

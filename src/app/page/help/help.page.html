@@ -1,0 +1,49 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="goBack()">
+        <ion-icon name="chevron-back-outline" aria-label="Volver"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <img src="assets/img/gruapp.png" width="50%" height="50%" />
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="help-content">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Ayuda</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  
+  <div class="help-container">
+    <h2>Bienvenido a la Página de Ayuda</h2>
+    <p>Si tiene alguna pregunta, ¡No dude en comunicarse!</p>
+    
+    <!-- Botón de WhatsApp -->
+    <ion-button expand="block" color="success" (click)="sendWhatsAppMessage()">
+      <ion-icon name="logo-whatsapp" slot="start"></ion-icon>
+      Enviar Mensaje por WhatsApp
+    </ion-button>
+
+    <p>Si necesitas asistencia, por favor revisa las siguientes opciones o contáctanos.</p>
+    
+    <!-- Lista de temas de ayuda -->
+    <ion-list>
+      <ion-item *ngFor="let topic of helpTopics" (click)="topic.action()">
+        <ion-label>{{ topic.title }}</ion-label>
+      </ion-item>
+    </ion-list>
+    
+    <!-- Aquí se muestra el contenido de ayuda dependiendo del tema seleccionado -->
+    <ion-card *ngIf="selectedHelpTopic && selectedHelpTopic.title">
+      <ion-card-header>
+        <ion-card-title>{{ selectedHelpTopic.title }}</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <div [innerHTML]="selectedHelpTopic.content"></div>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>
+

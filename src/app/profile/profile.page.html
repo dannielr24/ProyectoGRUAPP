@@ -1,0 +1,74 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="goBack()">
+        <ion-icon name="chevron-back-outline" aria-label="Volver"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <img src="assets/img/gruapp.png" width="50%" height="50%" />
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Perfil de Usuario</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <!-- Mostrar la imagen del usuario si está disponible -->
+      <ion-img *ngIf="usuario.length > 0 && usuario[0].imagen_usuario" 
+               [src]="usuario[0].imagen_usuario" 
+               alt="Imagen del Usuario" 
+               style="border-radius: 50%; height: 150px; width: 150px; object-fit: cover; margin: 10px auto;"></ion-img>
+
+      <div *ngIf="usuario.length > 0">
+        <h2>{{ usuario[0].nombre }}</h2>
+        <p>{{ usuario[0].correo_electronico }}</p>
+        <p><strong>Teléfono:</strong> {{ usuario[0].telefono }}</p>
+        <p><strong>Marca:</strong> {{ usuario[0].marca }}</p>
+        <p><strong>Modelo:</strong> {{ usuario[0].modelo }}</p>
+        <p><strong>Color:</strong> {{ usuario[0].color }}</p>
+        <p><strong>Capacidad de Pasajeros:</strong> {{ usuario[0].capacidad_pasajeros }}</p>
+        <p><strong>Tipo de Combustible:</strong> {{ usuario[0].tipo_combustible }}</p>
+        <p><strong>Patente:</strong> {{ usuario[0].patente }}</p>
+        <p><strong>Proyecto:</strong> {{ usuario[0].nombre_proyecto }}</p>
+        <p><strong>Año:</strong> {{ usuario[0].anio }}</p>
+        <p><strong>Calificación Promedio:</strong> {{ usuario[0].calificacion_promedio }}</p>
+      </div>
+
+      <!-- Opciones adicionales -->
+      <ion-list>
+        <ion-item button (click)="editProfile()">
+          <ion-icon name="create-outline" slot="start"></ion-icon>
+          Editar Perfil
+        </ion-item>
+        <ion-item button (click)="viewSettings()">
+          <ion-icon name="settings-outline" slot="start"></ion-icon>
+          Configuración
+        </ion-item>
+        <ion-item button (click)="logout()">
+          <ion-icon name="log-out-outline" slot="start"></ion-icon>
+          Cerrar Sesión
+        </ion-item>
+      </ion-list>
+
+      <!-- Botón para tomar una foto -->
+      <ion-button expand="full" (click)="takePicture()" style="margin-top: 15px;">
+        <ion-icon slot="start" name="camera"></ion-icon>
+        Tomar foto
+      </ion-button>
+
+      <!-- Mostrar la imagen capturada -->
+      <ion-img *ngIf="imageUrl" 
+               [src]="imageUrl" 
+               alt="Foto capturada" 
+               style="width: 100%; height: auto; margin-top: 15px; border-radius: 10px;"/>
+    </ion-card-content>
+  </ion-card>
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-title>Desarrollado por GruAPP</ion-title>
+  </ion-toolbar>
+</ion-footer>

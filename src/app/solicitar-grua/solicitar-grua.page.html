@@ -1,0 +1,38 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="goBack()">
+        <ion-icon name="chevron-back-outline" aria-label="Volver"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Solicitar Grúa</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Solicitar Grúa</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  
+
+  <ion-card>
+    <div>
+      <ion-img src="https://media.istockphoto.com/id/1192940992/vector/tow-car-evacuator-icon-vector-symbol-isolated-on-white-background.jpg?s=612x612&w=0&k=20&c=QHK6KiTl5CSWi8G2Gi2dZ69K9uZM8max8Fs9UkkNH5k="></ion-img>
+    </div>
+    <ion-card-header>
+      <ion-card-title>Asistencia en Carretera</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <p>¿Tienes un inconveniente? Haz clic en el botón para solicitar asistencia y recibir ayuda en el camino.</p>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-button expand="full" fill="solid" color="danger" shape="round" (click)="iniciarViaje()">
+    <ion-icon name="help-buoy-outline" slot="start"></ion-icon>
+    Solicitar Grúa
+  </ion-button>
+</ion-content>
+

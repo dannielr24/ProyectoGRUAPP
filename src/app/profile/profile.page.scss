@@ -1,0 +1,81 @@
+/* Estilos generales para la página de perfil */
+.profile-content {
+    padding: 16px; // Espaciado interno
+    background-color: var(--ion-background-color); // Color de fondo según el modo
+  }
+  
+  /* Estilos para el encabezado del perfil */
+  .profile-header {
+    text-align: center; // Centrar el texto
+    margin-bottom: 20px; // Espaciado inferior
+  }
+  
+  /* Estilos para el título de la página */
+  h1 {
+    font-size: 2em; // Tamaño de fuente del título
+    color: var(--ion-text-color); // Color de texto según el modo
+  }
+  
+  /* Estilos para la sección de información del usuario */
+  .user-info {
+    background: var(--ion-item-background); // Color de fondo del contenedor
+    border-radius: 8px; // Bordes redondeados
+    padding: 16px; // Espaciado interno
+    margin-bottom: 20px; // Espaciado inferior
+  }
+  
+  /* Estilos para los detalles del usuario */
+  .user-info p {
+    font-size: 1.1em; // Tamaño de fuente para detalles
+    color: var(--ion-text-color); // Color de texto según el modo
+  }
+  
+  /* Estilos para los botones de acción */
+  .action-button {
+    margin-top: 20px; // Espaciado superior
+    --background: var(--ion-button-background); // Color de fondo del botón
+    --color: var(--ion-button-color); // Color de texto del botón
+  }
+  
+  /* Estilos para los elementos de la lista */
+  ion-list {
+    margin-top: 20px; // Espaciado superior
+    --background: var(--ion-list-background); // Color de fondo de la lista
+    --color: var(--ion-list-color); // Color de texto de la lista
+  }
+  
+  /* Estilos para cada elemento de la lista */
+  ion-item {
+    --background: var(--ion-item-background); // Color de fondo de cada elemento
+    --color: var(--ion-item-color); // Color de texto de cada elemento
+  
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.1); // Efecto de hover
+    }
+  }
+  
+  /* Estilos para el modo oscuro */
+  body.dark .profile-content {
+    background-color: #222; // Color de fondo oscuro
+  }
+  
+  body.dark h1,
+  body.dark .user-info p {
+    color: #fff; // Color de texto claro
+  }
+  
+  body.dark ion-item {
+    --background: #444; // Color de fondo oscuro para elementos
+    --color: #fff; // Color de texto claro para elementos
+  }
+  
+  /* Estilos para el modo claro */
+  body {
+    background-color: #fff; // Color de fondo claro
+  }
+  
+  body h1,
+  body .user-info p {
+    color: #000; // Color de texto oscuro
+  }
+  

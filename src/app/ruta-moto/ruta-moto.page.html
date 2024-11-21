@@ -1,0 +1,34 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="goBack()">
+        <ion-icon name="chevron-back-outline" aria-label="Volver"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Ruta Moto</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Ruta Moto</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-card>
+    <ion-img src="assets/img/uber-moto.jpg"></ion-img>
+    <ion-card-header>
+      <ion-card-title>Disfruta de la Carretera</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <p>Prepárate para una aventura segura en tu moto.</p>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-button expand="full" fill="solid" color="tertiary" shape="round" (click)="iniciarViaje()">
+    <ion-icon name="bicycle-outline" slot="start"></ion-icon>
+    Iniciar Viaje en Moto
+  </ion-button>
+</ion-content>
+

@@ -1,0 +1,31 @@
+ion-card {
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+  ion-img {
+    border-radius: 12px;
+    max-height: 200px; // Limita la altura máxima
+    object-fit: cover; // Asegura que la imagen se vea bien y no se distorsione
+  }
+
+  ion-card-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #333;
+  }
+
+  ion-card-content {
+    font-size: 1rem;
+    color: #666;
+  }
+
+  ion-button {
+    margin-top: 10px;
+    --background: #10dc60; // Color verde para viajes en moto
+    --background-hover: #0cba4a; // Color al pasar el cursor
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  }
+
+  

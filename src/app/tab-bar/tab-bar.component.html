@@ -1,0 +1,24 @@
+<ion-tabs color="dark">
+  <ion-tab-bar slot="bottom">
+    <ion-tab-button [routerLink]="['/home']">
+      <ion-icon name="home"></ion-icon>
+      <ion-label>Inicio</ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button [routerLink]="['/mapa']">
+      <ion-icon name="map"></ion-icon>
+      <ion-label>Mapa</ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button [routerLink]="['/historial']">
+      <ion-icon name="pulse"></ion-icon>
+      <ion-label>Historial</ion-label>
+    </ion-tab-button>
+
+    <!-- Botón de cierre de sesión -->
+    <ion-tab-button (click)="logout()">
+      <ion-icon name="log-out"></ion-icon>
+      <ion-label>Cerrar Sesión</ion-label>
+    </ion-tab-button>
+  </ion-tab-bar>
+</ion-tabs>

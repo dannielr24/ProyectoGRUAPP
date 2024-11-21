@@ -1,0 +1,120 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="goBack()">
+        <ion-icon name="chevron-back-outline" aria-label="Volver"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <img src="assets/img/gruapp.png" width="50%" height="50%">
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div class="form-header">
+    <h1>Registro</h1>
+    <p class="subheading">Completa los siguientes campos para registrarte.</p>
+  </div>
+
+  <form [formGroup]="registerForm" (ngSubmit)="registrar()">
+    
+    <!-- Nombre y Apellido -->
+    <ion-item>
+      <ion-input formControlName="nombre" label="Nombre" placeholder="Nombre" type="text"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-input formControlName="apellido" label="Apellido" placeholder="Apellido" type="text"></ion-input>
+    </ion-item>
+
+    <!-- RUT -->
+    <ion-item>
+      <ion-input formControlName="rut" label="Rut" placeholder="Rut" type="text"></ion-input>
+    </ion-item>
+
+    <!-- Fecha de Nacimiento -->
+    <ion-item>
+      <ion-label>Fecha de Nacimiento</ion-label>
+      <ion-grid>
+        <ion-row>
+          <ion-col size="4">
+            <ion-select formControlName="dia" placeholder="Día">
+              <ion-select-option *ngFor="let day of days" [value]="day">{{ day }}</ion-select-option>
+            </ion-select>
+          </ion-col>
+
+          <ion-col size="4">
+            <ion-select formControlName="mes" placeholder="Mes">
+              <ion-select-option *ngFor="let month of months" [value]="month.value">{{ month.name }}</ion-select-option>
+            </ion-select>
+          </ion-col>
+
+          <ion-col size="4">
+            <ion-select formControlName="anio" placeholder="Año">
+              <ion-select-option *ngFor="let year of years" [value]="year">{{ year }}</ion-select-option>
+            </ion-select>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-item>
+
+    <div *ngIf="dateOfBirthInvalid" class="error-message">
+      Fecha de nacimiento no válida.
+    </div>
+
+    <!-- Contraseña -->
+    <ion-item>
+      <ion-input 
+        [(ngModel)]="password" 
+        formControlName="password" 
+        [type]="passwordVisible ? 'text' : 'password'" 
+        placeholder="Contraseña">
+      </ion-input>
+      <ion-button fill="clear" slot="end" (click)="togglePasswordVisibility()">
+        <ion-icon [name]="passwordVisible ? 'eye-off-outline' : 'eye-outline'"></ion-icon>
+      </ion-button>
+    </ion-item>
+
+    <!-- Confirmar Contraseña -->
+    <ion-item>
+      <ion-input 
+        [(ngModel)]="confirmPassword" 
+        formControlName="confirmPassword" 
+        [type]="confirmPasswordVisible ? 'text' : 'password'" 
+        placeholder="Confirmar Contraseña">
+      </ion-input>
+      <ion-button fill="clear" slot="end" (click)="toggleConfirmPasswordVisibility()">
+        <ion-icon [name]="confirmPasswordVisible ? 'eye-off-outline' : 'eye-outline'"></ion-icon>
+      </ion-button>
+    </ion-item>
+
+    <!-- Teléfono -->
+    <ion-item>
+      <ion-input formControlName="telefono" label="Teléfono" placeholder="Teléfono" type="tel"></ion-input>
+    </ion-item>
+
+    <!-- Email -->
+    <ion-item>
+      <ion-input formControlName="email" label="Email" type="email" placeholder="Ingresa tu email"></ion-input>
+    </ion-item>
+
+    <!-- Seleccionar Imagen -->
+    <ion-item>
+      <ion-label>Seleccionar Imagen</ion-label>
+      <input type="file" (change)="onFileChange($event)" />
+    </ion-item>
+
+    <div *ngIf="imageSelectedError" class="error-message">
+      Debes seleccionar una imagen.
+    </div>
+
+    <!-- Botón Registrar -->
+    <ion-button expand="full" type="submit" [disabled]="registerForm.invalid">Registrar</ion-button>
+  </form>
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-title>GruAPP</ion-title>
+  </ion-toolbar>
+</ion-footer>
+

@@ -1,0 +1,25 @@
+<ion-app>
+  <ion-menu contentId="main-content">
+    <ion-header>
+      <ion-toolbar>
+        <ion-buttons slot="start">
+          <ion-back-button icon="chevron-back-outline" defaultHref="/home"></ion-back-button>
+        </ion-buttons>
+        <ion-title>Menú</ion-title>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content>
+      <ion-list>
+        <ion-item routerLink="/home">Página Principal</ion-item>
+        <ion-item routerLink="/mapa">Mapa</ion-item>
+        <ion-item routerLink="/historial">Historial</ion-item>
+        <ion-item routerLink="/payment">Métodos de Pagos</ion-item>
+        <ion-item routerLink="/principal">Cerrar Sesión</ion-item>
+      </ion-list>
+    </ion-content>
+  </ion-menu>
+
+  <div class="ion-page" id="main-content">
+    <ion-router-outlet></ion-router-outlet>
+  </div>
+</ion-app>

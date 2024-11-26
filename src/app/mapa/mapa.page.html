@@ -1,10 +1,5 @@
 <ion-header>
   <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-button (click)="goBack()">
-        <ion-icon name="chevron-back-outline" aria-label="Volver"></ion-icon>
-      </ion-button>
-    </ion-buttons>
     <ion-title>Buscando Uber por tu zona...</ion-title>
   </ion-toolbar>
 </ion-header>
@@ -21,11 +16,12 @@
   </div>
   <div class="overlay-bottom">
     <div class="ride-info">
-      <img src="https://www.uber-assets.com/image/upload/f_auto,q_auto:eco,c_fill,h_368,w_552/v1548646935/assets/64/93c255-87c8-4e2e-9429-cf709bf1b838/original/3.png" alt="Driver Photo" class="driver-photo">
+      <img src="assets/img/driver-photo.jpg" alt="Driver Photo" class="driver-photo">
       <div class="ride-details">
         <h2>Conductor: Juan Pérez</h2>
         <p>Auto: Toyota Prius</p>
         <p>Placa: ABC-123</p>
+        <p>Distancia: {{ distance }}</p> <!-- Mostrar la distancia -->
       </div>
     </div>
   </div>

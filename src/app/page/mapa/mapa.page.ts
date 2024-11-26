@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { HistorialViajesService } from '../../services/historial-viajes.service';
 import { Viaje } from '../models/viaje.model';
+import { ChangeDetectorRef } from '@angular/core'; // Importar ChangeDetectorRef
 
 declare var google: any; // Declarar google para TypeScript
 
@@ -19,11 +20,13 @@ export class MapaPage implements OnInit {
   userLocation: { lat: number, lng: number } = { lat: 0, lng: 0 };
   destination: { lat: number, lng: number } = { lat: -33.4489, lng: -70.6693 }; // Santiago de Chile como ejemplo
   viajes: Viaje[] = [];
+  distance: string = ''; // Variable para almacenar la distancia
 
   constructor(
     private router: Router,
     private location: Location,
-    private historialService: HistorialViajesService
+    private historialService: HistorialViajesService,
+    private cdr: ChangeDetectorRef // Inyectar ChangeDetectorRef
   ) {}
 
   ngOnInit() {
@@ -95,6 +98,7 @@ export class MapaPage implements OnInit {
           lat: event.latLng.lat(),
           lng: event.latLng.lng()
         };
+        console.log('Punto seleccionado:', destination); // Verificar el punto seleccionado
         this.calculateRoute(destination);
       });
     } else {
@@ -137,6 +141,12 @@ export class MapaPage implements OnInit {
     this.directionsService.route(request, (result: any, status: any) => {
       if (status === google.maps.DirectionsStatus.OK) {
         this.directionsRenderer.setDirections(result);
+        // Calcular la distancia y actualizar la variable
+        const route = result.routes[0];
+        const distance = route.legs[0].distance.text;
+        this.distance = distance;
+        console.log('Distancia calculada:', this.distance); // Verificar la distancia en la consola
+        this.cdr.detectChanges(); // Forzar la detección de cambios
       } else {
         console.error('Error al calcular la ruta:', status);
       }

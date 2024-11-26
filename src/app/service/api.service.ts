@@ -7,7 +7,7 @@ import {
 import { retry, catchError } from 'rxjs';
 import { lastValueFrom, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment'; // Asegúrate de que la ruta sea correcta
-import { UserModel } from '../models/user.model';
+import { UserModel } from '../page/models/user.model';
 import { idTokenResult } from '@angular/fire/compat/auth-guard';
 import { IMAGE_CONFIG } from '@angular/common';
 
@@ -69,6 +69,31 @@ export class ApiService {
     }
   }
 
+  async agregarVehiculo(data: bodyVehiculo, imageFile: File) {
+    try {
+      const formData = new FormData();
+      formData.append('p_id_usuario', data.p_id_usuario.toString());
+      formData.append('p_patente', data.p_patente);
+      formData.append('p_marca', data.p_marca);
+      formData.append('p_modelo', data.p_modelo);
+      formData.append('p_anio', data.p_anio.toString());
+      formData.append('p_color', data.p_color);
+      formData.append('p_tipo_combustible', data.p_tipo_combustible);
+      if (data.token) {
+        formData.append('token', data.token);
+      }
+      if (imageFile) {
+        formData.append('image_usuario', imageFile, imageFile.name);
+      }
+      const response = await lastValueFrom(
+        this.http.post<any>(environment.apiUrl + 'user/agregar', formData)
+      );
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  }
+
   async obtenerUsuario(data: dataGetUser): Promise<UserModel[]> {
     try {
       const params = {
@@ -93,5 +118,16 @@ interface bodyUser {
 interface dataGetUser {
   p_correo: string;
   token: string;
+}
+
+interface bodyVehiculo {
+  p_id_usuario: number;
+  p_patente: string;
+  p_marca: string;
+  p_modelo: string;
+  p_anio: number;
+  p_color: string;
+  p_tipo_combustible: string;
+  token?: string;
 }
 

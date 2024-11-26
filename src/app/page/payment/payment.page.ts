@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { PaymentService } from '../services/payment.service';
+import { PaymentService } from '../../services/payment.service';
 import { Location } from '@angular/common';
 import { AlertController } from '@ionic/angular';
 import { StorageService } from 'src/app/service/storage.service';

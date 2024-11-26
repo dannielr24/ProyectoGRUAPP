@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { AccountPageRoutingModule } from './account-routing.module';
 import { AccountPage } from './account.page';
-import { TabBarModule } from 'src/app/tab-bar/tab-bar.module';
+import { TabBarModule } from 'src/app/page/tab-bar/tab-bar.module';
 
 @NgModule({
   imports: [

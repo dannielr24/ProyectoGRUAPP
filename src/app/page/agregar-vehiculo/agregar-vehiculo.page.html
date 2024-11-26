@@ -1,0 +1,67 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="goBack()">
+        <ion-icon name="chevron-back-outline" aria-label="Volver"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <img src="assets/img/gruapp.png" width="50%" height="50%">
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div class="form-header">
+    <h1>Registro</h1>
+    <p class="subheading">Completa los siguientes campos para registrar tu vehículo.</p>
+  </div>
+
+  <form (ngSubmit)="registrarVehiculo()">
+    <!-- Patente Vehículo -->
+    <ion-list>
+      <ion-item>
+        <ion-label position="floating">Patente</ion-label>
+        <ion-input [(ngModel)]="patente" name="patente"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating">Marca</ion-label>
+        <ion-input [(ngModel)]="marca" name="marca"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating">Modelo</ion-label>
+        <ion-input [(ngModel)]="modelo" name="modelo"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating">Año</ion-label>
+        <ion-input [(ngModel)]="anio" name="anio"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating">Color</ion-label>
+        <ion-input [(ngModel)]="color" name="color"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating">Tipo Combustible</ion-label>
+        <ion-input [(ngModel)]="tipo_combustible" name="tipoCombustible"></ion-input>
+      </ion-item>
+    </ion-list>
+
+    <!-- Seleccionar Imagen -->
+    <ion-item>
+      <ion-label>Seleccionar Imagen</ion-label>
+      <input type="file" (change)="onFileChange($event)" />
+    </ion-item>
+
+    <!-- Botón Registrar -->
+    <ion-button expand="full" type="submit" [disabled]="registrarVehiculo()">Registrar Vehículo</ion-button>
+  </form>
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-title>GruAPP</ion-title>
+  </ion-toolbar>
+</ion-footer>

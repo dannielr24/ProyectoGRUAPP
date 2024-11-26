@@ -1,0 +1,21 @@
+ion-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+  
+  h2 {
+    font-size: 24px;
+    font-weight: bold;
+  }
+  
+  h1 div {
+    font-size: 32px;
+    color: #007bff; // Asegúrate de personalizar el color al estilo de la app
+  }
+  
+  ion-button {
+    margin-top: 10px;
+  }
+  

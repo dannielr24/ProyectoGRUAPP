@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Router } from '@angular/router';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { FirebaseService } from '../service/firebase.service';
+import { FirebaseService } from '../../service/firebase.service';
 
 @Component({
   selector: 'app-register',

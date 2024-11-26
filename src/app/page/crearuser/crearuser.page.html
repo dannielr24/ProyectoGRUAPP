@@ -62,30 +62,29 @@
     </div>
 
     <!-- Contraseña -->
-    <ion-item>
-      <ion-input 
-        [(ngModel)]="password" 
-        formControlName="password" 
-        [type]="passwordVisible ? 'text' : 'password'" 
-        placeholder="Contraseña">
-      </ion-input>
-      <ion-button fill="clear" slot="end" (click)="togglePasswordVisibility()">
-        <ion-icon [name]="passwordVisible ? 'eye-off-outline' : 'eye-outline'"></ion-icon>
-      </ion-button>
-    </ion-item>
+<ion-item>
+  <ion-input 
+    formControlName="password" 
+    [type]="passwordVisible ? 'text' : 'password'" 
+    placeholder="Contraseña">
+  </ion-input>
+  <ion-button fill="clear" slot="end" (click)="togglePasswordVisibility()">
+    <ion-icon [name]="passwordVisible ? 'eye-off-outline' : 'eye-outline'"></ion-icon>
+  </ion-button>
+</ion-item>
 
-    <!-- Confirmar Contraseña -->
-    <ion-item>
-      <ion-input 
-        [(ngModel)]="confirmPassword" 
-        formControlName="confirmPassword" 
-        [type]="confirmPasswordVisible ? 'text' : 'password'" 
-        placeholder="Confirmar Contraseña">
-      </ion-input>
-      <ion-button fill="clear" slot="end" (click)="toggleConfirmPasswordVisibility()">
-        <ion-icon [name]="confirmPasswordVisible ? 'eye-off-outline' : 'eye-outline'"></ion-icon>
-      </ion-button>
-    </ion-item>
+<!-- Confirmar Contraseña -->
+<ion-item>
+  <ion-input 
+    formControlName="confirmPassword" 
+    [type]="confirmPasswordVisible ? 'text' : 'password'" 
+    placeholder="Confirmar Contraseña">
+  </ion-input>
+  <ion-button fill="clear" slot="end" (click)="toggleConfirmPasswordVisibility()">
+    <ion-icon [name]="confirmPasswordVisible ? 'eye-off-outline' : 'eye-outline'"></ion-icon>
+  </ion-button>
+</ion-item>
+
 
     <!-- Teléfono -->
     <ion-item>

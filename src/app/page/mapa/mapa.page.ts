@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
-import { HistorialViajesService } from '../services/historial-viajes.service';
+import { HistorialViajesService } from '../../services/historial-viajes.service';
 import { Viaje } from '../models/viaje.model';
 
 declare var google: any; // Declarar google para TypeScript

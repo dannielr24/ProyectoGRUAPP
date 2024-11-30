@@ -1,3 +1,4 @@
+//auth.service.ts
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth'; 
 import { BehaviorSubject } from 'rxjs';
@@ -15,16 +16,17 @@ export class AuthService {
   ) {
     this.afAuth.onAuthStateChanged(user => {
       if (user) {
-        this.userData.next(user);
-        // Almacenar el nombre y email en localStorage
+        // Asegúrate de guardar correctamente los datos
         this.storageService.setUserName(user.uid, user.displayName || 'Usuario desconocido');
-        localStorage.setItem('user', JSON.stringify({ uid: user.uid, userName: user.displayName, email: user.email }));
-      } else {
-        this.userData.next(null);
-        localStorage.removeItem('user');
+        localStorage.setItem('user', JSON.stringify({
+          uid: user.uid,
+          userName: user.displayName || 'Usuario desconocido',
+          email: user.email
+        }));
+        console.log('Usuario autenticado:', user.uid);  // Log para depuración
       }
-    });
-  }     
+    });    
+  }         
 
   get currentUser() {
     const userData = localStorage.getItem('user');
@@ -43,7 +45,19 @@ export class AuthService {
     }
 
     // Método para recuperar el nombre del usuario desde el almacenamiento local
-    getUserNameFromStorage(uid: string) {
-        return this.storageService.getUserName(uid);  // Usamos el servicio de almacenamiento para obtener el nombre
+    async getUserNameFromStorage(uid: string): Promise<string | null> {
+      // Aquí puedes acceder a una base de datos o almacenamiento adicional si es necesario
+      const user = JSON.parse(localStorage.getItem('user') || '{}');
+      
+      // Verificamos si el UID coincide y devolvemos el nombre de usuario
+      if (user && user.uid === uid) {
+        return user.userName || null;  // Si no tiene userName, se puede devolver null o un valor por defecto
+      } else {
+        throw new Error('Usuario no encontrado');
+      }
     }
+
+    getAuthenticatedUser() {
+      return JSON.parse(localStorage.getItem('authenticatedUser') || '{}');
+    }    
 }

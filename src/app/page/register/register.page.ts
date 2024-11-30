@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Router } from '@angular/router';
-import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { FirebaseService } from '../../service/firebase.service';
+import { UsuarioService } from 'src/app/services/usuario.service';  // Importamos el servicio
 
 @Component({
   selector: 'app-register',
@@ -14,24 +14,29 @@ export class RegisterPage {
   apellido: string = '';
   rut: string = '';
   fechaNacimiento: string = '';
-  email: string;
-  password: string;
+  email: string = '';
+  password: string = '';
 
   constructor(
     private afAuth: AngularFireAuth, 
     private router: Router, 
-    private firestore: AngularFirestore, 
-    private firebaseService: FirebaseService
-  ) {
-    this.email = '';
-    this.password = '';
-  }
+    private firebaseService: FirebaseService,
+    private usuarioService: UsuarioService  // Inyectamos el servicio
+  ) {}
 
   async register() {
     try {
       // Llamar al servicio para registrar al usuario
       const usuario = await this.firebaseService.registrar(this.email, this.password, this.nombre, this.apellido, this.rut, this.fechaNacimiento);
       console.log('Usuario registrado correctamente:', usuario);
+
+      // Obtener el UID del usuario recién registrado
+      const uid = usuario.user?.uid;
+      
+      if (uid) {
+        // Guardar el usuario en localStorage
+        this.usuarioService.saveUser(uid, this.email, this.nombre, this.apellido); // Usamos saveUser
+      }
 
       // Obtener el token del usuario
       const token = await usuario.user?.getIdToken();
@@ -45,5 +50,3 @@ export class RegisterPage {
     }
   }
 }
-
-

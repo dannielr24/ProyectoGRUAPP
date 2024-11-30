@@ -12,7 +12,32 @@ export class UsuarioService {
 
   constructor(private afAuth: AngularFireAuth, private firestore: AngularFirestore) {}
 
-  // Guarda localmente los datos del usuario
+  // Guardar el usuario en localStorage
+  saveUser(uid: string, email: string, nombre: string, apellido: string): void {
+    const users = JSON.parse(localStorage.getItem('users') || '{}');
+    users[uid] = { email, nombre, apellido };  // Guarda el usuario con el UID como clave
+    localStorage.setItem('users', JSON.stringify(users));  // Guarda todos los usuarios
+  }
+
+  // Obtener el usuario por email desde localStorage
+  getUserByEmail(email: string) {
+    const users = JSON.parse(localStorage.getItem('users') || '{}');
+    // Busca el usuario por el correo electrónico
+    for (const uid in users) {
+      if (users[uid].email === email) {
+        return users[uid];  // Retorna el usuario si lo encuentra
+      }
+    }
+    return null;  // Retorna null si no encuentra al usuario
+  }
+
+  // Obtiene los usuarios almacenados en localStorage
+  getUsers(): any {
+    const users = localStorage.getItem('users');
+    return users ? JSON.parse(users) : null;
+  }
+
+  // Guarda los datos del usuario
   setUsuario(datos: { nombre: string; sexo: string }) {
     this.usuario = datos;
   }

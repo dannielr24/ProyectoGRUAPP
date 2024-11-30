@@ -35,7 +35,7 @@ export class FirebaseService {
     try {
       const request = await this.firebase.createUserWithEmailAndPassword(email, password);
       const uid = request.user?.uid;
-
+  
       if (uid) {
         // Almacenar los datos adicionales del usuario en Firestore
         await this.firestore.collection('usuarios').doc(uid).set({
@@ -46,11 +46,19 @@ export class FirebaseService {
           email
         });
         console.log('Datos adicionales guardados en Firestore');
-
-        // Almacenar el nombre en StorageService después de crear el usuario
+  
+        // Almacenar el nombre en el servicio de almacenamiento (StorageService)
         await this.storage.setUserName(uid, nombre);
+  
+        // Obtener el usuario actual y actualizar su displayName
+        const user = await this.firebase.currentUser;  // Resolver la promesa
+        if (user) {
+          await user.updateProfile({
+            displayName: nombre
+          });
+        }
       }
-
+  
       return request; // Devuelvo el objeto 'request' (userCredential)
     } catch (error) {
       console.error('Error en el registro de usuario:', error);

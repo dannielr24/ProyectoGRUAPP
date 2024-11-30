@@ -40,13 +40,15 @@ export class LoginPage implements OnInit {
       if (user) {
         const userName = user.displayName || (user.email ? user.email.split('@')[0] : 'Usuario');
         const uid = user.uid;
-      
-        // Guarda el objeto completo en localStorage
-        const userData = { uid, userName, email: this.email };
+        const tokenID = await user.getIdToken(); // Obtén el token ID
+  
+        // Guarda datos del usuario en LocalStorage
+        const userData = { uid, userName, email: this.email, token: tokenID };
         localStorage.setItem('user', JSON.stringify(userData));
-      
-        console.log('Usuario autenticado:', { userName, uid, email: this.email });
-      
+        localStorage.setItem('token', tokenID); // Guarda solo el token explícitamente
+        
+        console.log('Usuario autenticado:', userData);
+        
         // Redirigir al usuario a la página principal
         this.router.navigate(['/principal'], {
           queryParams: { email: this.email }, 
@@ -57,7 +59,7 @@ export class LoginPage implements OnInit {
       console.error('Error al iniciar sesión:', error);
       this.popAlert();
     }
-  }  
+  }    
 
   // Mostrar un mensaje de alerta en caso de error
   async popAlert() {
@@ -72,5 +74,10 @@ export class LoginPage implements OnInit {
   // Volver a la página anterior
   goBack() {
     this.router.navigate(['/home']);  // Redirige a la página de inicio si hay un error
+  }
+
+  onLoginSuccess(tokenID: string) {
+    console.log('Inicio de sesión exitoso. Guardando token...');
+    this.storageService.setToken(tokenID); // Guarda el token
   }
 }

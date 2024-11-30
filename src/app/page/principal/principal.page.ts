@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { FirebaseService } from 'src/app/service/firebase.service';
 import { StorageService } from 'src/app/service/storage.service';
 import { AuthService } from 'src/app/services/auth.service';
@@ -47,24 +47,12 @@ export class PrincipalPage implements OnInit {
   }
 
   // Método para registrar vehículo
-  async registrarVehiculo() {
-  if (!this.user.email) {
-    console.error("Email no disponible, no se puede registrar vehículo");
-    // Mostrar una alerta al usuario si el email no está disponible
-    const alert = await this.alertController.create({
-      header: 'Error',
-      message: 'No se pudo obtener el email del usuario. Por favor, inicie sesión nuevamente.',
-      buttons: ['OK']
-    });
-    await alert.present();
-    return;
-  }
- 
-  console.log("Registrando vehículo con email:", this.user.email);
-  this.router.navigate(['/agregar-vehiculo'], {
-    queryParams: { email: this.user.email }
-  });
-}
+  async agregarVehiculo() {
+    const navigationExtras: NavigationExtras = {
+      queryParams: { email: this.user.email }
+    };
+    this.router.navigate(['/agregar-vehiculo'], navigationExtras);
+    }   
 
   // Método para navegar a otras páginas
   navigateTo(page: string) {

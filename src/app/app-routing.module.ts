@@ -99,12 +99,15 @@ const routes: Routes = [
         loadChildren: () => import('./page/agregar-vehiculo/agregar-vehiculo.module').then( m => m.AgregarVehiculoPageModule)
       },
       {
+        path: 'agregar-viaje',
+        loadChildren: () => import('./page/agregar-viaje/agregar-viaje.module').then( m => m.AgregarViajePageModule)
+      },
+      {
         path: '**',
         component: PageNotFoundComponent
       }       
     ]
-  },     
-
+  },   
 ];
 
 @NgModule({

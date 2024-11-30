@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { AngularFireAuthGuard, redirectUnauthorizedTo } from '@angular/fire/compat/auth-guard';
-import { TabBarComponent } from './tab-bar/tab-bar.component';
-import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { TabBarComponent } from './page/tab-bar/tab-bar.component';
+import { PageNotFoundComponent } from './page/page-not-found/page-not-found.component';
 
 const redireccionarLogin = () => redirectUnauthorizedTo(['/login']);
 
@@ -32,15 +32,15 @@ const routes: Routes = [
     children: [
       { 
         path: 'home',
-        loadChildren: () => import('./home/home.module').then( m => m.HomePageModule),
+        loadChildren: () => import('./page/home/home.module').then( m => m.HomePageModule),
       },
       {
         path: 'mapa',
-        loadChildren: () => import('./mapa/mapa.module').then( m => m.MapaPageModule)
+        loadChildren: () => import('./page/mapa/mapa.module').then( m => m.MapaPageModule)
       },
       {
         path: 'historial',
-        loadChildren: () => import('./historial/historial.module').then( m => m.HistorialPageModule)
+        loadChildren: () => import('./page/historial/historial.module').then( m => m.HistorialPageModule)
       },
       {
         path: 'account',
@@ -52,15 +52,15 @@ const routes: Routes = [
       },
       {
         path: 'ruta-auto',
-        loadChildren: () => import('./ruta-auto/ruta-auto.module').then(m => m.RutaAutoPageModule)
+        loadChildren: () => import('./page/ruta-auto/ruta-auto.module').then(m => m.RutaAutoPageModule)
       },
       {
         path: 'ruta-moto',
-        loadChildren: () => import('./ruta-moto/ruta-moto.module').then(m => m.RutaMotoPageModule)
+        loadChildren: () => import('./page/ruta-moto/ruta-moto.module').then(m => m.RutaMotoPageModule)
       },
       {
         path: 'solicitar-grua',
-        loadChildren: () => import('./solicitar-grua/solicitar-grua.module').then(m => m.SolicitarGruaPageModule)
+        loadChildren: () => import('./page/solicitar-grua/solicitar-grua.module').then(m => m.SolicitarGruaPageModule)
       },
       {
         path: 'testapi',
@@ -68,7 +68,7 @@ const routes: Routes = [
       },
       {
         path: 'profile',
-        loadChildren: () => import('./profile/profile.module').then(m => m.ProfilePageModule)
+        loadChildren: () => import('./page/profile/profile.module').then(m => m.ProfilePageModule)
       },
       {
         path: 'settings',
@@ -80,38 +80,34 @@ const routes: Routes = [
       },
       {
         path: 'payment',
-        loadChildren: () => import('./payment/payment.module').then(m => m.PaymentPageModule)
+        loadChildren: () => import('./page/payment/payment.module').then(m => m.PaymentPageModule)
       },
       {
         path: 'payment-confirmation',
-        loadChildren: () => import('./payment-confirmation/payment-confirmation.module').then(m => m.PaymentConfirmationPageModule)
+        loadChildren: () => import('./page/payment-confirmation/payment-confirmation.module').then(m => m.PaymentConfirmationPageModule)
       },
       {
         path: 'payment-history',
-        loadChildren: () => import('./payment-history/payment-history.module').then(m => m.PaymentHistoryPageModule)
+        loadChildren: () => import('./page/payment-history/payment-history.module').then(m => m.PaymentHistoryPageModule)
+      },
+      {
+        path: 'detalle-viaje',
+        loadChildren: () => import('./page/detalle-viaje/detalle-viaje.module').then( m => m.DetalleViajePageModule)
+      },
+      {
+        path: 'agregar-vehiculo',
+        loadChildren: () => import('./page/agregar-vehiculo/agregar-vehiculo.module').then( m => m.AgregarVehiculoPageModule)
+      },
+      {
+        path: 'agregar-viaje',
+        loadChildren: () => import('./page/agregar-viaje/agregar-viaje.module').then( m => m.AgregarViajePageModule)
       },
       {
         path: '**',
         component: PageNotFoundComponent
       }       
     ]
-  },     
-  {
-    path: 'detalle-viaje',
-    loadChildren: () => import('./detalle-viaje/detalle-viaje.module').then( m => m.DetalleViajePageModule)
-  },
-  {
-    path: 'payment',
-    loadChildren: () => import('./payment/payment.module').then( m => m.PaymentPageModule)
-  },
-  {
-    path: 'payment-confirmation',
-    loadChildren: () => import('./payment-confirmation/payment-confirmation.module').then( m => m.PaymentConfirmationPageModule)
-  },
-  {
-    path: 'payment-history',
-    loadChildren: () => import('./payment-history/payment-history.module').then( m => m.PaymentHistoryPageModule)
-  }
+  },   
 ];
 
 @NgModule({

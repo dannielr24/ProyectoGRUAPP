@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { HistorialViajesService } from '../services/historial-viajes.service';
+import { HistorialViajesService } from '../../services/historial-viajes.service';
 import { Viaje } from '../models/viaje.model';
 
 @Component({

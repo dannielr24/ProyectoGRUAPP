@@ -77,7 +77,7 @@ export class AppComponent implements OnInit {
 
     try {
       await this.firebase.logout();
-      this.storage.clearSessionData();
+      this.storage.clearSessionData(true);
       await loading.onDidDismiss();
       this.router.navigate(['/login']);
     } catch (error) {
@@ -129,4 +129,18 @@ export class AppComponent implements OnInit {
     // Implementación de tomar foto (requiere plugins/capacidades de la cámara)
     this.presentAlert('Función en desarrollo', 'La función de tomar una foto estará disponible próximamente.');
   }
+
+  verificarUsuario() {
+    const usuarioString = localStorage.getItem('usuario');
+    
+    if (!usuarioString) {
+      console.log("No se encontró usuario en localStorage");
+      this.router.navigate(['/login']); // Redirige al login si no hay usuario
+    } else {
+      const usuario = JSON.parse(usuarioString);
+      console.log("Usuario recuperado: ", usuario);
+      // Aquí puedes redirigir al usuario a la página principal o dashboard
+      this.router.navigate(['/home']);
+    }
+  }  
 }

@@ -6,6 +6,7 @@ export interface UserModel {
     correo_electronico: string;
     id_usuario: number;
     id_vehiculo: number;
+    id: number;
     imagen_usuario: string;
     imagen_vehiculo: string;
     marca: string;

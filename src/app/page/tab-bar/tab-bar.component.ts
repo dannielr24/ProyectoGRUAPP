@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { FirebaseService } from '../service/firebase.service';
+import { FirebaseService } from '../../service/firebase.service';
 
 @Component({
   selector: 'app-tab-bar',

@@ -4,31 +4,44 @@
       <ion-title>Menu Content</ion-title>
     </ion-toolbar>
   </ion-header>
-  <ion-content class="ion-padding">{{ user.email }}</ion-content>
+  <ion-content class="ion-padding">
+    <!-- Mostrar el correo del usuario -->
+    <div *ngIf="user?.email">{{ user.email }}</div>
+  </ion-content>
 </ion-menu>
 
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
+      <!-- Botón de volver atrás -->
       <ion-button (click)="goBack()">
         <ion-icon name="chevron-back-outline" aria-label="Volver"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <img src="assets/img/gruapp.png" width="50%" height="50%">
+    <!-- Imagen en la barra de herramientas -->
+    <img src="assets/img/gruapp.png" alt="GruAPP Logo" width="50%" height="50%" />
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding">
-  <h2>Bienvenido, {{ user.name }}!</h2>
-  <p>Te has logueado exitosamente en GruAPP.</p>
+<ion-content id="main-content" class="ion-padding">
+  <!-- Mensajes de bienvenida solo si el usuario está logueado -->
+  <h2 *ngIf="user">{{ 'Bienvenido, ' + user.userName + '!' }}</h2>
+  <p *ngIf="user">Te has logueado exitosamente en GruAPP.</p>
 
+  <!-- Botón para registrar vehículo -->
+  <ion-button (click)="agregarVehiculo()">Registrar Vehículo</ion-button>
+
+  <!-- Botón para cerrar sesión -->
   <ion-button (click)="logout()">Cerrar Sesión</ion-button>
+
+  <!-- Nombre de la aplicación -->
   <h1>
     <div>
       GruAPP
     </div>
   </h1>
 
+  <!-- Lista de opciones de navegación -->
   <ion-list>
     <ion-item button (click)="navigateTo('profile')">
       <ion-label>Ver Perfil</ion-label>

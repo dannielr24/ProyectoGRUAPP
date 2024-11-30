@@ -13,6 +13,7 @@ export const environment = {
     appId: "1:386799996285:web:967ff111b991c9f0ebd014",
     measurementId: "G-SHVBKRE0P6"
   },
+  apiUrl2: 'https://tu-api-url.com', // Cambia esto por la URL de tu API
   apiUrl:"https://uber-nodejs-server-git-d61f89-guillermovillacuratorres-projects.vercel.app/api/" //uber.matiivilla.cl
 };
 

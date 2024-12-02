@@ -140,35 +140,47 @@ export class StorageService {
     await this.set('users', users);
   }  
   
-  getUserByEmail(email: string): Usuario | null {
-    const users: { [key: string]: Usuario } = JSON.parse(localStorage.getItem('users') || '{}');
-    const user = Object.values(users).find((user) => user.email === email);
-    if (!user) {
-      console.warn('Usuario no encontrado para email:', email);
-    }
-    return user || null;
-  }    
-  
+  // Guardar los datos del usuario autenticado
   setAuthenticatedUser(user: any) {
     localStorage.setItem('authenticatedUser', JSON.stringify(user));
   }
+
+  // Recuperar los datos del usuario autenticado
+  getAuthenticatedUser() {
+    const user = localStorage.getItem('authenticatedUser');
+    console.log('Usuario desde Storage:', user);
+    return user ? JSON.parse(user) : null;
+  }
   
-  // Método para guardar el ID del usuario en localStorage
-  setUserID(uid: string): void {
-    console.log(`Guardando ID del usuario: ${uid}`);
-    localStorage.setItem(UID_KEY, uid);
+
+  // Eliminar los datos del usuario autenticado
+  clearAuthenticatedUser() {
+    localStorage.removeItem('authenticatedUser');
+  }
+  
+  // Método para guardar un usuario
+  async setUser(user: any): Promise<void> {
+    const users = JSON.parse(await this.get(USERS_KEY) || '{}');
+    users[user.uid] = user; 
+    await this.set(USERS_KEY, users); 
+  }
+  
+  // Método para obtener un usuario por su uid
+  async getUserByUid(uid: string): Promise<any | null> {
+    const users = JSON.parse(await this.get(USERS_KEY) || '{}');
+    return users[uid] || null; 
   }
 
-  // Método para obtener el ID del usuario desde localStorage
-  getUserID(): string | null {
-    const uid = localStorage.getItem(UID_KEY);
-    console.log(`Recuperando ID del usuario: ${uid}`);
-    return uid;
+  // Método para eliminar un usuario por su uid
+  async removeUserByUid(uid: string): Promise<void> {
+    const users = JSON.parse(await this.get(USERS_KEY) || '{}');
+    delete users[uid]; 
+    await this.set(USERS_KEY, users); 
   }
+}
 
-  // Método para eliminar el ID del usuario de localStorage
-  removeUserID(): void {
-    console.log('Eliminando ID del usuario de localStorage');
-    localStorage.removeItem(UID_KEY);
-  }
+interface Card {
+  id: string;
+  name: string;
+  // Otros campos que pueda tener la tarjeta
 }

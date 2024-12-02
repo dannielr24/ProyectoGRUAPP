@@ -34,23 +34,22 @@ export class AppComponent implements OnInit {
     this.loadUserData();
   }
 
-  loadUserData() {
-    const storedEmail = this.storage.get('email');
+  async loadUserData() {
+    const storedEmail = await this.storage.get('email');
     if (storedEmail) {
       this.userEmail = storedEmail;
-
-      // Cargar el nombre de usuario asociado al email
-      const storedName = this.storage.getUserName(this.userEmail);
+  
+      const storedName = await this.storage.getUserName(this.userEmail);
       if (storedName) {
         this.userName = storedName;
       }
     }
-
-    const storedPhoto = this.storage.get('photo');
+  
+    const storedPhoto = await this.storage.get('photo');
     if (storedPhoto) {
       this.userPhoto = storedPhoto;
     }
-  }
+  }  
 
   async confirmLogout() {
     const alert = await this.alertController.create({
@@ -142,5 +141,6 @@ export class AppComponent implements OnInit {
       // Aquí puedes redirigir al usuario a la página principal o dashboard
       this.router.navigate(['/home']);
     }
-  }  
+  }
+  
 }

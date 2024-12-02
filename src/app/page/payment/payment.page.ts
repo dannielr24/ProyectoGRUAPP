@@ -30,13 +30,23 @@ export class PaymentPage implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.email = this.storage.get('email');
-    this.loadCardsFromStorage();
+    this.loadEmailAndCards();
   }
-
-  loadCardsFromStorage() {
-    this.cards = this.storage.getUserCards(this.email);
-    const storedSelectedCard = this.storage.get(`${this.email}_selectedCard`);
+  
+  async loadEmailAndCards() {
+    const storedEmail = await this.storage.get('email');
+    if (!storedEmail) {
+      console.error('No se encontró un email almacenado.');
+      // Manejo del error, redirigir o mostrar mensaje al usuario
+      return;
+    }
+    this.email = storedEmail;
+    await this.loadCardsFromStorage();
+  }    
+  
+  async loadCardsFromStorage() {
+    this.cards = await this.storage.getUserCards(this.email) || [];
+    const storedSelectedCard = await this.storage.get(`${this.email}_selectedCard`);
     if (storedSelectedCard) {
       this.selectedCard = storedSelectedCard;
     }

@@ -35,18 +35,18 @@ export class HomePage implements OnInit {
   
     // Recupera el UID del usuario desde el almacenamiento local
     const uid = await this.storageService.get('uid');
-    console.log('UID recuperado:', uid); // Verifica que el UID recuperado sea el correcto
+    console.log('UID recuperado:', uid);
   
     if (uid) {
-      // Si el UID es válido, intenta obtener el usuario desde el servicio
       try {
+        // Obtiene el usuario desde el servicio
         this.usuario = await this.usuarioService.getUsuario(uid);
-        console.log('Usuario autenticado:', this.usuario); // Verifica si el usuario se recuperó correctamente
+        console.log('Usuario autenticado:', this.usuario);
   
         if (this.usuario) {
-          // Si el usuario existe, intenta obtener el nombre de usuario desde el almacenamiento
+          // Recupera el nombre de usuario de Storage y asigna un valor por defecto si es null
           const storedUserName = await this.storageService.getUserName(uid);
-          this.userName = storedUserName || 'Usuario';  // Usa el nombre almacenado si existe
+          this.userName = storedUserName !== null ? storedUserName : 'Usuario';
           console.log('Nombre de usuario recuperado:', this.userName);
         } else {
           console.warn('Usuario no encontrado, redirigiendo a login');
@@ -60,7 +60,7 @@ export class HomePage implements OnInit {
       console.warn('UID no encontrado, redirigiendo a login');
       this.router.navigate(['/login']);
     }
-  }        
+  }  
 
   // Función para obtener la posición actual del usuario
   async printCurrentPosition() {

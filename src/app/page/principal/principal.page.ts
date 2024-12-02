@@ -1,3 +1,4 @@
+//principal.page.ts
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { FirebaseService } from 'src/app/service/firebase.service';

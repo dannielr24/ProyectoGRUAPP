@@ -11,6 +11,8 @@ import { GoogleMapsModule } from '@angular/google-maps';
 import { provideHttpClient } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 import { StorageService } from './service/storage.service';
+import { UsuarioService } from './services/usuario.service';
+import { FirebaseService } from './service/firebase.service';
 
 @NgModule({
   declarations: [AppComponent],
@@ -24,7 +26,7 @@ import { StorageService } from './service/storage.service';
     ReactiveFormsModule
   ],
   providers: [
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, StorageService, provideHttpClient()],
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, UsuarioService, FirebaseService, StorageService, provideHttpClient()],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

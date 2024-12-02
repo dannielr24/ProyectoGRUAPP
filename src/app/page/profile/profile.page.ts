@@ -48,13 +48,13 @@ export class ProfilePage implements OnInit {
       const token = dataStorage[0]?.token;
       this.email = dataStorage[0]?.email || '';
       console.log('Email cargado:', this.email);
-
+  
       if (token) {
         const req = await this.apiService.obtenerUsuario({
             p_correo: this.email,
             token: token
         });
-
+  
         console.log('Respuesta de la API:', req);
         if (req && req.length > 0) {
           this.usuario = req;
@@ -70,6 +70,7 @@ export class ProfilePage implements OnInit {
       console.error('No hay datos de almacenamiento disponibles');
     }
   }
+  
 
   async takePicture() {
     try {

@@ -99,11 +99,8 @@ export class AgregarVehiculoPage implements OnInit {
 
   // Manejo de la carga de archivo de imagen
   onFileChange(event: any) {
-    if (event.target.files && event.target.files.length > 0) {
+    if (event.target.files.length > 0) {
       this.archivoImagen = event.target.files[0];
-      console.log('Imagen seleccionada:', this.archivoImagen);
-    } else {
-      console.log('No se seleccionó imagen');
     }
   }  
 
@@ -116,7 +113,6 @@ export class AgregarVehiculoPage implements OnInit {
         }
       );
         this.usuario = req;
-        console.error("DATA INICIO USUARIO", this.usuario);
     } 
 
   // Alerta personalizada

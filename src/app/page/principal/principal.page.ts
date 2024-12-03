@@ -6,6 +6,7 @@ import { StorageService } from 'src/app/service/storage.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { AppComponent } from 'src/app/app.component';
 import { AlertController } from '@ionic/angular';
+import { ApiService } from 'src/app/service/api.service';
 
 @Component({
   selector: 'app-principal',
@@ -16,6 +17,7 @@ export class PrincipalPage implements OnInit {
   uid: string = ''; // El UID debería ser dinámico, lo obtendremos de AuthService
   userName: string = ''; 
   email: string = '';
+  vehiculos: any[]=[];
 
   user = {
     email: '',
@@ -29,7 +31,8 @@ export class PrincipalPage implements OnInit {
     private storage: StorageService,
     private appComponent: AppComponent, 
     private authService: AuthService, 
-    private alertController: AlertController
+    private alertController: AlertController,
+    private apiService: ApiService
   ) {}
 
   ngOnInit() {
@@ -53,7 +56,13 @@ export class PrincipalPage implements OnInit {
       queryParams: { email: this.user.email }
     };
     this.router.navigate(['/agregar-vehiculo'], navigationExtras);
-    }   
+  }
+  
+  // Método para obtener vehículos
+  async obtenerVehiculos() {
+    let dataStorage = await this.storage.obtenerStorage();
+    const vehiculos = await this.apiService.obtenerVehiculo
+  }
 
   // Método para navegar a otras páginas
   navigateTo(page: string) {

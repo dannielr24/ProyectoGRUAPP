@@ -103,11 +103,16 @@ const routes: Routes = [
         loadChildren: () => import('./page/agregar-viaje/agregar-viaje.module').then( m => m.AgregarViajePageModule)
       },
       {
+        path: 'listado-vehiculos',
+        loadChildren: () => import('./page/listado-vehiculos/listado-vehiculos.module').then( m => m.ListadoVehiculosPageModule)
+      },
+      {
         path: '**',
         component: PageNotFoundComponent
       }       
     ]
   },   
+  
 ];
 
 @NgModule({

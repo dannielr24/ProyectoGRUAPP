@@ -103,7 +103,7 @@ export class ApiService {
       }
 
       const response = await lastValueFrom(
-        this.http.post<any>(environment.apiUrl + 'user/agregar', formData).pipe(
+        this.http.post<any>(environment.apiUrl + 'vehiculo/agregar', formData).pipe(
           timeout(10000),
           retry(3),
           catchError(this.handleError)
@@ -153,6 +153,37 @@ export class ApiService {
       throw error;
     }
   }
+
+  async obtenerVehiculo(p_id: number | null, token: string): Promise<any> {
+    try {
+      // Construir los parámetros de consulta
+      const params: any = { token }; // `token` es obligatorio
+  
+      // Si `p_id` está presente, se agrega al objeto de parámetros
+      if (p_id !== null && p_id !== undefined) {
+        params.p_id = p_id;
+      }
+  
+      // Realizar la solicitud HTTP GET con los parámetros
+      const response = await lastValueFrom(
+        this.http.get<any>(`${environment.apiUrl}/vehiculo/obtener`, { params }).pipe(
+          timeout(10000), // Tiempo límite de espera
+          retry(3),       // Reintentar hasta 3 veces si hay fallos
+          catchError((error: HttpErrorResponse) => {
+            console.error('Error al obtener vehículo:', error);
+            return throwError(() => new Error(error.message || 'Error desconocido al obtener vehículo.'));
+          })
+        )
+      );
+  
+      // Devolver la respuesta
+      return response;
+  
+    } catch (error) {
+      console.error('Error en obtenerVehiculo:', error);
+      throw error;
+    }
+  }  
 
   async agregarViaje(data: any): Promise<any> {
     try {

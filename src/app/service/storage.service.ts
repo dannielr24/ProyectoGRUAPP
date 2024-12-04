@@ -22,25 +22,65 @@ export class StorageService {
   constructor() {}
 
   // Método para guardar cualquier valor en localStorage
-  set(key: string, value: any): void {
-    console.log(`Guardando en localStorage - Clave: ${key}, Valor: ${value}`);
-    localStorage.setItem(key, JSON.stringify(value));
+  async set(key: string, value: any): Promise<void> {
+    try {
+      console.log(`Guardando en localStorage - Clave: ${key}`);
+      localStorage.setItem(key, JSON.stringify(value));
+    } catch (error) {
+      console.error(`Error al guardar ${key} en localStorage:`, error);
+    }
   }
 
   // Método para obtener cualquier valor de localStorage
   get(key: string): any {
     try {
       const data = localStorage.getItem(key);
-      if (!data) {
-        console.warn(`No se encontró el valor para la clave ${key}`);
-        return null;  // Devuelve null si no hay datos
-      }
-      return JSON.parse(data);  // Retorna los datos parseados
+      return data ? JSON.parse(data) : null;
     } catch (error) {
       console.error(`Error al recuperar clave ${key} de localStorage:`, error);
-      return null;  // Si hay un error, devuelve null
+      return null;
     }
-  } 
+  }
+
+  // Método mejorado para guardar usuario autenticado
+  async saveAuthenticatedUser(userData: any) {
+    try {
+      // Guardar el objeto completo, no solo un string
+      localStorage.setItem(`user_${userData.uid}`, JSON.stringify(userData));
+      localStorage.setItem('currentUser', JSON.stringify(userData));
+      
+      console.log('Usuario guardado correctamente:', userData);
+    } catch (error) {
+      console.error('Error al guardar usuario:', error);
+    }
+  }  
+
+  // Método para obtener usuario autenticado actual
+  async getCurrentUser(): Promise<any | null> {
+    try {
+      const currentUserId = this.get('currentUser');
+      if (!currentUserId) {
+        console.warn('No hay usuario autenticado');
+        return null;
+      }
+
+      const user = this.get(`user_${currentUserId}`);
+      return user || null;
+    } catch (error) {
+      console.error('Error al obtener usuario actual:', error);
+      return null;
+    }
+  }
+
+   // Método para limpiar datos de sesión
+   clearSessionData(preserveToken: boolean = false): void {
+    console.log('clearSessionData llamado. ¿Preservar token?', preserveToken);
+    console.log('Limpiando datos de sesión...');
+    if (!preserveToken) {
+      this.remove('tokenID');
+    }
+    this.remove('user');
+  }  
   
   // Método para eliminar el token
   removeToken() {
@@ -51,17 +91,7 @@ export class StorageService {
   remove(key: string): void {
     console.log(`Eliminando clave de localStorage: ${key}`);
     localStorage.removeItem(key);
-  }
-
-  // Método para limpiar datos de sesión
-  clearSessionData(preserveToken: boolean = false): void {
-    console.log('clearSessionData llamado. ¿Preservar token?', preserveToken);
-    console.log('Limpiando datos de sesión...');
-    if (!preserveToken) {
-      this.remove('tokenID');
-    }
-    this.remove('user');
-  }    
+  }   
 
   // Método para guardar el nombre del usuario
   setUserName(uid: string, userName: string) {
@@ -97,11 +127,13 @@ export class StorageService {
 
   async obtenerStorage() {
     try {
-      const data = await this.get(llave);
-      console.log(`Recuperando de localStorage con clave ${llave}:`, data);
-      return data ? JSON.parse(data) : null;
+      const currentUser = localStorage.getItem('currentUser');
+      if (currentUser) {
+        return JSON.parse(currentUser);
+      }
+      return null;
     } catch (error) {
-      console.error('Error al recuperar datos de localStorage:', error);
+      console.error('Error al obtener usuario:', error);
       return null;
     }
   }

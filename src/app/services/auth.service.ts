@@ -60,4 +60,27 @@ export class AuthService {
     getAuthenticatedUser() {
       return JSON.parse(localStorage.getItem('authenticatedUser') || '{}');
     }    
+
+    getCurrentUser() {
+      try {
+        const userString = localStorage.getItem('currentUser');
+        if (userString) {
+          const userData = JSON.parse(userString);
+          
+          // Verificar que el objeto tenga la estructura esperada
+          if (userData && userData.userName && userData.email) {
+            return userData;
+          }
+        }
+        return null;
+      } catch (error) {
+        console.error('Error al obtener usuario actual:', error);
+        return null;
+      }
+    }
+
+    getUserName() {
+      return localStorage.getItem('userName'); 
+      }
+
 }

@@ -10,37 +10,44 @@
 </ion-header>
 
 <ion-content>
-  <form [formGroup]="agregarViajeForm" (ngSubmit)="onSubmit()">
+  <!-- Formulario tradicional sin formGroup -->
+  <form (ngSubmit)="registrarViaje()">
+    <!-- Campo de origen -->
     <ion-item>
-      <ion-label position="floating">ID de Usuario</ion-label>
-      <ion-input formControlName="p_id_usuario" type="number"></ion-input>
+      <ion-label position="floating">Origen</ion-label>
+      <ion-input 
+        type="text" 
+        [(ngModel)]="p_ubicacion_origen" 
+        name="p_ubicacion_origen" 
+        required>
+      </ion-input>
     </ion-item>
 
+    <!-- Campo de destino -->
     <ion-item>
-      <ion-label position="floating">Ubicación de Origen</ion-label>
-      <ion-input formControlName="p_ubicacion_origen"></ion-input>
+      <ion-label position="floating">Destino</ion-label>
+      <ion-input 
+        type="text" 
+        [(ngModel)]="p_ubicacion_destino" 
+        name="p_ubicacion_destino" 
+        required>
+      </ion-input>
     </ion-item>
-
-    <ion-item>
-      <ion-label position="floating">Ubicación de Destino</ion-label>
-      <ion-input formControlName="p_ubicacion_destino"></ion-input>
-    </ion-item>
-
+    
+    <!-- Campo de costo -->
     <ion-item>
       <ion-label position="floating">Costo</ion-label>
-      <ion-input formControlName="p_costo" type="number"></ion-input>
+      <ion-input 
+        type="number" 
+        [(ngModel)]="p_costo" 
+        name="p_costo" 
+        required>
+      </ion-input>
     </ion-item>
-
-    <ion-item>
-      <ion-label position="floating">ID de Vehículo</ion-label>
-      <ion-input formControlName="p_id_vehiculo" type="number"></ion-input>
-    </ion-item>
-
-    <ion-item>
-      <ion-label position="floating">Token</ion-label>
-      <ion-input formControlName="token" type="text"></ion-input>
-    </ion-item>
-
-    <ion-button expand="full" type="submit" [disabled]="agregarViajeForm.invalid">Agregar Viaje</ion-button>
+    
+    <!-- Botón de registro -->
+    <ion-button expand="full" type="submit" [disabled]="!p_ubicacion_origen || !p_ubicacion_destino || !p_costo">
+      Registrar Viaje
+    </ion-button>
   </form>
 </ion-content>

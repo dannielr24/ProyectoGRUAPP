@@ -11,15 +11,11 @@
 
 <ion-content [fullscreen]="true">
   <ion-list>
-    <ion-card *ngFor="let vehiculo of vehiculos">
-      <ion-card-header>
-        <ion-card-title>{{ vehiculo.patente }}</ion-card-title>
-      </ion-card-header>
-      <ion-card-content>
-        <p><strong>Modelo:</strong> {{ vehiculo.modelo }}</p>
-        <p><strong>Año:</strong> {{ vehiculo.anio }}</p>
-        <p><strong>Color:</strong> {{ vehiculo.color }}</p>
-      </ion-card-content>
+    <ion-card *ngFor="let v of viajes">
+      <h2>Origen: {{v.ubicacion_destino}}</h2>
+      <h2>Destino: {{v.ubicacion_destino}}</h2>
+      <h2>Costo: {{v.costo}}</h2>
+      <h2>Estado: {{v.estado}}</h2>
     </ion-card>
   </ion-list>
 </ion-content>

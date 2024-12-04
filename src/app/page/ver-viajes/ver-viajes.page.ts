@@ -1,37 +1,31 @@
 import { Component, OnInit } from '@angular/core';
-import { ApiService } from 'src/app/service/api.service';
 import { Location } from '@angular/common';
 import { UserModel } from '../models/user.model';
-import { ActivatedRoute } from '@angular/router';
 import { StorageService } from 'src/app/service/storage.service';
+import { ApiService } from 'src/app/service/api.service';
+import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { AlertController, AnimationController } from '@ionic/angular';
-import { UserVehiculo } from '../models/user-vehiculo.model';
 
 @Component({
-  selector: 'app-listado-vehiculos',
-  templateUrl: './listado-vehiculos.page.html',
-  styleUrls: ['./listado-vehiculos.page.scss'],
+  selector: 'app-ver-viajes',
+  templateUrl: './ver-viajes.page.html',
+  styleUrls: ['./ver-viajes.page.scss'],
 })
-export class ListadoVehiculosPage implements OnInit {
+export class VerViajesPage implements OnInit {
 
   email: string= "";
   usuario: UserModel[]=[];
-  vehiculo: UserVehiculo[]=[];
-  vehiculos: any[]=[];
+  viajes: any[]=[];
 
   constructor(
-    private apiService: ApiService,
     private location: Location,
-    private activate: ActivatedRoute,
     private storage: StorageService,
+    private apiService: ApiService,
+    private router: Router,
+    private alertController: AlertController,
     private animationCtrl: AnimationController,
-    private alertController: AlertController
-  ) { 
-    this.activate.queryParams.subscribe(params => {
-      this.email = params['email'];
-      console.log(this.email)
-    })
-  }
+    private activatedRoute: ActivatedRoute
+  ) { }
 
   ngOnInit() {
     this.cargarUsuario();
@@ -47,10 +41,10 @@ export class ListadoVehiculosPage implements OnInit {
     );
     this.usuario = req;
     console.log("DATA INICIO USUARIO", this.usuario);
-    this.obtenerVehiculos();
+    this.cargarViajes();
   }
 
-  async obtenerVehiculos() {
+  async cargarViajes() {
     let dataStorage = await this.storage.obtenerStorage();
     const req = await this.apiService.obtenerVehiculo(
       {
@@ -58,12 +52,20 @@ export class ListadoVehiculosPage implements OnInit {
         token: dataStorage[0].token
       }
     );
-    this.vehiculos = req.data;
-    console.log("DATA INICIO VEHÍCULO", this.vehiculos);
+    this.viajes = req.data;
+  }
+
+  async popAlertNoViajes() {
+    const alert = await this.alertController.create({
+      header: 'Error',
+      message: "Sin viajes registrados",
+      buttons: ['ok']
+    });
+    await alert.present();
   }
 
   goBack() {
     this.location.back();
   }
-}
 
+}

@@ -107,12 +107,15 @@ const routes: Routes = [
         loadChildren: () => import('./page/listado-vehiculos/listado-vehiculos.module').then( m => m.ListadoVehiculosPageModule)
       },
       {
+        path: 'ver-viajes',
+        loadChildren: () => import('./page/ver-viajes/ver-viajes.module').then( m => m.VerViajesPageModule)
+      },
+      {
         path: '**',
         component: PageNotFoundComponent
       }       
     ]
-  },   
-  
+  }, 
 ];
 
 @NgModule({

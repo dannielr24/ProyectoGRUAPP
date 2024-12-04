@@ -25,7 +25,6 @@ export class HomePage implements OnInit {
   ) {}
 
   async ngOnInit() {
-    // Verifica si el usuario está autenticado al iniciar la página
     const isLoggedIn = await this.firebaseService.isUserLoggedIn();
     if (!isLoggedIn) {
       console.log('Usuario no autenticado, redirigiendo a login');
@@ -33,25 +32,18 @@ export class HomePage implements OnInit {
       return;
     }
   
-    // Recupera el UID del usuario desde el almacenamiento local
     const uid = await this.storageService.get('uid');
     console.log('UID recuperado:', uid);
   
     if (uid) {
       try {
-        // Obtiene el usuario desde el servicio
         this.usuario = await this.usuarioService.getUsuario(uid);
         console.log('Usuario autenticado:', this.usuario);
   
-        if (this.usuario) {
-          // Recupera el nombre de usuario de Storage y asigna un valor por defecto si es null
-          const storedUserName = await this.storageService.getUserName(uid);
-          this.userName = storedUserName !== null ? storedUserName : 'Usuario';
-          console.log('Nombre de usuario recuperado:', this.userName);
-        } else {
-          console.warn('Usuario no encontrado, redirigiendo a login');
-          this.router.navigate(['/login']);
-        }
+        // Asegúrate de que el nombre del usuario se recupera correctamente
+        const storedUserName = await this.storageService.getUserName(uid);
+        this.userName = storedUserName !== null ? storedUserName : 'Usuario';
+        console.log('Nombre de usuario recuperado:', this.userName);
       } catch (error) {
         console.error('Error al obtener el usuario:', error);
         this.router.navigate(['/login']);

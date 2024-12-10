@@ -14,19 +14,21 @@ export class AuthService {
     private afAuth: AngularFireAuth, 
     private storageService: StorageService
   ) {
-    this.afAuth.onAuthStateChanged(user => {
+    this.afAuth.onAuthStateChanged(async user => {
       if (user) {
-        // Asegúrate de guardar correctamente los datos
-        this.storageService.setUserName(user.uid, user.displayName || 'Usuario desconocido');
-        localStorage.setItem('user', JSON.stringify({
+        const token = await user.getIdToken();
+        await this.storageService.setToken(token);
+        
+        const userData = {
           uid: user.uid,
-          userName: user.displayName || 'Usuario desconocido',
-          email: user.email
-        }));
-        console.log('Usuario autenticado:', user.uid);  // Log para depuración
+          email: user.email,
+          displayName: user.displayName || 'Usuario desconocido'
+        };
+        
+        await this.storageService.saveUserData(userData);
       }
-    });    
-  }         
+    });
+  }             
 
   get currentUser() {
     const userData = localStorage.getItem('user');
@@ -79,8 +81,11 @@ export class AuthService {
       }
     }
 
+    getUsuario() {
+      return this.currentUser; // O cualquier lógica para obtener el usuario
+    }    
+
     getUserName() {
       return localStorage.getItem('userName'); 
       }
-
 }

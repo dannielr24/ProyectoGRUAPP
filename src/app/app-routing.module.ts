@@ -79,18 +79,6 @@ const routes: Routes = [
         loadChildren: () => import('./page/help/help.module').then(m => m.HelpPageModule)
       },
       {
-        path: 'payment',
-        loadChildren: () => import('./page/payment/payment.module').then(m => m.PaymentPageModule)
-      },
-      {
-        path: 'payment-confirmation',
-        loadChildren: () => import('./page/payment-confirmation/payment-confirmation.module').then(m => m.PaymentConfirmationPageModule)
-      },
-      {
-        path: 'payment-history',
-        loadChildren: () => import('./page/payment-history/payment-history.module').then(m => m.PaymentHistoryPageModule)
-      },
-      {
         path: 'detalle-viaje',
         loadChildren: () => import('./page/detalle-viaje/detalle-viaje.module').then( m => m.DetalleViajePageModule)
       },

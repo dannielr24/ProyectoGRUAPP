@@ -9,8 +9,7 @@ import { StorageService } from './storage.service';
 })
 export class FirebaseService {
 
-  constructor(
-    private firebase: AngularFireAuth, 
+  constructor( 
     private firestore: AngularFirestore,
     private afAuth: AngularFireAuth,
     private alertCtrl: AlertController,
@@ -19,21 +18,14 @@ export class FirebaseService {
 
   // Método de inicio de sesión en Firebase
   async auth(email: string, password: string) {
-    const request = await this.firebase.signInWithEmailAndPassword(email, password);
-    const uid = request.user?.uid;
-  
-    if (uid) {
-      // Almacenar el uid en el almacenamiento local
-      this.storage.set('uid', uid);  // Asegúrate de que el uid se almacene correctamente
-    }
-  
+    const request = await this.afAuth.signInWithEmailAndPassword(email, password);
     return request;
   }
 
   // Método para registrar un nuevo usuario
   async registrar(email: string, password: string, nombre: string, apellido: string, rut: string, fechaNacimiento: string) {
     try {
-      const request = await this.firebase.createUserWithEmailAndPassword(email, password);
+      const request = await this.afAuth.createUserWithEmailAndPassword(email, password); // Usar afAuth aquí
       const uid = request.user?.uid;
   
       if (uid) {
@@ -51,7 +43,7 @@ export class FirebaseService {
         await this.storage.setUserName(uid, nombre);
   
         // Obtener el usuario actual y actualizar su displayName
-        const user = await this.firebase.currentUser;  // Resolver la promesa
+        const user = await this.afAuth.currentUser;  // Usar afAuth aquí
         if (user) {
           await user.updateProfile({
             displayName: nombre
@@ -68,13 +60,13 @@ export class FirebaseService {
 
   // Método para recuperar contraseña
   async recuperar(email: string) {
-    const request = await this.firebase.sendPasswordResetEmail(email);
+    const request = await this.afAuth.sendPasswordResetEmail(email); // Usar afAuth aquí
     return request;
   }
 
   // Método para cerrar sesión
   async logout() {
-    return await this.firebase.signOut();
+    return await this.afAuth.signOut(); // Usar afAuth aquí
   }
 
   // Método para comprobar si el usuario está autenticado

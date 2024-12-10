@@ -3,6 +3,7 @@ import {
   HttpClient, 
   HttpHeaders, 
   HttpErrorResponse,
+  HttpParams
 } from '@angular/common/http';
 import { retry, catchError, throwError } from 'rxjs';
 import { lastValueFrom, Observable } from 'rxjs';
@@ -15,52 +16,29 @@ import { timeout } from 'rxjs';
 })
 export class ApiService {
   httpOptions = {
-    headers: new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': '*',
-    }),
+    headers: new HttpHeaders()
+      .set('Content-Type', 'application/json')
+      .set('Accept', 'application/json'),
+    withCredentials: false  // Añadido esta línea
   };
-
-  apiUrl = 'http://jsonplaceholder.typicode.com';
 
   constructor(private http: HttpClient) {}
 
-  getPosts(): Observable<any> {
-    return this.http.get(this.apiUrl + '/posts').pipe(
-      retry(3),
-      catchError(this.handleError)
-    );
+  private getAuthHeaders(token: string): HttpHeaders {
+    return new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+      'Accept': 'application/json'
+    });
   }
 
-  getPost(id: any): Observable<any> {
-    return this.http.get(this.apiUrl + '/posts' + id).pipe(
-      retry(3),
-      catchError(this.handleError)
-    );
+  private getFormDataHeaders(token: string): HttpHeaders {
+    return new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+      'Accept': 'application/json'
+    });
   }
 
-  createPost(post: any): Observable<any> {
-    return this.http
-      .post(this.apiUrl + '/posts', post, this.httpOptions)
-      .pipe(
-        retry(3),
-        catchError(this.handleError)
-      );
-  }
-
-  updatePost(id: any, post: any) {
-    return this.http.delete(this.apiUrl + '/posts' + id, this.httpOptions).pipe(
-      catchError(this.handleError)
-    );
-  }
-
-  deletePost(id: any): Observable<any> {
-    return this.http.delete(this.apiUrl + '/posts' + id, this.httpOptions).pipe(
-      catchError(this.handleError)
-    );
-  }
-
-  async agregarUsuario(data: bodyUser, imageFile: File) {
+  async agregarUsuario(data: bodyUser, imageFile?: File | null) {
     try {
       const formData = new FormData();
       formData.append('p_nombre', data.p_nombre);
@@ -72,15 +50,20 @@ export class ApiService {
       if (imageFile) {
         formData.append('image_usuario', imageFile, imageFile.name);
       }
+
+      const headers = this.getAuthHeaders(data.token || '');
+      console.log('Enviando datos de usuario:', data);
+      
       const response = await lastValueFrom(
-        this.http.post<any>(environment.apiUrl + 'user/agregar', formData).pipe(
-          timeout(10000),
-          catchError(this.handleError)
-        )
+        this.http.post<any>(`${environment.apiUrl}user/agregar`, formData, {
+          headers: headers
+        })
       );
+      
+      console.log('Respuesta de agregarUsuario:', response);
       return response;
-    } catch (error) {
-      this.handleError(error);
+    } catch(error) {
+      console.error('Error en agregarUsuario:', error);
       throw error;
     }
   }
@@ -88,105 +71,122 @@ export class ApiService {
   async agregarVehiculo(data: bodyVehiculo, imageFile: File) {
     try {
       const formData = new FormData();
-      formData.append('p_id_usuario', data.p_id_usuario.toString()); 
+      
+      formData.append('p_id_usuario', data.p_id_usuario.toString());
       formData.append('p_patente', data.p_patente);
       formData.append('p_marca', data.p_marca);
       formData.append('p_modelo', data.p_modelo);
       formData.append('p_anio', data.p_anio.toString());
       formData.append('p_color', data.p_color);
       formData.append('p_tipo_combustible', data.p_tipo_combustible);
-      if (data.token) {
-        formData.append('token', data.token);
-      }
+      
       if (imageFile) {
         formData.append('image', imageFile, imageFile.name);
       }
-
+  
+      const headers = new HttpHeaders({
+        'Authorization': `Bearer ${data.token}`
+      });
+  
+      // Log simplificado sin usar entries()
+      console.log('Enviando datos del vehículo:', {
+        ...data,
+        imageFile: imageFile?.name
+      });
+  
       const response = await lastValueFrom(
-        this.http.post<any>(environment.apiUrl + 'vehiculo/obtener', formData).pipe(
-          timeout(10000),
-          retry(3),
-          catchError(this.handleError)
+        this.http.post<any>(`${environment.apiUrl}vehiculo/agregar`, formData, {
+          headers,
+          withCredentials: false
+        }).pipe(
+          timeout(30000),
+          catchError(error => {
+            console.error('Error en agregarVehiculo:', error);
+            throw error;
+          })
         )
       );
+  
       return response;
     } catch (error) {
-      this.handleError(error);
+      console.error('Error en agregarVehiculo:', error);
       throw error;
     }
-  }  
-
-  private handleError(error: any) {
-    // Verifica si el error es una instancia de HttpErrorResponse
-    if (error instanceof HttpErrorResponse) {
-      console.error('Detalles del error:', error);
-      if (error.status === 500) {
-        alert('Hubo un problema al registrar el vehículo. Por favor, intente más tarde.');
-      } else {
-        alert('Ocurrió un error desconocido. Intente nuevamente.');
-      }
-    } else {
-      // Manejo de errores no relacionados con HTTP
-      console.error('Error desconocido:', error);
-      alert('Ocurrió un error desconocido. Intente nuevamente.');
-    }
-  
-    return throwError(() => new Error(error.message || 'Error desconocido'));
   }
 
   async obtenerUsuario(data: dataGetUser): Promise<UserModel[]> {
     try {
-      const params = {
-        p_correo: data.p_correo,
-        token: data.token
-      };
+      console.log('Enviando solicitud obtenerUsuario con:', data);
+      
+      const headers = new HttpHeaders({
+        'Authorization': `Bearer ${data.token}`,
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      });
+
+      const params = new HttpParams().set('p_correo', data.p_correo);
+
       const response = await lastValueFrom(
-        this.http.get<any>(`${environment.apiUrl}/user/obtener`, { params }).pipe(
-          timeout(10000),
-          retry(3),
-          catchError(this.handleError)
+        this.http.get<any>(`${environment.apiUrl}user/obtener`, {
+          headers,
+          params,
+          withCredentials: false // Asegúrate que esto esté en false
+        }).pipe(
+          timeout(30000),
+          catchError(error => {
+            console.error('Error en obtenerUsuario:', error);
+            throw error;
+          })
         )
       );
-      return response.data; 
+
+      console.log('Respuesta de obtenerUsuario:', response);
+      return response?.data || [];
     } catch (error) {
-      this.handleError(error);
+      console.error('Error en obtenerUsuario:', error);
+      throw error;
+    }
+}
+
+  async obtenerVehiculo(data: { p_id: number; token: string }) {
+    try {
+      const headers = this.getAuthHeaders(data.token);
+      
+      const response = await lastValueFrom(
+        this.http.get<any>(`${environment.apiUrl}vehiculo/obtener`, { 
+          params: { p_id: data.p_id.toString() },
+          headers: headers
+        })
+      );
+      return response;
+    } catch (error) {
+      console.error("Error en obtenerVehiculo:", error);
       throw error;
     }
   }
-
-  async obtenerVehiculo(data: dataGetVehiculo) {
-    try {
-      const params = {
-        p_id: data.p_id,
-        token: data.token
-      };
-      const response = await lastValueFrom(
-        this.http.get<any>(environment.apiUrl + 'vehiculo/agregar', {params}));
-      return response;
-    } catch (error) {
-      throw error;
-    }
-  }  
 
   async agregarViaje(data: bodyViaje) {
     try {
+      const headers = this.getAuthHeaders(data.token);
       const response = await lastValueFrom(
-        this.http.post<any>(environment.apiUrl + 'viaje/agregar', data)
-    );
+        this.http.post<any>(`${environment.apiUrl}viaje/agregar`, data, {
+          headers: headers
+        })
+      );
       return response;
     } catch (error) {
       throw error;
     }
   }
-  
+
   async obtenerViaje(data: dataGetViaje) {
     try {
-      const params = {
-        p_id_usuario: data.p_id_usuario,
-        token: data.token
-      };
+      const headers = this.getAuthHeaders(data.token);
       const response = await lastValueFrom(
-        this.http.get<any>(environment.apiUrl + 'viaje/obtener', { params })
+        this.http.get<any>(`${environment.apiUrl}viaje/obtener`, { 
+          params: { p_id_usuario: data.p_id_usuario.toString() },
+          headers: headers
+        })
       );
       return response;
     } catch (error) {
@@ -196,15 +196,25 @@ export class ApiService {
 
   async actualizarViaje(data: bodyActViaje) {
     try {
+      const headers = this.getAuthHeaders(data.token);
       const response = await lastValueFrom(
-        this.http.post<any>(environment.apiUrl + 'viaje/actualizar_estado_viaje', data)
+        this.http.post<any>(`${environment.apiUrl}viaje/actualizar_estado_viaje`, data, {
+          headers: headers
+        })
       );
       return response;
     } catch (error) {
       throw error;
     }
   }
+
+  private handleError(error: HttpErrorResponse) {
+    console.error('Error completo:', error);
+    return throwError(() => new Error('Ocurrió un error al procesar la solicitud'));
+  }
 }
+
+// Mantener las interfaces como están
 
 interface bodyUser {
   p_nombre: string;

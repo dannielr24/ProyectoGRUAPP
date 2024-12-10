@@ -1,0 +1,23 @@
+.error-message {
+    font-size: 0.8em;
+    margin-left: 16px;
+    padding: 5px 0;
+  }
+  
+  ion-item {
+    margin-bottom: 8px;
+  }
+  
+  .form-header {
+    margin-bottom: 20px;
+    
+    h1 {
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+    
+    .subheading {
+      color: var(--ion-color-medium);
+    }
+  }

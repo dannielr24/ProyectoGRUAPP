@@ -1,10 +1,9 @@
 // login.page.ts
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { NavigationExtras, Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
-import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { StorageService } from 'src/app/service/storage.service';
-import { AuthService } from 'src/app/services/auth.service';
+import { FirebaseService } from 'src/app/service/firebase.service';
 
 @Component({
   selector: 'app-login',
@@ -14,90 +13,83 @@ import { AuthService } from 'src/app/services/auth.service';
 export class LoginPage implements OnInit {
   email: string = "";
   password: string = "";
+  tokenID: any = "";
+  usuario: any = null;
 
   constructor(
     private router: Router, 
-    private alertController: AlertController, 
-    private afAuth: AngularFireAuth,
+    private alertController: AlertController,
     private storageService: StorageService, 
-    private authService: AuthService
+    private firebase: FirebaseService
   ) {}
 
   ngOnInit() {}
 
+  async onSubmit(email: string, password: string): Promise<void> {
+    try {
+      const response = await this.storageService.signIn(email, password);
+      console.log('Login successful', response);
+    } catch (error) {
+      console.error('Login failed', error);
+    }
+  }
+
   // Método para iniciar sesión
   async login() {
-    if (!this.email || !this.password) {
-      await this.showAlert("Error", "Por favor, ingrese correo y contraseña");
-      return;
-    }
-  
     try {
-      const userCredential = await this.afAuth.signInWithEmailAndPassword(this.email, this.password);
-      const user = userCredential.user;
+      let usuario = await this.firebase.auth(this.email, this.password);
+      
+      if (!usuario.user) {
+        throw new Error('No se pudo autenticar el usuario');
+      }
   
-      if (user) {
-        // Usar el email como base para el userName si no hay displayName
-        const userName = user.displayName || 
-                         (user.email ? user.email.split('@')[0] : 'Usuario desconocido');
-        
-        const uid = user.uid;
-        const tokenID = await user.getIdToken();
-      
-        const userData = { 
-          uid: uid, 
-          userName: userName, 
-          email: this.email, 
-          token: tokenID 
-        };
-      
-        // Guardar con stringify
-        localStorage.setItem('currentUser', JSON.stringify(userData));
-        localStorage.setItem(`user_${uid}`, JSON.stringify(userData));
-      
-        console.log('Datos de usuario guardados:', userData);
-      
-        // Usar métodos de StorageService
-        await this.storageService.saveAuthenticatedUser(userData);
-        await this.storageService.setToken(tokenID);
-      
-        this.router.navigate(['/principal'], {
-          queryParams: { email: this.email }, 
-          replaceUrl: true
-        });
+      // Obtener el token y verificar que exista
+      const token = await usuario.user.getIdToken();
+      if (!token) {
+        throw new Error('No se pudo obtener el token');
       }
-    } catch (error: any) {
-      console.error('Error al iniciar sesión:', error);
+  
+      // Guardar el token
+      await this.storageService.setToken(token);
+  
+      // Guardar los datos del usuario
+      const userData = {
+        email: usuario.user.email || '',
+        uid: usuario.user.uid,
+        displayName: usuario.user.displayName || 'Usuario desconocido'
+      };
+  
+      // Guardar datos del usuario
+      this.storageService.saveUserData(userData);
+  
+      const navigationExtras: NavigationExtras = {
+        queryParams: { email: this.email }
+      };
       
-      // Manejar diferentes tipos de errores
-      let errorMessage = "Error al iniciar sesión";
-      switch(error.code) {
-        case 'auth/invalid-email':
-          errorMessage = "Correo electrónico inválido";
-          break;
-        case 'auth/user-disabled':
-          errorMessage = "Usuario deshabilitado";
-          break;
-        case 'auth/user-not-found':
-          errorMessage = "Usuario no encontrado";
-          break;
-        case 'auth/wrong-password':
-          errorMessage = "Contraseña incorrecta";
-          break;
-      }
-      
-      await this.showAlert("Error", errorMessage);
+      // Ya no necesitamos pruebaStorage() ya que estamos manejando el token correctamente
+      this.router.navigate(['/principal'], navigationExtras);
+    } catch (error) {
+      console.error('Error en login:', error);
+      this.popAlert();
     }
-  }    
+  }  
 
   // Método mejorado para mostrar alertas
-  async showAlert(header: string, message: string) {
+  async popAlert() {
     const alert = await this.alertController.create({
-      header: header,
-      message: message,
+      header: 'Error',
+      message: "Usuario o contraseña incorrecto",
       buttons: ['Ok']
     });
     await alert.present();
+  }
+
+  async pruebaStorage() {
+    const jsonToken: any = {
+      token: this.tokenID
+    }
+    this.storageService.agregarStorage(jsonToken);
+    console.log(await this.storageService.obtenerStorage());
   }
 
   // Volver a la página anterior

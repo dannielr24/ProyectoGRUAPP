@@ -15,48 +15,127 @@
     <p class="subheading">Completa los siguientes campos para registrar tu vehículo.</p>
   </div>
 
-  <form (ngSubmit)="agregarVehiculo()">
-    <!-- Patente Vehículo -->
+  <form #vehiculoForm="ngForm" (ngSubmit)="agregarVehiculo()">
     <ion-list>
+      <!-- Patente Vehículo -->
       <ion-item>
-        <ion-label position="floating">Patente</ion-label>
-        <ion-input [(ngModel)]="patente" name="patente"></ion-input>
+        <ion-label position="floating">Patente <ion-text color="danger">*</ion-text></ion-label>
+        <ion-input 
+          [(ngModel)]="patente" 
+          name="patente" 
+          required
+          minlength="6"
+          maxlength="6"
+          pattern="^[A-Z0-9]+$"
+          #patenteInput="ngModel">
+        </ion-input>
       </ion-item>
+      <ion-text color="danger" *ngIf="patenteInput.invalid && (patenteInput.dirty || patenteInput.touched)">
+        <small class="error-message" *ngIf="patenteInput.errors?.['required']">La patente es requerida</small>
+        <small class="error-message" *ngIf="patenteInput.errors?.['pattern']">La patente debe contener solo letras mayúsculas y números</small>
+      </ion-text>
 
+      <!-- Marca -->
       <ion-item>
-        <ion-label position="floating">Marca</ion-label>
-        <ion-input [(ngModel)]="marca" name="marca"></ion-input>
+        <ion-label position="floating">Marca <ion-text color="danger">*</ion-text></ion-label>
+        <ion-input 
+          [(ngModel)]="marca" 
+          name="marca" 
+          required
+          #marcaInput="ngModel">
+        </ion-input>
       </ion-item>
+      <ion-text color="danger" *ngIf="marcaInput.invalid && (marcaInput.dirty || marcaInput.touched)">
+        <small class="error-message">La marca es requerida</small>
+      </ion-text>
 
+      <!-- Modelo -->
       <ion-item>
-        <ion-label position="floating">Modelo</ion-label>
-        <ion-input [(ngModel)]="modelo" name="modelo"></ion-input>
+        <ion-label position="floating">Modelo <ion-text color="danger">*</ion-text></ion-label>
+        <ion-input 
+          [(ngModel)]="modelo" 
+          name="modelo" 
+          required
+          #modeloInput="ngModel">
+        </ion-input>
       </ion-item>
+      <ion-text color="danger" *ngIf="modeloInput.invalid && (modeloInput.dirty || modeloInput.touched)">
+        <small class="error-message">El modelo es requerido</small>
+      </ion-text>
 
+      <!-- Año -->
       <ion-item>
-        <ion-label position="floating">Año</ion-label>
-        <ion-input [(ngModel)]="anio" name="anio"></ion-input>
+        <ion-label position="floating">Año <ion-text color="danger">*</ion-text></ion-label>
+        <ion-input 
+          [(ngModel)]="anio" 
+          name="anio" 
+          type="number"
+          required
+          min="1900"
+          [max]="currentYear"
+          #anioInput="ngModel">
+        </ion-input>
       </ion-item>
+      <ion-text color="danger" *ngIf="anioInput.invalid && (anioInput.dirty || anioInput.touched)">
+        <small class="error-message">El año debe estar entre 1900 y el año actual</small>
+      </ion-text>
 
+      <!-- Color -->
       <ion-item>
-        <ion-label position="floating">Color</ion-label>
-        <ion-input [(ngModel)]="color" name="color"></ion-input>
+        <ion-label position="floating">Color <ion-text color="danger">*</ion-text></ion-label>
+        <ion-input 
+          [(ngModel)]="color" 
+          name="color" 
+          required
+          #colorInput="ngModel">
+        </ion-input>
       </ion-item>
+      <ion-text color="danger" *ngIf="colorInput.invalid && (colorInput.dirty || colorInput.touched)">
+        <small class="error-message">El color es requerido</small>
+      </ion-text>
 
+      <!-- Tipo Combustible -->
       <ion-item>
-        <ion-label position="floating">Tipo Combustible</ion-label>
-        <ion-input [(ngModel)]="tipo_combustible" name="tipoCombustible"></ion-input>
+        <ion-label position="floating">Tipo Combustible <ion-text color="danger">*</ion-text></ion-label>
+        <ion-select 
+          [(ngModel)]="tipo_combustible" 
+          name="tipo_combustible"
+          required
+          #combustibleInput="ngModel">
+          <ion-select-option value="Bencina">Bencina</ion-select-option>
+          <ion-select-option value="Diesel">Diesel</ion-select-option>
+          <ion-select-option value="Gas">Gas</ion-select-option>
+          <ion-select-option value="Eléctrico">Eléctrico</ion-select-option>
+        </ion-select>
       </ion-item>
+      <ion-text color="danger" *ngIf="combustibleInput.invalid && (combustibleInput.dirty || combustibleInput.touched)">
+        <small class="error-message">El tipo de combustible es requerido</small>
+      </ion-text>
     </ion-list>
 
     <!-- Seleccionar Imagen -->
     <ion-item>
-      <ion-label>Seleccionar Imagen</ion-label>
-      <input type="file" (change)="onFileChange($event)" />
+      <ion-label>Imagen del Vehículo <ion-text color="danger">*</ion-text></ion-label>
+      <input 
+        type="file" 
+        (change)="onFileChange($event)"
+        accept="image/*"
+        required
+        #fileInput/>
     </ion-item>
+    <ion-text color="danger" *ngIf="!archivoImagen">
+      <small class="error-message">Debe seleccionar una imagen</small>
+    </ion-text>
 
     <!-- Botón Registrar -->
-    <ion-button expand="full" type="submit">Registrar Vehículo</ion-button>
+    <div class="ion-padding">
+      <ion-button 
+        expand="block" 
+        type="submit"
+        [disabled]="!vehiculoForm.valid || !archivoImagen">
+        Registrar Vehículo
+      </ion-button>
+    </div>
   </form>
 </ion-content>
 

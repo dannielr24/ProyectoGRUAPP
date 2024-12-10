@@ -32,7 +32,7 @@ export class HomePage implements OnInit {
       return;
     }
   
-    const uid = await this.storageService.get('uid');
+    const uid = await this.storageService.getItem('uid');
     console.log('UID recuperado:', uid);
   
     if (uid) {

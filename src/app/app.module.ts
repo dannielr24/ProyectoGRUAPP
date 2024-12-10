@@ -15,6 +15,8 @@ import { UsuarioService } from './services/usuario.service';
 import { FirebaseService } from './service/firebase.service';
 import { ApiService } from './service/api.service';
 import { FormsModule } from '@angular/forms';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AuthService } from './services/auth.service';
 
 @NgModule({
   declarations: [AppComponent],
@@ -26,10 +28,11 @@ import { FormsModule } from '@angular/forms';
     AngularFireModule.initializeApp(environment.firebaseConfig),
     GoogleMapsModule,
     ReactiveFormsModule,
+    HttpClientModule,
     FormsModule
   ],
   providers: [
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, UsuarioService, FirebaseService, StorageService, ApiService, provideHttpClient()],
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, UsuarioService, AuthService, FirebaseService, StorageService, ApiService, provideHttpClient()],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

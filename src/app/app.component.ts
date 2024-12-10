@@ -35,7 +35,7 @@ export class AppComponent implements OnInit {
   }
 
   async loadUserData() {
-    const storedEmail = await this.storage.get('email');
+    const storedEmail = await this.storage.getItem('email');
     if (storedEmail) {
       this.userEmail = storedEmail;
   
@@ -45,7 +45,7 @@ export class AppComponent implements OnInit {
       }
     }
   
-    const storedPhoto = await this.storage.get('photo');
+    const storedPhoto = await this.storage.getItem('photo');
     if (storedPhoto) {
       this.userPhoto = storedPhoto;
     }
@@ -76,7 +76,7 @@ export class AppComponent implements OnInit {
 
     try {
       await this.firebase.logout();
-      this.storage.clearSessionData(true);
+      this.storage.clearSessionData();
       await loading.onDidDismiss();
       this.router.navigate(['/login']);
     } catch (error) {

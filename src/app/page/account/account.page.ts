@@ -22,7 +22,7 @@ export class AccountPage implements OnInit {
 
   async ngOnInit() {
     // Recupera el uid desde el storage
-    const uid = await this.storageService.get('uid');
+    const uid = await this.storageService.getItem('uid');
   
     if (uid) {
       // Pasa el uid al método getUsuario

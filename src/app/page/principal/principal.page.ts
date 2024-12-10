@@ -18,6 +18,8 @@ export class PrincipalPage implements OnInit {
   uid: string = ''; // El UID debería ser dinámico, lo obtendremos de AuthService
   userName: string = ''; 
   email: string = '';
+  pass: number = 0;
+  valor: number = 0;
   vehiculos: any[]=[];
   usuario: UserModel[]=[];
 
@@ -35,35 +37,20 @@ export class PrincipalPage implements OnInit {
     private authService: AuthService, 
     private alertController: AlertController,
     private apiService: ApiService
-  ) {}
+  ) {
+    this.activate.queryParams.subscribe(params => {
+      this.email = params['email'];
+      this.pass = params['password'];
+      this.valor = params['valor'];
+      console.log('mail',this.email);
+    });
+  }
 
-  async ngOnInit() {
-    await this.loadUserData(); // Asegúrate de que email esté disponible
-    if (this.email) {
-      await this.cargarUsuario();
-    } else {
-      console.error("Email no encontrado. No se puede cargar el usuario.");
-    }
-  }  
-  
-  async loadUserData() {
-    try {
-      const currentUserString = localStorage.getItem('currentUser');
-      if (currentUserString) {
-        const userData = JSON.parse(currentUserString);
-        if (userData?.userName && userData?.email) {
-          this.userName = userData.userName;
-          this.email = userData.email;
-        } else {
-          console.error('Estructura de datos inválida:', userData);
-        }
-      } else {
-        console.warn('No se encontró el usuario en localStorage.');
-      }
-    } catch (e) {
-      console.error('Error al analizar datos del usuario:', e);
-    }
-  }        
+  ngOnInit() {
+    this.user = this.storage.getUserData(); // O usa AuthService si centralizas
+    console.log('Usuario en principal:', this.user);
+  }
+               
 
   // Método para cerrar sesión
   logout() {
@@ -73,41 +60,39 @@ export class PrincipalPage implements OnInit {
   // Método para registrar vehículo
   async agregarVehiculo() {
     const navigationExtras: NavigationExtras = {
-      queryParams: { email: this.user.email }
+      queryParams: { email: this.email }
     };
     this.router.navigate(['/agregar-vehiculo'], navigationExtras);
   }
 
   async cargarUsuario() {
-    if (!this.email) {
-      console.error("Email no definido. No se puede cargar el usuario.");
-      return;
-    }
+    const dataStorage = await this.storage.obtenerStorage();
+    if (dataStorage && dataStorage.length > 0) {
+      const token = dataStorage[0]?.token;
+      this.email = dataStorage[0]?.email || '';
+      console.log('Email cargado:', this.email);
   
-    try {
-      let dataStorage = await this.storage.obtenerStorage();
-      if (!dataStorage || dataStorage.length === 0 || !dataStorage[0].token) {
-        console.error("Error: No se encontró un token válido en el almacenamiento.");
-        await this.mostrarAlertaError("No se encontró un token válido. Intenta iniciar sesión nuevamente.");
-        return;
-      }
+      if (token) {
+        const req = await this.apiService.obtenerUsuario({
+            p_correo: this.email,
+            token: token
+        });
   
-      const req = await this.apiService.obtenerUsuario({
-        p_correo: this.email,
-        token: dataStorage[0].token,
-      });
-  
-      if (req && req.length > 0) {
-        this.usuario = req;
-        console.log("Usuario cargado:", this.usuario);
+        console.log('Respuesta de la API:', req);
+        if (req && req.length > 0) {
+          this.usuario = req;
+          console.log('Usuario cargado:', this.usuario);
+        } else {
+          console.warn('No se encontraron datos para el usuario');
+          this.usuario = [];
+        }
       } else {
-        console.warn("No se encontró usuario.");
-        this.usuario = []; // Limpia el array si no hay datos
+        console.error('Token no disponible en el almacenamiento');
       }
-    } catch (error) {
-      console.error("Error al cargar usuario:", error);
+    } else {
+      console.error('No hay datos de almacenamiento disponibles');
     }
-  }      
+  }     
 
   async cargarViajes() {
     if (!this.usuario || this.usuario.length === 0) {
@@ -131,7 +116,7 @@ export class PrincipalPage implements OnInit {
     } catch (error) {
       console.error("Error al cargar viajes:", error);
     }
-  }    
+  }      
   
   // Método para obtener vehículos
   async obtenerVehiculos() {
@@ -184,6 +169,15 @@ export class PrincipalPage implements OnInit {
         token: dataStorage[0].token
       }
     ) 
+  }
+
+  async popAlert(header: string, message: string) {
+    const alert = await this.alertController.create({
+      header,
+      message,
+      buttons: ['OK'],
+    });
+    await alert.present();
   }
 
   // Método para navegar a otras páginas

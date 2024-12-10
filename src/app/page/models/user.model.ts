@@ -16,5 +16,8 @@ export interface UserModel {
     patente: string;
     telefono: string;
     tipo_combustible: string;
+    email: string;
+    uid: string;
+    displayName: string;
   }
   

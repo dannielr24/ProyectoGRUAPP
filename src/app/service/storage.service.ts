@@ -1,11 +1,18 @@
 //storage.service.ts
 import { Injectable } from '@angular/core';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { Preferences } from '@capacitor/preferences';
 
 const llave = 'llaveValor';
-const TOKEN_KEY = 'tokenID';
-const USERS_KEY = 'users';
+const TOKEN_KEY = 'token';
 const CARDS_KEY = 'cards';
 const UID_KEY = 'userID';
+const key = 'keyValor';
+const STORAGE_KEYS = {
+  TOKEN: 'token',
+  USER_ID: 'userID',
+  USER_DATA: 'usuarioData',
+};
 
 
 interface Usuario {
@@ -19,61 +26,46 @@ interface Usuario {
 })
 export class StorageService {
 
-  constructor() {}
+  constructor(private afAuth: AngularFireAuth) {}
 
-  // Método para guardar cualquier valor en localStorage
-  async set(key: string, value: any): Promise<void> {
-    try {
-      console.log(`Guardando en localStorage - Clave: ${key}`);
-      localStorage.setItem(key, JSON.stringify(value));
-    } catch (error) {
-      console.error(`Error al guardar ${key} en localStorage:`, error);
-    }
+  // Guardar un valor en el almacenamiento local
+  async setItem(key: string, value: any): Promise<void> {
+    localStorage.setItem(key, JSON.stringify(value));
   }
 
-  // Método para obtener cualquier valor de localStorage
-  get(key: string): any {
-    try {
-      const data = localStorage.getItem(key);
-      return data ? JSON.parse(data) : null;
-    } catch (error) {
-      console.error(`Error al recuperar clave ${key} de localStorage:`, error);
-      return null;
-    }
+  // Obtener un valor del almacenamiento local
+  getItem(key: string): any {
+    const data = localStorage.getItem(key);
+    return data ? JSON.parse(data) : null;
   }
 
-  // Método mejorado para guardar usuario autenticado
-  async saveAuthenticatedUser(userData: any) {
+  async saveItem(key: string, valor: string) {
+    await this.setItem(key, valor);  
+  }
+
+   // Eliminar un valor del almacenamiento local
+   removeItem(key: string): void {
+    localStorage.removeItem(key);
+  }
+
+  // Función para iniciar sesión y guardar el token
+  async signIn(email: string, password: string): Promise<any> {
     try {
-      // Guardar el objeto completo, no solo un string
-      localStorage.setItem(`user_${userData.uid}`, JSON.stringify(userData));
-      localStorage.setItem('currentUser', JSON.stringify(userData));
-      
-      console.log('Usuario guardado correctamente:', userData);
+      const request = await this.afAuth.signInWithEmailAndPassword(email, password);
+      if (request.user) {
+        const token = await request.user.getIdToken();
+        this.setToken(token); // Guardar el token como cadena
+        console.log('Token guardado correctamente:', token);
+      }
+      return request;
     } catch (error) {
-      console.error('Error al guardar usuario:', error);
+      console.error('Error durante la autenticación de Firebase:', error);
+      throw error;
     }
   }  
 
-  // Método para obtener usuario autenticado actual
-  async getCurrentUser(): Promise<any | null> {
-    try {
-      const currentUserId = this.get('currentUser');
-      if (!currentUserId) {
-        console.warn('No hay usuario autenticado');
-        return null;
-      }
-
-      const user = this.get(`user_${currentUserId}`);
-      return user || null;
-    } catch (error) {
-      console.error('Error al obtener usuario actual:', error);
-      return null;
-    }
-  }
-
-   // Método para limpiar datos de sesión
-   clearSessionData(preserveToken: boolean = false): void {
+  // Método para limpiar datos de sesión
+  clearSessionData(preserveToken: boolean = false): void {
     console.log('clearSessionData llamado. ¿Preservar token?', preserveToken);
     console.log('Limpiando datos de sesión...');
     if (!preserveToken) {
@@ -81,66 +73,44 @@ export class StorageService {
     }
     this.remove('user');
   }  
-  
+
   // Método para eliminar el token
   removeToken() {
-    this.remove('tokenID');
+    this.removeItem(TOKEN_KEY);
   }
 
   // Método para eliminar cualquier clave
   remove(key: string): void {
     console.log(`Eliminando clave de localStorage: ${key}`);
     localStorage.removeItem(key);
-  }   
+  }
 
   // Método para guardar el nombre del usuario
   setUserName(uid: string, userName: string) {
     const users = JSON.parse(localStorage.getItem('users') || '{}');
-    users[uid] = userName; // Actualiza o agrega el usuario
+    users[uid] = userName; // Almacenar solo el nombre del usuario, no el objeto completo
     localStorage.setItem('users', JSON.stringify(users));
-    console.log('Usuarios almacenados:', users); // Agrega un log para validar
-  }  
+    console.log('Usuarios almacenados:', users);
+  }    
 
   getUserName(uid: string): string | null {
-    const clave = `name_${uid}`;
-    const nombre = localStorage.getItem(clave);
-    console.log(`Recuperando de localStorage con clave ${clave}: ${nombre}`);
-    return nombre;
+    const users = JSON.parse(localStorage.getItem('users') || '{}');
+    return users[uid] || null;  // Recuperar el nombre de usuario según el UID
   }  
 
-  // Otros métodos de usuario como tarjetas, etc.
-  setUserCards(tokenID: string, cards: any[]): void {
-    if (tokenID) this.set(`cards_${tokenID}`, cards);
-  }
-
-  getUserCards(tokenID: string): any[] {
-    return tokenID ? this.get(`cards_${tokenID}`) || [] : [];
-  }
-
-  setUserSelectedCard(tokenID: string, selectedCard: any): void {
-    if (tokenID) this.set(`selectedCard_${tokenID}`, selectedCard);
-  }
-
-  getUserSelectCard(tokenID: string): any | null {
-    return tokenID ? this.get(`selectedCard_${tokenID}`) : null;
-  }
-
   async obtenerStorage() {
-    try {
-      const currentUser = localStorage.getItem('currentUser');
-      if (currentUser) {
-        return JSON.parse(currentUser);
-      }
-      return null;
-    } catch (error) {
-      console.error('Error al obtener usuario:', error);
-      return null;
+    const data = await this.getItem(key);
+    if (data == null){
+      return []
+    } else {
+      return JSON.parse(data);
     }
   }
 
   async agregarStorage(data: any) {
-    this.set(llave, JSON.stringify(data));
-  }
+    console.log('Guardando datos en el localStorage:', data);
+    this.setItem(llave, JSON.stringify(data));
+}
 
   eliminarStorage() {
     try {
@@ -151,68 +121,42 @@ export class StorageService {
     }
   }
 
-  // Método para guardar el token
-  setToken(token: string) {
-    this.set('tokenID', token);
+   // Guardar el token de autenticación
+   async saveToken(token: string) {
+    await Preferences.set({ key: 'token', value: token });
   }
 
-  // Método para obtener el token
-  getToken(): string | null {
-    return this.get(TOKEN_KEY);
+  // Guardar el token
+  setToken(token: string): void {
+    if (!token) {
+      console.error('Intento de guardar token nulo o indefinido');
+      return;
+    }
+    localStorage.setItem('authToken', token);
+    console.log('Token guardado exitosamente');
   }
   
-  // Método para obtener los usuarios almacenados
-  getUsers(): any {
-    return this.get(USERS_KEY);
+  async getToken(): Promise<string | null> {
+    return localStorage.getItem('authToken');
+  }
+ 
+  // Guardar el ID del usuario
+  async saveUserId(uid: string): Promise<void> {
+    await this.setItem(STORAGE_KEYS.USER_ID, uid);
   }
 
-  async saveUser(uid: string, userName: string) {
-    const users = await this.get('users') || {};
-    users[uid] = userName;
-    await this.set('users', users);
-  }  
-  
-  // Guardar los datos del usuario autenticado
-  setAuthenticatedUser(user: any) {
-    localStorage.setItem('authenticatedUser', JSON.stringify(user));
+  // Obtener el ID del usuario
+  getUserId(): string | null {
+    return this.getItem(STORAGE_KEYS.USER_ID);
   }
 
-  // Recuperar los datos del usuario autenticado
-  getAuthenticatedUser() {
-    const user = localStorage.getItem('authenticatedUser');
-    console.log('Usuario desde Storage:', user);
-    return user ? JSON.parse(user) : null;
-  }
-  
-
-  // Eliminar los datos del usuario autenticado
-  clearAuthenticatedUser() {
-    localStorage.removeItem('authenticatedUser');
-  }
-  
-  // Método para guardar un usuario
-  async setUser(user: any): Promise<void> {
-    const users = JSON.parse(await this.get(USERS_KEY) || '{}');
-    users[user.uid] = user; 
-    await this.set(USERS_KEY, users); 
-  }
-  
-  // Método para obtener un usuario por su uid
-  async getUserByUid(uid: string): Promise<any | null> {
-    const users = JSON.parse(await this.get(USERS_KEY) || '{}');
-    return users[uid] || null; 
+  // Guardar datos completos del usuario
+  async saveUserData(data: any): Promise<void> {
+    await this.setItem(STORAGE_KEYS.USER_DATA, data);
   }
 
-  // Método para eliminar un usuario por su uid
-  async removeUserByUid(uid: string): Promise<void> {
-    const users = JSON.parse(await this.get(USERS_KEY) || '{}');
-    delete users[uid]; 
-    await this.set(USERS_KEY, users); 
+  // Obtener datos completos del usuario
+  getUserData(): any {
+    return this.getItem(STORAGE_KEYS.USER_DATA);
   }
-}
-
-interface Card {
-  id: string;
-  name: string;
-  // Otros campos que pueda tener la tarjeta
 }

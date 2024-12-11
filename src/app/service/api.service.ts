@@ -119,25 +119,22 @@ export class ApiService {
   }
 
   async obtenerUsuario(data: dataGetUser) {
-    try {
-      const params = {
-        p_correo: data.p_correo,
-        token: data.token
-      };
-      const response = await lastValueFrom(
-        this.http.get<any>(environment.apiUrl + 'user/obtener', { params })
-      );
-      return response;
-    } catch (error) {
-      if (error instanceof HttpErrorResponse) {
-        console.error('Error en obtenerUsuario:', error);
-        return this.handleError(error);
-      } else {
-        console.error('Error inesperado en obtenerUsuario:', error);
-        throw error;
-      }
-    }
+  try {
+    const params = {
+      p_correo: data.p_correo,
+      token: data.token
+    };
+    console.log('Parámetros enviados a obtenerUsuario:', params);
+    const response = await lastValueFrom(
+      this.http.get<any>(environment.apiUrl + 'user/obtener', { params })
+    );
+    console.log('Respuesta completa de obtenerUsuario:', JSON.stringify(response, null, 2));
+    return response;
+  } catch (error) {
+    console.error('Error en obtenerUsuario:', error);
+    throw error;
   }
+}
 
 async agregarVehiculo(vehiculoData: bodyVehiculo, imageFile: File): Promise<any> {
   try {
@@ -172,14 +169,16 @@ async agregarVehiculo(vehiculoData: bodyVehiculo, imageFile: File): Promise<any>
 
 async obtenerVehiculo(data: { p_id: number; token: string }) {
   try {
-    const params = {
-      p_id: data.p_id.toString(),
-      token: data.token
-    };
+    const params = new HttpParams()
+      .set('p_id', data.p_id.toString())
+      .set('token', data.token);
+    
+    console.log('Parámetros enviados a obtenerVehiculo:', params.toString());
     
     const response = await lastValueFrom(
       this.http.get<any>(`${environment.apiUrl}vehiculo/obtener`, { params })
     );
+    console.log('Respuesta de obtenerVehiculo:', response);
     return response;
   } catch (error) {
     console.error("Error en obtenerVehiculo:", error);
@@ -189,11 +188,14 @@ async obtenerVehiculo(data: { p_id: number; token: string }) {
 
 async agregarViaje(data: bodyViaje) {
   try {
+    console.log('Datos enviados a la API:', data);
     const response = await lastValueFrom(
       this.http.post<any>(`${environment.apiUrl}viaje/agregar`, data)
     );
+    console.log('Respuesta de la API:', response);
     return response;
   } catch (error) {
+    console.error('Error en agregarViaje:', error);
     throw error;
   }
 }

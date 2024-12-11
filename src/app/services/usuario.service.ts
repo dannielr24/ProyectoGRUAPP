@@ -82,7 +82,11 @@ export class UsuarioService {
       .then((credenciales) => {
         const uid = credenciales.user?.uid;
         // Guardar el UID en StorageService o localStorage
-        this.storageService.setItem('uid', uid);  // Guardamos el UID
+        if (uid) {
+          this.storageService.setItem('uid', uid);  // Guardamos el UID
+        } else {
+          console.error('UID no disponible, no se puede guardar en el storage');
+        } // Guardamos el UID
         // Guardar el usuario en Firestore
         return this.firestore.collection('usuarios').doc(uid).set({
           nombre: datosUsuario.nombre,

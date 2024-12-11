@@ -17,7 +17,7 @@ export class AuthService {
     this.afAuth.onAuthStateChanged(async user => {
       if (user) {
         const token = await user.getIdToken();
-        await this.storageService.setToken(token);
+        await this.storageService.setItem('authToken', token); // Usa el método setItem
         
         const userData = {
           uid: user.uid,
@@ -25,7 +25,7 @@ export class AuthService {
           displayName: user.displayName || 'Usuario desconocido'
         };
         
-        await this.storageService.saveUserData(userData);
+        await this.storageService.setItem('userData', JSON.stringify(userData)); // Usa el método setItem
       }
     });
   }             

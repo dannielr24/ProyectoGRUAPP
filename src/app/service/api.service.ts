@@ -11,209 +11,6 @@ import { environment } from 'src/environments/environment';
 import { UserModel } from '../page/models/user.model';
 import { timeout } from 'rxjs';
 
-@Injectable({
-  providedIn: 'root'
-})
-export class ApiService {
-  httpOptions = {
-    headers: new HttpHeaders()
-      .set('Content-Type', 'application/json')
-      .set('Accept', 'application/json'),
-    withCredentials: false  // Añadido esta línea
-  };
-
-  constructor(private http: HttpClient) {}
-
-  private getAuthHeaders(token: string): HttpHeaders {
-    return new HttpHeaders({
-      'Authorization': `Bearer ${token}`,
-      'Accept': 'application/json'
-    });
-  }
-
-  private getFormDataHeaders(token: string): HttpHeaders {
-    return new HttpHeaders({
-      'Authorization': `Bearer ${token}`,
-      'Accept': 'application/json'
-    });
-  }
-
-  async agregarUsuario(data: bodyUser, imageFile?: File | null) {
-    try {
-      const formData = new FormData();
-      formData.append('p_nombre', data.p_nombre);
-      formData.append('p_correo_electronico', data.p_correo_electronico);
-      formData.append('p_telefono', data.p_telefono);
-      if (data.token) {
-        formData.append('token', data.token);
-      }
-      if (imageFile) {
-        formData.append('image_usuario', imageFile, imageFile.name);
-      }
-
-      const headers = this.getAuthHeaders(data.token || '');
-      console.log('Enviando datos de usuario:', data);
-      
-      const response = await lastValueFrom(
-        this.http.post<any>(`${environment.apiUrl}user/agregar`, formData, {
-          headers: headers
-        })
-      );
-      
-      console.log('Respuesta de agregarUsuario:', response);
-      return response;
-    } catch(error) {
-      console.error('Error en agregarUsuario:', error);
-      throw error;
-    }
-  }
-
-  async agregarVehiculo(data: bodyVehiculo, imageFile: File) {
-    try {
-      const formData = new FormData();
-      
-      formData.append('p_id_usuario', data.p_id_usuario.toString());
-      formData.append('p_patente', data.p_patente);
-      formData.append('p_marca', data.p_marca);
-      formData.append('p_modelo', data.p_modelo);
-      formData.append('p_anio', data.p_anio.toString());
-      formData.append('p_color', data.p_color);
-      formData.append('p_tipo_combustible', data.p_tipo_combustible);
-      
-      if (imageFile) {
-        formData.append('image', imageFile, imageFile.name);
-      }
-  
-      const headers = new HttpHeaders({
-        'Authorization': `Bearer ${data.token}`
-      });
-  
-      // Log simplificado sin usar entries()
-      console.log('Enviando datos del vehículo:', {
-        ...data,
-        imageFile: imageFile?.name
-      });
-  
-      const response = await lastValueFrom(
-        this.http.post<any>(`${environment.apiUrl}vehiculo/agregar`, formData, {
-          headers,
-          withCredentials: false
-        }).pipe(
-          timeout(30000),
-          catchError(error => {
-            console.error('Error en agregarVehiculo:', error);
-            throw error;
-          })
-        )
-      );
-  
-      return response;
-    } catch (error) {
-      console.error('Error en agregarVehiculo:', error);
-      throw error;
-    }
-  }
-
-  async obtenerUsuario(data: dataGetUser): Promise<UserModel[]> {
-    try {
-      console.log('Enviando solicitud obtenerUsuario con:', data);
-      
-      const headers = new HttpHeaders({
-        'Authorization': `Bearer ${data.token}`,
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      });
-
-      const params = new HttpParams().set('p_correo', data.p_correo);
-
-      const response = await lastValueFrom(
-        this.http.get<any>(`${environment.apiUrl}user/obtener`, {
-          headers,
-          params,
-          withCredentials: false // Asegúrate que esto esté en false
-        }).pipe(
-          timeout(30000),
-          catchError(error => {
-            console.error('Error en obtenerUsuario:', error);
-            throw error;
-          })
-        )
-      );
-
-      console.log('Respuesta de obtenerUsuario:', response);
-      return response?.data || [];
-    } catch (error) {
-      console.error('Error en obtenerUsuario:', error);
-      throw error;
-    }
-}
-
-  async obtenerVehiculo(data: { p_id: number; token: string }) {
-    try {
-      const headers = this.getAuthHeaders(data.token);
-      
-      const response = await lastValueFrom(
-        this.http.get<any>(`${environment.apiUrl}vehiculo/obtener`, { 
-          params: { p_id: data.p_id.toString() },
-          headers: headers
-        })
-      );
-      return response;
-    } catch (error) {
-      console.error("Error en obtenerVehiculo:", error);
-      throw error;
-    }
-  }
-
-  async agregarViaje(data: bodyViaje) {
-    try {
-      const headers = this.getAuthHeaders(data.token);
-      const response = await lastValueFrom(
-        this.http.post<any>(`${environment.apiUrl}viaje/agregar`, data, {
-          headers: headers
-        })
-      );
-      return response;
-    } catch (error) {
-      throw error;
-    }
-  }
-
-  async obtenerViaje(data: dataGetViaje) {
-    try {
-      const headers = this.getAuthHeaders(data.token);
-      const response = await lastValueFrom(
-        this.http.get<any>(`${environment.apiUrl}viaje/obtener`, { 
-          params: { p_id_usuario: data.p_id_usuario.toString() },
-          headers: headers
-        })
-      );
-      return response;
-    } catch (error) {
-      throw error;
-    }
-  }
-
-  async actualizarViaje(data: bodyActViaje) {
-    try {
-      const headers = this.getAuthHeaders(data.token);
-      const response = await lastValueFrom(
-        this.http.post<any>(`${environment.apiUrl}viaje/actualizar_estado_viaje`, data, {
-          headers: headers
-        })
-      );
-      return response;
-    } catch (error) {
-      throw error;
-    }
-  }
-
-  private handleError(error: HttpErrorResponse) {
-    console.error('Error completo:', error);
-    return throwError(() => new Error('Ocurrió un error al procesar la solicitud'));
-  }
-}
-
 // Mantener las interfaces como están
 
 interface bodyUser {
@@ -262,4 +59,195 @@ interface bodyActViaje {
   p_id_estado: number;
   p_id: number;
   token: string;
+}
+
+@Injectable({
+  providedIn: 'root'
+})
+export class ApiService {
+
+  httpOptions = {
+    headers: new HttpHeaders({
+      'Content-Type' : 'application/json',
+      'Access-Control-Allow-Origin' : '*'
+    })
+  }
+
+  apiURL = 'https://jsonplaceholder.typicode.com';
+
+  constructor(private http: HttpClient) { }
+
+  getPosts(): Observable<any>{
+    return this.http.get(this.apiURL + '/post/').pipe(retry(3));
+  }
+
+  getPost(id: any): Observable<any> {
+    return this.http.get(this.apiURL + '/post/' + id).pipe(retry(3));
+  }
+
+  createPost(post: any): Observable<any>{
+    return this.http.post(this.apiURL + '/post', post, this.httpOptions).pipe(retry(3));
+  }
+
+  updatePost(id: any, post: any): Observable<any>{
+    return this.http.put(this.apiURL + '/posts/' + id, post, this.httpOptions).pipe(retry(3));
+  }
+
+  deletePost(id:any): Observable<any>{
+    return this.http.delete(this.apiURL + '/posts/' + id, this.httpOptions);
+  }
+
+  async agregarUsuario(data: bodyUser, imageFile?: File | null) {
+    try {
+      const formData = new FormData();
+      formData.append('p_nombre', data.p_nombre);
+      formData.append('p_correo_electronico', data.p_correo_electronico);
+      formData.append('p_telefono',data.p_telefono);
+      if(data.token){
+        formData.append('token', data.token);
+      }
+      if(imageFile){
+        formData.append('image_usuario', imageFile,imageFile.name);
+      }
+      const response = await lastValueFrom(
+        this.http.post<any>(environment.apiUrl +'user/agregar',formData)
+      );
+      return response;
+    } catch(error){
+      throw error;
+    }
+  }
+
+  async obtenerUsuario(data: dataGetUser) {
+    try {
+      const params = {
+        p_correo: data.p_correo,
+        token: data.token
+      };
+      const response = await lastValueFrom(
+        this.http.get<any>(environment.apiUrl + 'user/obtener', { params })
+      );
+      return response;
+    } catch (error) {
+      if (error instanceof HttpErrorResponse) {
+        console.error('Error en obtenerUsuario:', error);
+        return this.handleError(error);
+      } else {
+        console.error('Error inesperado en obtenerUsuario:', error);
+        throw error;
+      }
+    }
+  }
+
+async agregarVehiculo(vehiculoData: bodyVehiculo, imageFile: File): Promise<any> {
+  try {
+    const formData = new FormData();
+    formData.append('p_id_usuario', vehiculoData.p_id_usuario.toString());
+    formData.append('p_patente', vehiculoData.p_patente);
+    formData.append('p_marca', vehiculoData.p_marca);
+    formData.append('p_modelo', vehiculoData.p_modelo);
+    formData.append('p_anio', vehiculoData.p_anio.toString());
+    formData.append('p_color', vehiculoData.p_color);
+    formData.append('p_tipo_combustible', vehiculoData.p_tipo_combustible);
+    formData.append('token', vehiculoData.token);
+    formData.append('image', imageFile);
+
+    // Iterar sobre FormData y convertirlo a un objeto
+    const formDataObject: { [key: string]: any } = {};
+    formData.forEach((value, key) => {
+      formDataObject[key] = value;
+    });
+
+    console.log('Datos enviados al servidor:', formDataObject);
+
+    const response = await lastValueFrom(
+      this.http.post<any>(`${environment.apiUrl}vehiculo/agregar`, formData)
+    );
+    return response;
+  } catch (error) {
+    console.error('Error en agregarVehiculo:', error);
+    throw error;
+  }
+}
+
+async obtenerVehiculo(data: { p_id: number; token: string }) {
+  try {
+    const params = {
+      p_id: data.p_id.toString(),
+      token: data.token
+    };
+    
+    const response = await lastValueFrom(
+      this.http.get<any>(`${environment.apiUrl}vehiculo/obtener`, { params })
+    );
+    return response;
+  } catch (error) {
+    console.error("Error en obtenerVehiculo:", error);
+    throw error;
+  }
+}
+
+async agregarViaje(data: bodyViaje) {
+  try {
+    const response = await lastValueFrom(
+      this.http.post<any>(`${environment.apiUrl}viaje/agregar`, data)
+    );
+    return response;
+  } catch (error) {
+    throw error;
+  }
+}
+
+async obtenerViaje(data: dataGetViaje) {
+  try {
+    const params = {
+      p_id_usuario: data.p_id_usuario.toString(),
+      token: data.token
+    };
+    
+    const response = await lastValueFrom(
+      this.http.get<any>(`${environment.apiUrl}viaje/obtener`, { params })
+    );
+    return response;
+  } catch (error) {
+    throw error;
+  }
+}
+
+async actualizarViaje(data: bodyActViaje) {
+  try {
+    const response = await lastValueFrom(
+      this.http.post<any>(`${environment.apiUrl}viaje/actualizar_estado_viaje`, data)
+    );
+    return response;
+  } catch (error) {
+    throw error;
+  }
+}
+
+private handleError(error: HttpErrorResponse | Error) {
+  let errorMessage = 'Ocurrió un error desconocido';
+  if (error instanceof HttpErrorResponse) {
+    // Error del lado del servidor
+    switch (error.status) {
+      case 400:
+        errorMessage = `Error (${error.status}): Solicitud incorrecta. ${error.error.message || 'Sin mensaje de error'}`;
+        break;
+      case 404:
+        errorMessage = `Error (${error.status}): Recurso no encontrado. ${error.error.message || 'Sin mensaje de error'}`;
+        break;
+      case 500:
+        errorMessage = `Error (${error.status}): Error en el servidor. ${error.error.message || 'Sin mensaje de error'}`;
+        break;
+      default:
+        errorMessage = `Error (${error.status}): ${error.error.message || 'Sin mensaje de error'}`;
+        break;
+    }
+  } else {
+    // Error del lado del cliente
+    errorMessage = `Error: ${error.message}`;
+  }
+  console.error(errorMessage);
+  return throwError(() => new Error(errorMessage));
+}
 }

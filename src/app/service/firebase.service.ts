@@ -40,7 +40,7 @@ export class FirebaseService {
         console.log('Datos adicionales guardados en Firestore');
   
         // Almacenar el nombre en el servicio de almacenamiento (StorageService)
-        await this.storage.setUserName(uid, nombre);
+        await this.storage.setItem('userName', nombre);
   
         // Obtener el usuario actual y actualizar su displayName
         const user = await this.afAuth.currentUser;  // Usar afAuth aquí

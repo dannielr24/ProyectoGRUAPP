@@ -41,8 +41,8 @@ export class HomePage implements OnInit {
         console.log('Usuario autenticado:', this.usuario);
   
         // Asegúrate de que el nombre del usuario se recupera correctamente
-        const storedUserName = await this.storageService.getUserName(uid);
-        this.userName = storedUserName !== null ? storedUserName : 'Usuario';
+        const storedUserName = await this.storageService.getItem('userName');
+        this.userName = storedUserName || 'Usuario';
         console.log('Nombre de usuario recuperado:', this.userName);
       } catch (error) {
         console.error('Error al obtener el usuario:', error);

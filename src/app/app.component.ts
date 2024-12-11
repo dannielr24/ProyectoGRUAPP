@@ -30,26 +30,7 @@ export class AppComponent implements OnInit {
     this.platform.ready().then(() => {});
   }
 
-  ngOnInit() {
-    this.loadUserData();
-  }
-
-  async loadUserData() {
-    const storedEmail = await this.storage.getItem('email');
-    if (storedEmail) {
-      this.userEmail = storedEmail;
-  
-      const storedName = await this.storage.getUserName(this.userEmail);
-      if (storedName) {
-        this.userName = storedName;
-      }
-    }
-  
-    const storedPhoto = await this.storage.getItem('photo');
-    if (storedPhoto) {
-      this.userPhoto = storedPhoto;
-    }
-  }  
+  ngOnInit() {}
 
   async confirmLogout() {
     const alert = await this.alertController.create({
@@ -109,7 +90,7 @@ export class AppComponent implements OnInit {
           handler: (data) => {
             if (data.name && data.name.trim().length > 0) {
               this.userName = data.name;
-              this.storage.setUserName(this.userEmail, data.name);
+              this.storage.setItem('userName', data.name); // Usa setItem
               this.presentAlert('Éxito', 'Perfil actualizado correctamente.');
               return true;
             } else {
@@ -120,7 +101,7 @@ export class AppComponent implements OnInit {
         }
       ]
     });
-
+  
     await alert.present();
   }
 

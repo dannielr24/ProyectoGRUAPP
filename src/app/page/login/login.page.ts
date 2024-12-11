@@ -4,6 +4,7 @@ import { NavigationExtras, Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
 import { StorageService } from 'src/app/service/storage.service';
 import { FirebaseService } from 'src/app/service/firebase.service';
+import { ApiService } from 'src/app/service/api.service';
 
 @Component({
   selector: 'app-login',
@@ -20,79 +21,56 @@ export class LoginPage implements OnInit {
     private router: Router, 
     private alertController: AlertController,
     private storageService: StorageService, 
-    private firebase: FirebaseService
+    private firebase: FirebaseService,
+    private apiService: ApiService
   ) {}
 
-  ngOnInit() {}
+  ngOnInit() { }
 
-  async onSubmit(email: string, password: string): Promise<void> {
-    try {
-      const response = await this.storageService.signIn(email, password);
-      console.log('Login successful', response);
-    } catch (error) {
-      console.error('Login failed', error);
-    }
-  }
-
-  // Método para iniciar sesión
   async login() {
     try {
       let usuario = await this.firebase.auth(this.email, this.password);
-      
-      if (!usuario.user) {
-        throw new Error('No se pudo autenticar el usuario');
-      }
+      this.tokenID = await usuario.user?.getIdToken();
   
-      // Obtener el token y verificar que exista
-      const token = await usuario.user.getIdToken();
-      if (!token) {
-        throw new Error('No se pudo obtener el token');
-      }
+      // Primero obtener datos del usuario
+      const userInfo = await this.apiService.obtenerUsuario({
+        p_correo: this.email,
+        token: this.tokenID
+      });
   
-      // Guardar el token
-      await this.storageService.setToken(token);
+      console.log('Respuesta del servidor:', userInfo);
   
-      // Guardar los datos del usuario
-      const userData = {
-        email: usuario.user.email || '',
-        uid: usuario.user.uid,
-        displayName: usuario.user.displayName || 'Usuario desconocido'
-      };
+      // Guardar en storage con el ID correcto
+      await this.storageService.agregarStorage({
+        email: this.email,
+        token: this.tokenID,
+        idUsuario: userInfo.data[0].id // Asegúrate que sea el campo correcto
+      });
   
-      // Guardar datos del usuario
-      this.storageService.saveUserData(userData);
-  
-      const navigationExtras: NavigationExtras = {
-        queryParams: { email: this.email }
-      };
-      
-      // Ya no necesitamos pruebaStorage() ya que estamos manejando el token correctamente
-      this.router.navigate(['/principal'], navigationExtras);
+      this.router.navigate(['/principal']);
     } catch (error) {
-      console.error('Error en login:', error);
-      this.popAlert();
+      console.error("Error:", error);
+      await this.mostrarMensaje('Error', 'Credenciales inválidas');
     }
-  }  
+  }
 
-  // Método mejorado para mostrar alertas
-  async popAlert() {
+  private async mostrarMensaje(header: string, message: string) {
     const alert = await this.alertController.create({
-      header: 'Error',
-      message: "Usuario o contraseña incorrecto",
-      buttons: ['Ok']
+      header,
+      message,
+      buttons: ['OK']
     });
     await alert.present();
   }
 
   async pruebaStorage() {
     const jsonToken: any = {
-      token: this.tokenID
-    }
+      token: this.tokenID,
+    };
     this.storageService.agregarStorage(jsonToken);
     console.log(await this.storageService.obtenerStorage());
   }
 
-  // Volver a la página anterior
   goBack() {
     this.router.navigate(['/home']);
   }

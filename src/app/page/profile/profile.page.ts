@@ -120,7 +120,7 @@ export class ProfilePage implements OnInit {
           handler: (data) => {
             if (data.name && data.name.trim().length > 0) {
               this.userName = data.name;
-              this.storage.setUserName(this.user.email, data.name); // Actualiza el nombre en el StorageService
+              this.storage.setItem('userName', data.name); // Actualiza el nombre en el StorageService
               this.firebaseService.updateDisplayName(data.name); // Actualiza el nombre en Firebase
               this.presentAlert('Éxito', 'Perfil actualizado correctamente.');
               return true;

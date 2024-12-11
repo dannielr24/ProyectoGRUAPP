@@ -103,7 +103,8 @@ const routes: Routes = [
         component: PageNotFoundComponent
       }       
     ]
-  }, 
+  },   
+
 ];
 
 @NgModule({

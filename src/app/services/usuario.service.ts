@@ -68,7 +68,7 @@ export class UsuarioService {
         ? 'assets/img/user1.jpg'
         : 'assets/img/user2.jpg';
     }
-    return 'assets/img/default-avatar.jpg';  // Avatar por defecto si no hay un usuario
+    return 'assets/img/avatar.jpg';  // Avatar por defecto si no hay un usuario
   }
 
   // Genera un saludo personalizado

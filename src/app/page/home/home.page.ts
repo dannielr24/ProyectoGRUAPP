@@ -14,45 +14,49 @@ import { StorageService } from '../../service/storage.service';
 export class HomePage implements OnInit {
   usuario: any;
   userName: string = '';
-  tokenID: string = '';  // Asegúrate de tener el tokenID
+  tokenID: string = ''; // Asegúrate de tener el tokenID
 
   constructor(
-    private router: Router, 
-    private menu: MenuController, 
+    private router: Router,
+    private menu: MenuController,
     private usuarioService: UsuarioService,
     private firebaseService: FirebaseService,
     private storageService: StorageService
   ) {}
 
   async ngOnInit() {
-    const isLoggedIn = await this.firebaseService.isUserLoggedIn();
-    if (!isLoggedIn) {
-      console.log('Usuario no autenticado, redirigiendo a login');
-      this.router.navigate(['/login']);
-      return;
-    }
-  
-    const uid = await this.storageService.getItem('uid');
-    console.log('UID recuperado:', uid);
-  
-    if (uid) {
-      try {
-        this.usuario = await this.usuarioService.getUsuario(uid);
-        console.log('Usuario autenticado:', this.usuario);
-  
-        // Asegúrate de que el nombre del usuario se recupera correctamente
-        const storedUserName = await this.storageService.getItem('userName');
-        this.userName = storedUserName || 'Usuario';
-        console.log('Nombre de usuario recuperado:', this.userName);
-      } catch (error) {
-        console.error('Error al obtener el usuario:', error);
+    try {
+      // Verificar si el usuario está autenticado
+      const isLoggedIn = await this.firebaseService.isUserLoggedIn();
+      if (!isLoggedIn) {
+        console.log('Usuario no autenticado, redirigiendo a login');
         this.router.navigate(['/login']);
+        return;
       }
-    } else {
-      console.warn('UID no encontrado, redirigiendo a login');
+
+      // Obtener UID del almacenamiento
+      const uid = await this.storageService.getItem('uid');
+      console.log('UID recuperado:', uid);
+
+      if (!uid) {
+        console.warn('UID no encontrado, redirigiendo a login');
+        this.router.navigate(['/login']);
+        return;
+      }
+
+      // Recuperar información del usuario
+      this.usuario = await this.usuarioService.getUsuario(uid);
+      console.log('Usuario autenticado:', this.usuario);
+
+      // Recuperar nombre de usuario del almacenamiento
+      const storedUserName = await this.storageService.getItem('userName');
+      this.userName = storedUserName || 'Usuario';
+      console.log('Nombre de usuario recuperado:', this.userName);
+    } catch (error) {
+      console.error('Error durante la inicialización de HomePage:', error);
       this.router.navigate(['/login']);
     }
-  }  
+  }
 
   // Función para obtener la posición actual del usuario
   async printCurrentPosition() {

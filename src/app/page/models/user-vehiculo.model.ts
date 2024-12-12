@@ -7,6 +7,7 @@ export class UserVehiculo {
     anio: number;
     color: string;
     tipo_combustible: string;
+    estado_viaje?: string;
   
     constructor(data?: Partial<UserVehiculo>) {
       this.id_vehiculo = data?.id_vehiculo || 0;

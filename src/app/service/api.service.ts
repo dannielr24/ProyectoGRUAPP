@@ -119,22 +119,22 @@ export class ApiService {
   }
 
   async obtenerUsuario(data: dataGetUser) {
-  try {
-    const params = {
-      p_correo: data.p_correo,
-      token: data.token
-    };
-    console.log('Parámetros enviados a obtenerUsuario:', params);
-    const response = await lastValueFrom(
-      this.http.get<any>(environment.apiUrl + 'user/obtener', { params })
-    );
-    console.log('Respuesta completa de obtenerUsuario:', JSON.stringify(response, null, 2));
-    return response;
-  } catch (error) {
-    console.error('Error en obtenerUsuario:', error);
-    throw error;
+    try {
+      const params = {
+        p_correo: data.p_correo,
+        token: data.token
+      };
+      console.log('Parámetros enviados a obtenerUsuario:', params);
+      const response = await lastValueFrom(
+        this.http.get<any>(environment.apiUrl + 'user/obtener', { params })
+      );
+      console.log('Respuesta completa de obtenerUsuario:', JSON.stringify(response, null, 2));
+      return response;
+    } catch (error) {
+      console.error('Error en obtenerUsuario:', error);
+      throw error;
+    }
   }
-}
 
 async agregarVehiculo(vehiculoData: bodyVehiculo, imageFile: File): Promise<any> {
   try {
@@ -196,6 +196,10 @@ async agregarViaje(data: bodyViaje) {
     return response;
   } catch (error) {
     console.error('Error en agregarViaje:', error);
+    if (error instanceof HttpErrorResponse) {
+      console.error('Detalles del error HTTP:', error.error);
+      throw error.error;
+    }
     throw error;
   }
 }

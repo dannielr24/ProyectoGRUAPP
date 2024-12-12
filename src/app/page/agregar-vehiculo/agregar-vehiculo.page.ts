@@ -176,6 +176,18 @@ export class AgregarVehiculoPage implements OnInit {
       console.log('Archivo seleccionado:', this.archivoImagen?.name);
     }
   }
+
+  goToListadoVehiculos() {
+    this.router.navigate(['/listado-vehiculos']); // Cambiar la ruta según tu configuración
+  }
+
+  goToAgregarViaje() {
+    this.router.navigate(['/agregar-viaje']); // Cambiar la ruta según tu configuración
+  }
+
+  goToVerViajes() {
+    this.router.navigate(['/ver-viajes']); // Cambiar la ruta según tu configuración
+  }
   
   goBack() {
     this.router.navigate([ '/principal' ]); // O la ruta a la que quieras regresar

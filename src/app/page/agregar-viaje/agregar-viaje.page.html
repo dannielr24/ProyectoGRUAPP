@@ -1,3 +1,4 @@
+<!-- agregar-viaje.page.html -->
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
@@ -5,13 +6,23 @@
         <ion-icon name="chevron-back-outline" aria-label="Volver"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <img src="assets/img/gruapp.png" width="50%" height="50%">
+    <img src="assets/img/gruapp.png" alt="Logo" width="50%" height="50%" />
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <!-- Formulario tradicional sin formGroup -->
   <form (ngSubmit)="registrarViaje()">
+    <!-- Selector de vehículo -->
+    <ion-item>
+      <ion-label position="floating">Seleccionar Vehículo</ion-label>
+      <ion-select [(ngModel)]="vehiculoSeleccionado" name="vehiculo" required>
+        <ion-select-option *ngFor="let v of vehiculo" [value]="v.id_vehiculo">
+          {{v.marca}} {{v.modelo}} - {{v.patente}}
+          <ng-container *ngIf="v.estado_viaje === 'activo'">(En viaje)</ng-container>
+        </ion-select-option>
+      </ion-select>
+    </ion-item>
+
     <!-- Campo de origen -->
     <ion-item>
       <ion-label position="floating">Origen</ion-label>
@@ -46,7 +57,7 @@
     </ion-item>
     
     <!-- Botón de registro -->
-    <ion-button expand="full" type="submit" [disabled]="!p_ubicacion_origen || !p_ubicacion_destino || !p_costo">
+    <ion-button expand="full" type="submit">
       Registrar Viaje
     </ion-button>
   </form>

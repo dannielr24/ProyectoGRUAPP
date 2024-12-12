@@ -36,12 +36,12 @@ export class HomePage implements OnInit {
 
       // Obtener UID del almacenamiento
       const uid = await this.storageService.getItem('uid');
-      console.log('UID recuperado:', uid);
-
       if (!uid) {
-        console.warn('UID no encontrado, redirigiendo a login');
+        console.warn('UID no encontrado o es null, redirigiendo a login');
         this.router.navigate(['/login']);
         return;
+      } else {
+        console.log('UID encontrado:', uid);
       }
 
       // Recuperar información del usuario

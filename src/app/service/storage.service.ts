@@ -18,12 +18,13 @@ export class StorageService {
   async getItem(key: string): Promise<string | null> {
     try {
       const obj = await Preferences.get({ key });
+      console.log(`Valor obtenido para la llave ${key}:`, obj.value);
       return obj.value;
     } catch (error) {
       console.error(`Error obteniendo el item con la llave ${key}:`, error);
       return null;
     }
-  }
+  }  
 
   public async setItem(key: string, valor: string) {
     await Preferences.set({ key: key, value: valor });

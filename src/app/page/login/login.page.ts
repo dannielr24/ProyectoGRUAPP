@@ -24,8 +24,10 @@ export class LoginPage implements OnInit {
   ) {}
 
   async ngOnInit() {
-    // Limpiar el storage al iniciar
-    await this.storageService.limpiarStorage();
+    const uid = await this.storageService.getItem('uid');
+    if (!uid) {
+      await this.storageService.limpiarStorage(); // Solo limpiar si no hay UID
+    }
   }
 
   async login() {

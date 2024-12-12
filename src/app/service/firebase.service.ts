@@ -18,8 +18,20 @@ export class FirebaseService {
 
   // Método de inicio de sesión en Firebase
   async auth(email: string, password: string) {
-    const request = await this.afAuth.signInWithEmailAndPassword(email, password);
-    return request;
+    try {
+      const request = await this.afAuth.signInWithEmailAndPassword(email, password);
+      const uid = request.user?.uid;
+
+      if (uid) {
+        await this.storage.setItem('uid', uid);
+        console.log('UID guardado en almacenamiento:', uid);
+      }
+
+      return request;
+    } catch (error) {
+      console.error('Error en el inicio de sesión:', error);
+      throw error;
+    }
   }
 
   // Método para registrar un nuevo usuario

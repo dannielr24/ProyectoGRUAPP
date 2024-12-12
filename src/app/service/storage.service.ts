@@ -33,17 +33,36 @@ export class StorageService {
     await Preferences.remove({ key: key });
   }
 
-  public async obtenerStorage() {
-    const data = await this.getItem(llave);
-    if (data == null) {
-      return [];
-    } else {
+  async obtenerStorage() {
+    try {
+      const data = await this.getItem(llave);
+      if (!data) {
+        return null;
+      }
       return JSON.parse(data);
+    } catch (error) {
+      console.error('Error al obtener datos del storage:', error);
+      return null;
     }
   }
 
-  public async agregarStorage(data: any) {
-    await this.setItem(llave, JSON.stringify(data));
+  async agregarStorage(data: any) {
+    try {
+      await this.setItem(llave, JSON.stringify(data));
+      console.log('Datos guardados en storage:', data);
+    } catch (error) {
+      console.error('Error al guardar en storage:', error);
+      throw error;
+    }
+  }
+
+  async limpiarStorage() {
+    try {
+      await Preferences.clear();
+      console.log('Storage limpiado completamente');
+    } catch (error) {
+      console.error('Error al limpiar storage:', error);
+    }
   }
 
   eliminarStorage(): void {

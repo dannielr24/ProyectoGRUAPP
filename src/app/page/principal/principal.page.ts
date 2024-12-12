@@ -22,6 +22,9 @@ export class PrincipalPage implements OnInit {
   valor: number = 0;
   vehiculos: any[]=[];
   usuario: UserModel[]=[];
+  // Agregar las propiedades que faltaban
+  token: string = '';
+  idUsuario: any = null;
 
   user = {
     email: '',
@@ -46,7 +49,27 @@ export class PrincipalPage implements OnInit {
     });
   }
 
-  ngOnInit() {}
+  async ngOnInit() {
+    try {
+      // Obtener datos del storage
+      const userData = await this.storage.obtenerStorage();
+      if (userData) {
+        this.email = userData.email || '';
+        this.token = userData.token || '';
+        this.idUsuario = userData.idUsuario;
+        
+        if (!this.email || !this.token) {
+          console.log('No hay datos de sesión');
+          this.router.navigate(['/login']);
+        }
+      } else {
+        this.router.navigate(['/login']);
+      }
+    } catch (error) {
+      console.error('Error al obtener datos de sesión:', error);
+      this.router.navigate(['/login']);
+    }
+  }
                
 
   // Método para cerrar sesión

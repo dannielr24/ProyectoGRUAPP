@@ -37,25 +37,26 @@ export class StorageService {
   async obtenerStorage() {
     try {
       const data = await this.getItem(llave);
+      console.log('Valor obtenido de storage:', data);  // Verifica el valor recuperado
       if (!data) {
         return null;
       }
-      return JSON.parse(data);
+      return JSON.parse(data);  // Devuelve los datos en formato JSON para uso posterior
     } catch (error) {
       console.error('Error al obtener datos del storage:', error);
-      return null;
+      return null; // Manejo de errores en caso de que no se pueda obtener
     }
-  }
+  }  
 
   async agregarStorage(data: any) {
     try {
       await this.setItem(llave, JSON.stringify(data));
-      console.log('Datos guardados en storage:', data);
+      console.log('Datos guardados en storage:', data);  // Verifica los datos guardados
     } catch (error) {
       console.error('Error al guardar en storage:', error);
       throw error;
     }
-  }
+  }  
 
   async limpiarStorage() {
     try {
@@ -83,11 +84,12 @@ export class StorageService {
     console.log('Limpiando datos de sesión. ¿Preservar token?:', preserveToken);
     
     if (!preserveToken) {
+      // No elimines el token si el usuario no lo ha solicitado
       localStorage.removeItem(this.TOKEN_KEY);
     }
     
     localStorage.removeItem(this.USER_DATA_KEY);
     localStorage.removeItem(this.USER_ID_KEY);
     console.log('Datos de sesión limpiados');
-  }
+  }  
 }

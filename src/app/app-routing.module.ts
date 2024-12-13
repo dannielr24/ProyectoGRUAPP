@@ -79,10 +79,6 @@ const routes: Routes = [
         loadChildren: () => import('./page/help/help.module').then(m => m.HelpPageModule)
       },
       {
-        path: 'detalle-viaje',
-        loadChildren: () => import('./page/detalle-viaje/detalle-viaje.module').then( m => m.DetalleViajePageModule)
-      },
-      {
         path: 'agregar-vehiculo',
         loadChildren: () => import('./page/agregar-vehiculo/agregar-vehiculo.module').then( m => m.AgregarVehiculoPageModule)
       },

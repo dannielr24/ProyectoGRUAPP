@@ -5,17 +5,38 @@
         <ion-icon name="chevron-back-outline" aria-label="Volver"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <ion-title>Listado de Vehículos</ion-title>
+    <ion-title>Listado de Viajes</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
   <ion-list>
-    <ion-card *ngFor="let v of viajes">
-      <h2>Origen: {{v.ubicacion_destino}}</h2>
-      <h2>Destino: {{v.ubicacion_destino}}</h2>
-      <h2>Costo: {{v.costo}}</h2>
-      <h2>Estado: {{v.estado}}</h2>
-    </ion-card>
+    <!-- Verifica si hay viajes cargados -->
+    <div *ngIf="viajes && viajes.length > 0; else noViajes">
+      <ion-card *ngFor="let v of viajes">
+        <ion-card-header>
+          <ion-card-title>Viaje</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <p><strong>Origen:</strong> {{ v.ubicacion_origen }}</p>
+          <p><strong>Destino:</strong> {{ v.ubicacion_destino }}</p>
+          <p><strong>Costo:</strong> {{ v.costo }}</p>
+          <p><strong>Estado:</strong> {{ v.estado }}</p>
+        </ion-card-content>
+      </ion-card>
+    </div>
+    
+    <ng-template #noViajes>
+      <div *ngIf="viajes && viajes.length === 0">
+        <ion-text color="medium">
+          <p>No se encontraron viajes registrados.</p>
+        </ion-text>
+      </div>
+      <div *ngIf="!viajes">
+        <ion-text color="danger">
+          <p>Error al cargar los viajes.</p>
+        </ion-text>
+      </div>
+    </ng-template>        
   </ion-list>
 </ion-content>

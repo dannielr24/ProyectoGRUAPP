@@ -33,27 +33,58 @@ export class VerViajesPage implements OnInit {
 
   async cargarUsuario() {
     let dataStorage = await this.storage.obtenerStorage();
-    const req = await this.apiService.obtenerUsuario(
-      {
+    console.log("DataStorage:", dataStorage);
+  
+    if (!dataStorage || dataStorage.length === 0 || !dataStorage[0]?.token) {
+      console.error("El almacenamiento no contiene datos válidos.");
+      this.popAlertNoViajes();
+      return;
+    }
+  
+    try {
+      const req = await this.apiService.obtenerUsuario({
         p_correo: this.email,
-        token: dataStorage[0].token
-      }
-    );
-    this.usuario = req;
-    console.log("DATA INICIO USUARIO", this.usuario);
-    this.cargarViajes();
-  }
+        token: dataStorage[0].token,
+      });
+      console.log("Usuario recibido:", req);
+      this.usuario = req;
+      this.cargarViajes();
+    } catch (error) {
+      console.error("Error al cargar el usuario:", error);
+    }
+  }  
 
   async cargarViajes() {
+    if (!this.usuario || this.usuario.length === 0) {
+      console.error("No hay usuario disponible para cargar los viajes.");
+      this.viajes = [];
+      this.popAlertNoViajes();
+      return;
+    }
+  
     let dataStorage = await this.storage.obtenerStorage();
-    const req = await this.apiService.obtenerVehiculo(
-      {
+    console.log("DataStorage en cargarViajes:", dataStorage);
+  
+    if (!dataStorage || dataStorage.length === 0 || !dataStorage[0]?.token) {
+      console.error("El almacenamiento no contiene datos válidos.");
+      this.viajes = [];
+      this.popAlertNoViajes();
+      return;
+    }
+  
+    try {
+      const req = await this.apiService.obtenerVehiculo({
         p_id: this.usuario[0].id_usuario,
-        token: dataStorage[0].token
-      }
-    );
-    this.viajes = req.data;
-  }
+        token: dataStorage[0].token,
+      });
+      console.log("Viajes recibidos:", req);
+      this.viajes = req.data || [];
+    } catch (error) {
+      console.error("Error al cargar los viajes:", error);
+      this.viajes = [];
+      this.popAlertNoViajes();
+    }
+  }     
 
   async popAlertNoViajes() {
     const alert = await this.alertController.create({

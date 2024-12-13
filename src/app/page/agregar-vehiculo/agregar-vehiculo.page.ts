@@ -178,8 +178,9 @@ export class AgregarVehiculoPage implements OnInit {
   }
 
   goToListadoVehiculos() {
-    this.router.navigate(['/listado-vehiculos']); // Cambiar la ruta según tu configuración
-  }
+    console.log('Email a pasar:', this.email);  // Asegúrate de que el email no sea undefined
+    this.router.navigate(['/listado-vehiculos'], { queryParams: { email: this.email } });
+  }  
 
   goToAgregarViaje() {
     this.router.navigate(['/agregar-viaje']); // Cambiar la ruta según tu configuración

@@ -9,7 +9,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:386799996285:android:c19d852a457ed91debd014",
         "android_client_info": {
-          "package_name": "com.example.gruapp"
+          "package_name": "io.ionic.starter"
         }
       },
       "oauth_client": [],

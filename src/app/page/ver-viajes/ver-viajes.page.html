@@ -27,6 +27,26 @@
           <p><strong>Color:</strong> {{ v.color }}</p>
           <p><strong>Tipo de Combustible:</strong> {{ v.tipo_combustible }}</p>
           <p><strong>Estado:</strong> {{ v.id_estado === 1 ? 'Activo' : 'Inactivo' }}</p>
+          
+          <!-- Botones para cambiar estado -->
+          <div class="ion-margin-top">
+            <ion-button 
+              *ngIf="v.id_estado === 1" 
+              (click)="actualizarEstadoViaje(v.id_viaje, 2)"
+              color="warning"
+              expand="block"
+            >
+              Desactivar Viaje
+            </ion-button>
+            <ion-button 
+              *ngIf="v.id_estado === 2" 
+              (click)="actualizarEstadoViaje(v.id_viaje, 1)"
+              color="success"
+              expand="block"
+            >
+              Activar Viaje
+            </ion-button>
+          </div>
         </ion-card-content>
       </ion-card>
     </div>

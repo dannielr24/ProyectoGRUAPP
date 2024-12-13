@@ -5,6 +5,7 @@ import { StorageService } from 'src/app/service/storage.service';
 import { ApiService } from 'src/app/service/api.service';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { AlertController, AnimationController } from '@ionic/angular';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-ver-viajes',
@@ -120,7 +121,63 @@ export class VerViajesPage implements OnInit {
       this.viajes = [];
       await this.popAlertNoViajes();
     }
-  }       
+  }
+  
+  async actualizarEstadoViaje(idViaje: number, nuevoEstado: number) {
+    try {
+      // Verificar si los parámetros son válidos
+      if (!idViaje || !nuevoEstado) {
+        console.error('Parámetros inválidos para actualizar el estado del viaje');
+        await this.mostrarAlerta('Error', 'Parámetros inválidos');
+        return;
+      }
+  
+      // Obtener datos de almacenamiento
+      const dataStorage = await this.storage.obtenerStorage();
+  
+      // Verificar que exista el token de autenticación
+      if (!dataStorage || !dataStorage.token) {
+        console.error('No se encontró token de autenticación');
+        await this.mostrarAlerta('Error', 'No se pudo autenticar');
+        return;
+      }
+  
+      // Preparar los datos para la actualización
+      const datosActualizacion = {
+        p_id: idViaje,
+        p_id_estado: nuevoEstado,
+        token: dataStorage.token
+      };
+  
+      // Llamar al servicio para actualizar el viaje
+      const respuesta = await this.apiService.actualizarEstadoViaje(datosActualizacion);
+  
+      // Verificar si la respuesta es exitosa
+      if (respuesta && respuesta.message) {
+        // Mostrar alerta de éxito
+        await this.mostrarAlerta('Éxito', respuesta.message);
+        
+        // Recargar los viajes después de la actualización
+        await this.cargarViajes();
+      } else {
+        console.error('La respuesta de la API no es válida o no contiene mensaje');
+        await this.mostrarAlerta('Error', 'No se pudo actualizar el estado del viaje');
+      }
+    } catch (error) {
+      console.error('Error al actualizar estado de viaje:', error);
+      await this.mostrarAlerta('Error', 'No se pudo actualizar el estado del viaje');
+    }
+  }  
+  
+  // Método auxiliar para mostrar alertas
+  async mostrarAlerta(header: string, message: string) {
+    const alert = await this.alertController.create({
+      header: header,
+      message: message,
+      buttons: ['OK']
+    });
+    await alert.present();
+  }
 
   async popAlertNoViajes() {
     const alert = await this.alertController.create({

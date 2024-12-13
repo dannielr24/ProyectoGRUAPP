@@ -93,14 +93,13 @@ const routes: Routes = [
       {
         path: 'ver-viajes',
         loadChildren: () => import('./page/ver-viajes/ver-viajes.module').then( m => m.VerViajesPageModule)
-      },
+      }, 
       {
         path: '**',
         component: PageNotFoundComponent
       }       
     ]
-  },   
-
+  },
 ];
 
 @NgModule({

@@ -227,13 +227,34 @@ async obtenerViaje(data: { p_id_usuario: number; token: string }) {
   }
 }
 
-async actualizarViaje(data: bodyActViaje) {
+async actualizarEstadoViaje(data: bodyActViaje) {
   try {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${data.token}` // Si el backend usa autorización Bearer
+    });
+
     const response = await lastValueFrom(
-      this.http.post<any>(`${environment.apiUrl}viaje/actualizar_estado_viaje`, data)
+      this.http.post<any>(`${environment.apiUrl}viaje/actualiza_estado_viaje`, 
+        {
+          p_id: data.p_id,
+          p_id_estado: data.p_id_estado
+        }, 
+        { 
+          headers: headers,
+          observe: 'response' // Para obtener información completa de la respuesta
+        }
+      ).pipe(
+        // Añade manejo de errores más detallado
+        catchError((error: HttpErrorResponse) => {
+          console.error('Error detallado en actualizar viaje:', error);
+          return throwError(() => error);
+        })
+      )
     );
-    return response;
+    return response.body; // Retorna solo el cuerpo de la respuesta
   } catch (error) {
+    console.error('Error en actualizarViaje:', error);
     throw error;
   }
 }

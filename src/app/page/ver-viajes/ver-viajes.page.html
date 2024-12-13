@@ -1,8 +1,8 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-button (click)="goBack()">
-        <ion-icon name="chevron-back-outline" aria-label="Volver"></ion-icon>
+      <ion-button (click)="goBack()" aria-label="Volver">
+        <ion-icon name="chevron-back-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
     <ion-title>Listado de Viajes</ion-title>
@@ -15,28 +15,29 @@
     <div *ngIf="viajes && viajes.length > 0; else noViajes">
       <ion-card *ngFor="let v of viajes">
         <ion-card-header>
-          <ion-card-title>Viaje</ion-card-title>
+          <ion-card-title>Viaje {{ v.id_viaje }}</ion-card-title>
         </ion-card-header>
         <ion-card-content>
           <p><strong>Origen:</strong> {{ v.ubicacion_origen }}</p>
           <p><strong>Destino:</strong> {{ v.ubicacion_destino }}</p>
-          <p><strong>Costo:</strong> {{ v.costo }}</p>
-          <p><strong>Estado:</strong> {{ v.estado }}</p>
+          <p><strong>Fecha:</strong> {{ v.fecha | date:'medium' }}</p>
+          <p><strong>Costo:</strong> ${{ v.costo }}</p>
+          <p><strong>Vehículo:</strong> {{ v.marca }} {{ v.modelo }} ({{ v.patente }})</p>
+          <p><strong>Año:</strong> {{ v.anio }}</p>
+          <p><strong>Color:</strong> {{ v.color }}</p>
+          <p><strong>Tipo de Combustible:</strong> {{ v.tipo_combustible }}</p>
+          <p><strong>Estado:</strong> {{ v.id_estado === 1 ? 'Activo' : 'Inactivo' }}</p>
         </ion-card-content>
       </ion-card>
     </div>
-    
-    <ng-template #noViajes>
-      <div *ngIf="viajes && viajes.length === 0">
-        <ion-text color="medium">
-          <p>No se encontraron viajes registrados.</p>
-        </ion-text>
-      </div>
-      <div *ngIf="!viajes">
-        <ion-text color="danger">
-          <p>Error al cargar los viajes.</p>
-        </ion-text>
-      </div>
-    </ng-template>        
   </ion-list>
+
+  <!-- Mensaje cuando no hay viajes -->
+  <ng-template #noViajes>
+    <div class="no-viajes">
+      <ion-text color="medium">
+        <p>No se encontraron viajes registrados.</p>
+      </ion-text>
+    </div>
+  </ng-template>
 </ion-content>

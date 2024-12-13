@@ -204,18 +204,25 @@ async agregarViaje(data: bodyViaje) {
   }
 }
 
-async obtenerViaje(data: dataGetViaje) {
+async obtenerViaje(data: { p_id_usuario: number; token: string }) {
   try {
-    const params = {
-      p_id_usuario: data.p_id_usuario.toString(),
-      token: data.token
-    };
+    const params = new HttpParams()
+      .set('p_id_usuario', data.p_id_usuario.toString())
+      .set('token', data.token);
+    
+    console.log('Parámetros enviados a obtenerViaje:', params.toString());
     
     const response = await lastValueFrom(
       this.http.get<any>(`${environment.apiUrl}viaje/obtener`, { params })
     );
+    console.log('Respuesta de obtenerViaje:', JSON.stringify(response, null, 2));
+    if (!response || (!Array.isArray(response) && typeof response !== 'object')) {
+      console.error('Respuesta inesperada de la API:', response);
+      throw new Error('La respuesta de la API no es válida');
+    }
     return response;
   } catch (error) {
+    console.error('Error en obtenerViaje:', error);
     throw error;
   }
 }

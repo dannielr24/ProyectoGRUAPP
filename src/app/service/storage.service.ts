@@ -46,7 +46,8 @@ export class StorageService {
       console.error('Error al obtener datos del storage:', error);
       return null; // Manejo de errores en caso de que no se pueda obtener
     }
-  }  
+  }
+  
 
   async agregarStorage(data: any) {
     try {

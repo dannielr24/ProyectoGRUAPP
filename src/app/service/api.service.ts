@@ -235,7 +235,7 @@ async actualizarEstadoViaje(data: bodyActViaje) {
     });
 
     const response = await lastValueFrom(
-      this.http.post<any>(`${environment.apiUrl}viaje/actualiza_estado_viaje`, 
+      this.http.post<any>(`${environment.apiUrl}viaje/actualizar_estado_viaje`, 
         {
           p_id: data.p_id,
           p_id_estado: data.p_id_estado
